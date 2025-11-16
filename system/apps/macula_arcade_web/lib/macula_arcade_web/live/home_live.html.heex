@@ -1,0 +1,452 @@
+<div class="arcade-container">
+  <!-- CRT Screen Effect -->
+  <div class="crt-overlay"></div>
+
+  <!-- Retro Terminal Header -->
+  <div class="terminal-header">
+    <div class="terminal-title">
+      <pre class="ascii-logo">
+ ███╗   ███╗ █████╗  ██████╗██╗   ██╗██╗      █████╗
+ ████╗ ████║██╔══██╗██╔════╝██║   ██║██║     ██╔══██╗
+ ██╔████╔██║███████║██║     ██║   ██║██║     ███████║
+ ██║╚██╔╝██║██╔══██║██║     ██║   ██║██║     ██╔══██║
+ ██║ ╚═╝ ██║██║  ██║╚██████╗╚██████╔╝███████╗██║  ██║
+ ╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝
+  █████╗ ██████╗  ██████╗ █████╗ ██████╗ ███████╗
+ ██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝
+ ███████║██████╔╝██║     ███████║██║  ██║█████╗
+ ██╔══██║██╔══██╗██║     ██╔══██║██║  ██║██╔══╝
+ ██║  ██║██║  ██║╚██████╗██║  ██║██████╔╝███████╗
+ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝ ╚══════╝
+      </pre>
+    </div>
+
+    <div class="manifesto">
+      <p class="blink">▸ DECENTRALIZED GAMING COLLECTIVE ◂</p>
+      <p class="tagline">
+        No servers. No tracking. No corporations.<br/>
+        Just you, the mesh, and the games.<br/>
+        <span class="hacker-motto">BUILT BY HACKERS, FOR PLAYERS</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- System Info Bar -->
+  <div class="system-info">
+    <span class="info-item">MESH: <span class="status-active">ACTIVE</span></span>
+    <span class="info-item">PROTOCOL: HTTP/3</span>
+    <span class="info-item">REALM: macula.arcade</span>
+    <span class="info-item">PEERS: <span id="peer-count">4</span></span>
+  </div>
+
+  <!-- Game Selection Grid -->
+  <div class="game-grid">
+    <%= for game <- @games do %>
+      <div
+        class={"game-card #{if game.status == :coming_soon, do: "coming-soon", else: ""} #{if @selected_game == game.id, do: "selected", else: ""}"}
+        phx-click="select_game"
+        phx-value-game={game.id}
+      >
+        <div class="game-card-inner">
+          <!-- Game ASCII Art -->
+          <div class="game-ascii">
+            <pre><%= game.ascii_art %></pre>
+          </div>
+
+          <!-- Game Title -->
+          <h2 class="game-title"><%= game.name %></h2>
+
+          <!-- Game Status Badge -->
+          <div class="game-status">
+            <%= if game.status == :available do %>
+              <span class="badge available">[ ONLINE ]</span>
+            <% else %>
+              <span class="badge coming-soon">[ COMING SOON ]</span>
+            <% end %>
+          </div>
+
+          <!-- Game Info -->
+          <div class="game-info">
+            <p class="game-description"><%= game.description %></p>
+            <p class="game-players">
+              <span class="label">PLAYERS:</span> <%= game.players %>
+            </p>
+          </div>
+
+          <!-- Launch Button -->
+          <%= if game.status == :available do %>
+            <button
+              class="launch-btn"
+              phx-click="launch_game"
+              phx-value-game={game.id}
+            >
+              ▶ INSERT COIN
+            </button>
+          <% else %>
+            <div class="launch-btn disabled">
+              ⧗ IN DEVELOPMENT
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Footer Manifesto -->
+  <div class="footer-manifesto">
+    <div class="manifesto-box">
+      <h3>⚡ THE MESH MANIFESTO ⚡</h3>
+      <ul class="principles">
+        <li>→ Your data stays yours. No central servers means no surveillance.</li>
+        <li>→ Play without permission. No gatekeepers, no censorship.</li>
+        <li>→ Built on HTTP/3 mesh networking. Peer-to-peer, edge-first, unstoppable.</li>
+        <li>→ Open source, forever. Fork it, hack it, make it yours.</li>
+        <li>→ Grassroots gaming. By the community, for the community.</li>
+      </ul>
+      <p class="call-to-action">
+        <span class="blink">▸</span>
+        BUILD YOUR OWN GAME. CONTRIBUTE TO THE MESH. BE THE CHANGE.
+        <span class="blink">◂</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Easter Egg / Hacker Credits -->
+  <div class="credits">
+    <p>POWERED BY MACULA MESH • HTTP/3 • ELIXIR • ERLANG/OTP</p>
+    <p class="small">Crafted with ❤️ by distributed rebels. No venture capital was harmed in the making of this arcade.</p>
+  </div>
+</div>
+
+<style>
+  /* Retro Terminal Aesthetic */
+  :root {
+    --neon-green: #00ff41;
+    --neon-cyan: #00f0ff;
+    --neon-pink: #ff006e;
+    --neon-orange: #ff6b00;
+    --dark-bg: #0a0e27;
+    --darker-bg: #050814;
+    --terminal-green: #33ff33;
+    --amber: #ffb000;
+  }
+
+  .arcade-container {
+    min-height: 100vh;
+    background: var(--darker-bg);
+    color: var(--neon-green);
+    font-family: 'Courier New', 'Monaco', monospace;
+    position: relative;
+    overflow-x: hidden;
+    padding: 2rem;
+  }
+
+  /* CRT Screen Effect */
+  .crt-overlay {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 1000;
+    animation: flicker 0.15s infinite;
+  }
+
+  @keyframes flicker {
+    0% { opacity: 0.97; }
+    50% { opacity: 1; }
+    100% { opacity: 0.97; }
+  }
+
+  /* Terminal Header */
+  .terminal-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    border: 2px solid var(--neon-green);
+    padding: 2rem;
+    background: rgba(0, 255, 65, 0.05);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+  }
+
+  .ascii-logo {
+    color: var(--neon-green);
+    font-size: 0.5rem;
+    line-height: 1.2;
+    text-shadow: 0 0 10px var(--neon-green);
+    margin: 0;
+    overflow-x: auto;
+  }
+
+  .manifesto {
+    margin-top: 1.5rem;
+  }
+
+  .manifesto p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .blink {
+    animation: blink 1s step-start infinite;
+    color: var(--neon-cyan);
+    font-weight: bold;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  .tagline {
+    color: var(--terminal-green);
+    line-height: 1.6;
+  }
+
+  .hacker-motto {
+    color: var(--neon-pink);
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--neon-pink);
+  }
+
+  /* System Info Bar */
+  .system-info {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--dark-bg);
+    border: 1px solid var(--neon-cyan);
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+  }
+
+  .info-item {
+    color: var(--amber);
+  }
+
+  .status-active {
+    color: var(--neon-green);
+    font-weight: bold;
+    text-shadow: 0 0 5px var(--neon-green);
+  }
+
+  /* Game Grid */
+  .game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .game-card {
+    border: 2px solid var(--neon-cyan);
+    background: rgba(0, 240, 255, 0.05);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .game-card:hover {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 30px rgba(255, 0, 110, 0.5);
+    transform: translateY(-5px);
+  }
+
+  .game-card.selected {
+    border-color: var(--neon-orange);
+    box-shadow: 0 0 40px rgba(255, 107, 0, 0.7);
+    background: rgba(255, 107, 0, 0.1);
+  }
+
+  .game-card.coming-soon {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .game-card.coming-soon:hover {
+    transform: none;
+  }
+
+  .game-ascii {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: var(--neon-cyan);
+  }
+
+  .game-ascii pre {
+    font-size: 0.7rem;
+    margin: 0;
+    text-shadow: 0 0 8px var(--neon-cyan);
+  }
+
+  .game-title {
+    color: var(--neon-orange);
+    text-align: center;
+    font-size: 1.3rem;
+    margin: 1rem 0;
+    text-shadow: 0 0 10px var(--neon-orange);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .game-status {
+    text-align: center;
+    margin: 1rem 0;
+  }
+
+  .badge {
+    padding: 0.3rem 1rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+
+  .badge.available {
+    background: rgba(0, 255, 65, 0.2);
+    color: var(--neon-green);
+    border: 1px solid var(--neon-green);
+  }
+
+  .badge.coming-soon {
+    background: rgba(255, 176, 0, 0.2);
+    color: var(--amber);
+    border: 1px solid var(--amber);
+  }
+
+  .game-info {
+    margin: 1.5rem 0;
+    min-height: 100px;
+  }
+
+  .game-description {
+    color: var(--terminal-green);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+  }
+
+  .game-players {
+    color: var(--neon-cyan);
+    font-size: 0.8rem;
+  }
+
+  .game-players .label {
+    color: var(--amber);
+    font-weight: bold;
+  }
+
+  .launch-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--neon-green);
+    color: var(--darker-bg);
+    border: none;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .launch-btn:hover {
+    background: var(--neon-pink);
+    box-shadow: 0 0 20px var(--neon-pink);
+    transform: scale(1.05);
+  }
+
+  .launch-btn.disabled {
+    background: rgba(255, 176, 0, 0.3);
+    color: var(--amber);
+    cursor: not-allowed;
+  }
+
+  .launch-btn.disabled:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Footer Manifesto */
+  .footer-manifesto {
+    margin: 3rem 0;
+  }
+
+  .manifesto-box {
+    border: 2px solid var(--neon-pink);
+    background: rgba(255, 0, 110, 0.05);
+    padding: 2rem;
+    box-shadow: 0 0 30px rgba(255, 0, 110, 0.3);
+  }
+
+  .manifesto-box h3 {
+    color: var(--neon-pink);
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 15px var(--neon-pink);
+  }
+
+  .principles {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+
+  .principles li {
+    color: var(--terminal-green);
+    margin: 1rem 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .call-to-action {
+    text-align: center;
+    color: var(--neon-orange);
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 2rem;
+    text-shadow: 0 0 10px var(--neon-orange);
+  }
+
+  /* Credits */
+  .credits {
+    text-align: center;
+    color: var(--neon-cyan);
+    margin: 2rem 0;
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+
+  .credits p {
+    margin: 0.5rem 0;
+  }
+
+  .credits .small {
+    font-size: 0.7rem;
+    color: var(--terminal-green);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .ascii-logo {
+      font-size: 0.35rem;
+    }
+
+    .game-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .arcade-container {
+      padding: 1rem;
+    }
+  }
+</style>

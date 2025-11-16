@@ -1,0 +1,36 @@
+# Elixir
+/_build
+/cover
+/deps
+/doc
+/.fetch
+erl_crash.dump
+*.ez
+*.beam
+/config/*.secret.exs
+.elixir_ls/
+
+# Node
+/apps/macula_arcade_web/assets/node_modules
+/apps/macula_arcade_web/priv/static
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Development
+.DS_Store
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# Testing
+/test
+/apps/*/test
+
+# Git
+.git
+.gitignore

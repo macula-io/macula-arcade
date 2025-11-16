@@ -1,0 +1,168 @@
+version: '3.8'
+
+services:
+  # Gateway node - acts as bootstrap registry
+  arcade-gateway:
+    build:
+      context: ./system
+      dockerfile: ../Dockerfile
+    container_name: arcade-gateway
+    hostname: arcade-gateway
+    environment:
+      # Gateway mode
+      MACULA_START_GATEWAY: "true"
+      MACULA_GATEWAY_PORT: "4433"
+      MACULA_REALM: "macula.arcade"
+
+      # Phoenix config
+      PORT: "4000"
+      PHX_HOST: "arcade-gateway"
+      SECRET_KEY_BASE: "WMw7VW0JQKZKbLLq6Y1hPrHvCvnqZvvnWMw7VW0JQKZKbLLq6Y1hPrHvCvnqZvvn"
+
+      # No TLS certs needed for local testing (using self-signed)
+      MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
+      MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
+
+      # Database (in-memory for testing)
+      DATABASE_PATH: ":memory:"
+
+      # Logging
+      LOG_LEVEL: "info"
+    ports:
+      - "4000:4000"   # Phoenix HTTP
+      - "4433:4433"   # Macula Gateway (HTTP/3)
+    networks:
+      arcade-mesh:
+        ipv4_address: 172.25.0.10
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+    volumes:
+      - gateway-certs:/opt/macula/certs
+
+  # Peer node 1
+  arcade-peer1:
+    build:
+      context: ./system
+      dockerfile: ../Dockerfile
+    container_name: arcade-peer1
+    hostname: arcade-peer1
+    environment:
+      # Edge peer mode (connects to gateway)
+      MACULA_START_GATEWAY: "false"
+      MACULA_REALM: "macula.arcade"
+      MACULA_BOOTSTRAP_REGISTRY: "https://arcade-gateway:4433"
+
+      # Phoenix config
+      PORT: "4000"
+      PHX_HOST: "arcade-peer1"
+      SECRET_KEY_BASE: "XNx8WX1KRLaLcMMr7Z2iQsIwDworaAwowXNx8WX1KRLaLcMMr7Z2iQsIwDworaAwo"
+
+      # Database (in-memory)
+      DATABASE_PATH: ":memory:"
+
+      # Logging
+      LOG_LEVEL: "info"
+    ports:
+      - "4001:4000"
+    networks:
+      arcade-mesh:
+        ipv4_address: 172.25.0.11
+    depends_on:
+      arcade-gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+  # Peer node 2
+  arcade-peer2:
+    build:
+      context: ./system
+      dockerfile: ../Dockerfile
+    container_name: arcade-peer2
+    hostname: arcade-peer2
+    environment:
+      # Edge peer mode (connects to gateway)
+      MACULA_START_GATEWAY: "false"
+      MACULA_REALM: "macula.arcade"
+      MACULA_BOOTSTRAP_REGISTRY: "https://arcade-gateway:4433"
+
+      # Phoenix config
+      PORT: "4000"
+      PHX_HOST: "arcade-peer2"
+      SECRET_KEY_BASE: "YOy9XY2LSMbMdNNs8a3jRtJxExpsbBxpxYOy9XY2LSMbMdNNs8a3jRtJxExpsbBxp"
+
+      # Database (in-memory)
+      DATABASE_PATH: ":memory:"
+
+      # Logging
+      LOG_LEVEL: "info"
+    ports:
+      - "4002:4000"
+    networks:
+      arcade-mesh:
+        ipv4_address: 172.25.0.12
+    depends_on:
+      arcade-gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+  # Peer node 3
+  arcade-peer3:
+    build:
+      context: ./system
+      dockerfile: ../Dockerfile
+    container_name: arcade-peer3
+    hostname: arcade-peer3
+    environment:
+      # Edge peer mode (connects to gateway)
+      MACULA_START_GATEWAY: "false"
+      MACULA_REALM: "macula.arcade"
+      MACULA_BOOTSTRAP_REGISTRY: "https://arcade-gateway:4433"
+
+      # Phoenix config
+      PORT: "4000"
+      PHX_HOST: "arcade-peer3"
+      SECRET_KEY_BASE: "ZPz0YZ3MTNcNeOOt9b4kSuKyFyqtcCyqyZPz0YZ3MTNcNeOOt9b4kSuKyFyqtcCyq"
+
+      # Database (in-memory)
+      DATABASE_PATH: ":memory:"
+
+      # Logging
+      LOG_LEVEL: "info"
+    ports:
+      - "4003:4000"
+    networks:
+      arcade-mesh:
+        ipv4_address: 172.25.0.13
+    depends_on:
+      arcade-gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+networks:
+  arcade-mesh:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/24
+
+volumes:
+  gateway-certs:
