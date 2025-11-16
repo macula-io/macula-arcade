@@ -2,19 +2,28 @@
 set -e
 
 # Generate self-signed TLS certificates if they don't exist
-# Note: This runs as app user, so we need write permissions on /opt/macula/certs
-if [ ! -f "/opt/macula/certs/cert.pem" ] || [ ! -f "/opt/macula/certs/key.pem" ]; then
-    echo "Generating self-signed TLS certificates for local testing..."
-    mkdir -p /opt/macula/certs
+if [ ! -f "$MACULA_CERT_PATH" ] || [ ! -f "$MACULA_KEY_PATH" ]; then
+    echo "[Entrypoint] Generating self-signed TLS certificates..."
 
+    # Create certs directory if it doesn't exist
+    mkdir -p "$(dirname "$MACULA_CERT_PATH")"
+    mkdir -p "$(dirname "$MACULA_KEY_PATH")"
+
+    # Generate private key and certificate
     openssl req -x509 -newkey rsa:4096 -nodes \
-        -keyout /opt/macula/certs/key.pem \
-        -out /opt/macula/certs/cert.pem \
+        -keyout "$MACULA_KEY_PATH" \
+        -out "$MACULA_CERT_PATH" \
         -days 365 \
-        -subj "/CN=${PHX_HOST:-localhost}/O=Macula Arcade/C=US"
+        -subj "/C=US/ST=State/L=City/O=Macula/CN=localhost"
 
-    echo "TLS certificates generated successfully"
+    echo "[Entrypoint] Self-signed certificates generated at:"
+    echo "[Entrypoint]   Cert: $MACULA_CERT_PATH"
+    echo "[Entrypoint]   Key:  $MACULA_KEY_PATH"
+else
+    echo "[Entrypoint] TLS certificates found:"
+    echo "[Entrypoint]   Cert: $MACULA_CERT_PATH"
+    echo "[Entrypoint]   Key:  $MACULA_KEY_PATH"
 fi
 
-# Execute the original command
+# Execute the main command
 exec "$@"
