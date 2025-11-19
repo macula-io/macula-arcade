@@ -97,38 +97,36 @@ if config_env() == :prod do
 
   config :macula_arcade, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
-  # Macula Configuration - Hybrid Mode
-  # Can run as gateway (with start_gateway=true) or edge peer (start_gateway=false)
-  # Set via MACULA_START_GATEWAY environment variable
-  start_gateway = System.get_env("MACULA_START_GATEWAY") == "true"
+  # Macula v0.8.5 Configuration - Always-On Architecture
+  # All nodes have all capabilities: Bootstrap + Gateway + Peer
 
-  # Certificate paths for gateway mode
-  # The Erlang code expects TLS_CERT_FILE and TLS_KEY_FILE environment variables
-  # Set these before the Macula application starts
+  # Certificate paths for TLS
+  # If not provided, macula will auto-generate self-signed certificates
   cert_path = System.get_env("MACULA_CERT_PATH") || "/opt/macula/certs/cert.pem"
   key_path = System.get_env("MACULA_KEY_PATH") || "/opt/macula/certs/key.pem"
 
-  # Realm configuration
-  # The Erlang gateway code expects MACULA_REALM environment variable
+  # Realm configuration for multi-tenancy
   realm = System.get_env("MACULA_REALM") || "macula.arcade"
 
-  # Set OS environment variables for the Erlang Macula code
-  System.put_env("TLS_CERT_FILE", cert_path)
-  System.put_env("TLS_KEY_FILE", key_path)
-  System.put_env("MACULA_REALM", realm)
+  # QUIC port for mesh communication
+  quic_port = String.to_integer(System.get_env("MACULA_QUIC_PORT") || "4433")
+
+  # Bootstrap URL - leave nil for first/bootstrap node, set for joining nodes
+  bootstrap_url = System.get_env("MACULA_BOOTSTRAP_URL")
+
+  # Health check port
+  health_port = String.to_integer(System.get_env("HEALTH_PORT") || "8080")
 
   config :macula,
-    # Gateway mode: accepts incoming connections, provides registry
-    # Edge peer mode: only makes outgoing connections
-    start_gateway: start_gateway,
-    # Bootstrap registry URL for initial mesh discovery
-    # In production, point to a central registry node
-    # For local testing with gateway mode, edge peers connect to gateway
-    bootstrap_registry: System.get_env("MACULA_BOOTSTRAP_REGISTRY") || "https://localhost:4433",
-    # Realm for multi-tenancy (used by Elixir SDK)
+    # TLS certificate paths (v0.8.5 uses application config, not env vars)
+    cert_path: cert_path,
+    key_path: key_path,
+    # Realm for multi-tenancy
     realm: realm,
-    # Gateway realm (used by Erlang gateway - fallback if GATEWAY_REALM env var not set)
-    gateway_realm: realm,
-    # Gateway listen port (only used if start_gateway=true)
-    gateway_port: String.to_integer(System.get_env("MACULA_GATEWAY_PORT") || "4433")
+    # QUIC port for mesh communication
+    quic_port: quic_port,
+    # Bootstrap URL for joining existing mesh (nil = be the bootstrap node)
+    bootstrap_url: bootstrap_url,
+    # Health check port
+    health_port: health_port
 end

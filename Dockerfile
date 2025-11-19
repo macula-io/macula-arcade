@@ -15,9 +15,12 @@ RUN mix local.hex --force && \
     mix local.rebar --force
 
 # Copy dependency files
-COPY mix.exs mix.lock ./
-COPY apps/macula_arcade/mix.exs ./apps/macula_arcade/
-COPY apps/macula_arcade_web/mix.exs ./apps/macula_arcade_web/
+COPY system/mix.exs system/mix.lock ./
+COPY system/apps/macula_arcade/mix.exs ./apps/macula_arcade/
+COPY system/apps/macula_arcade_web/mix.exs ./apps/macula_arcade_web/
+
+# Copy local macula dependency (for path dependency)
+COPY --from=macula . /macula
 
 # Install dependencies
 ENV MIX_ENV=prod
@@ -25,8 +28,8 @@ RUN mix deps.get --only prod
 RUN mix deps.compile
 
 # Copy source code
-COPY config ./config
-COPY apps ./apps
+COPY system/config ./config
+COPY system/apps ./apps
 
 # Compile assets
 RUN mix assets.deploy
@@ -57,8 +60,8 @@ RUN useradd --create-home app
 WORKDIR /home/app
 
 # Copy entrypoint script
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+COPY system/docker-entrypoint.sh /usr/local/bin/
+RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
 
 # Copy release from build stage
 COPY --from=build --chown=app:app /app/_build/prod/rel/macula_arcade ./

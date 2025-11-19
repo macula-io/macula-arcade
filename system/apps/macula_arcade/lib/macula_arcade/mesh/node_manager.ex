@@ -63,6 +63,21 @@ defmodule MaculaArcade.Mesh.NodeManager do
     GenServer.call(__MODULE__, {:advertise_service, procedure, handler, opts})
   end
 
+  @doc """
+  Discovers subscribers to a topic via DHT query.
+  Returns a list of nodes subscribed to the topic.
+  """
+  def discover_subscribers(topic) do
+    GenServer.call(__MODULE__, {:discover_subscribers, topic})
+  end
+
+  @doc """
+  Gets the node ID of this Macula client.
+  """
+  def get_node_id do
+    GenServer.call(__MODULE__, :get_node_id)
+  end
+
   ## Server Callbacks
 
   @impl true
@@ -124,6 +139,18 @@ defmodule MaculaArcade.Mesh.NodeManager do
   @impl true
   def handle_call({:advertise_service, procedure, handler, opts}, _from, %{client: client} = state) do
     result = :macula_client.advertise(client, procedure, handler, opts)
+    {:reply, result, state}
+  end
+
+  @impl true
+  def handle_call({:discover_subscribers, topic}, _from, %{client: client} = state) do
+    result = :macula_client.discover_subscribers(client, topic)
+    {:reply, result, state}
+  end
+
+  @impl true
+  def handle_call(:get_node_id, _from, %{client: client} = state) do
+    result = :macula_client.get_node_id(client)
     {:reply, result, state}
   end
 

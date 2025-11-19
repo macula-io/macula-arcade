@@ -23,7 +23,7 @@ defmodule MaculaArcade.MixProject do
   def application do
     [
       mod: {MaculaArcade.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :macula]
     ]
   end
 
@@ -36,7 +36,7 @@ defmodule MaculaArcade.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:macula, "~> 0.7.9"},
+      {:macula, path: "/macula", override: true},
       {:dns_cluster, "~> 0.2.0"},
       {:phoenix_pubsub, "~> 2.1"},
       {:ecto_sql, "~> 3.13"},

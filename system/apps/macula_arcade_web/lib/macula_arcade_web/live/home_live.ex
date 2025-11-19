@@ -18,7 +18,7 @@ defmodule MaculaArcadeWeb.HomeLive do
   end
 
   @impl true
-  def handle_event("launch_game", %{"game" => "snake_battle_royale"}, socket) do
+  def handle_event("launch_game", %{"game" => "snake_duel"}, socket) do
     {:noreply, push_navigate(socket, to: ~p"/snake")}
   end
 
@@ -31,11 +31,11 @@ defmodule MaculaArcadeWeb.HomeLive do
   defp list_games do
     [
       %{
-        id: "snake_battle_royale",
-        name: "Snake Battle Royale",
+        id: "snake_duel",
+        name: "Snake Duel",
         status: :available,
-        description: "Classic snake gameplay meets battle royale. Last snake standing wins!",
-        players: "1-100",
+        description: "Classic 1v1 snake duel. Outmaneuver your opponent to win!",
+        players: "2",
         ascii_art: """
         ╔═══╗ ╔═╗  ╔═╗ ╔═══╗ ╦  ╦ ╔═══╗
         ║ ╔═╝ ║ ║  ║ ║ ║ ╔═╝ ║ ╔╝ ║ ╔═╝

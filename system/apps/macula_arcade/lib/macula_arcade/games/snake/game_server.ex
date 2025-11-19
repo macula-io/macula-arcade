@@ -16,8 +16,9 @@ defmodule MaculaArcade.Games.Snake.GameServer do
   # Grid is 40x30 cells
   @grid_width 40
   @grid_height 30
-  @tick_interval 16  # ~60 FPS (1000ms / 60)
+  @tick_interval 150  # ~6-7 FPS (slower for better visibility)
   @initial_snake_length 3
+  @bot_enabled true  # Enable AI bots for both players
 
   defmodule State do
     defstruct [
@@ -58,6 +59,21 @@ defmodule MaculaArcade.Games.Snake.GameServer do
   end
 
   @doc """
+  Submit a player action (direction change).
+  Returns {:ok, tick} on success.
+  """
+  def submit_action(server, player_id, action) when is_binary(action) do
+    direction = String.to_existing_atom(action)
+    GenServer.call(server, {:submit_action, player_id, direction})
+  rescue
+    ArgumentError -> {:error, :invalid_action}
+  end
+
+  def submit_action(server, player_id, action) when is_atom(action) do
+    GenServer.call(server, {:submit_action, player_id, action})
+  end
+
+  @doc """
   Gets the current game state.
   """
   def get_state(server) do
@@ -81,6 +97,11 @@ defmodule MaculaArcade.Games.Snake.GameServer do
 
   @impl true
   def handle_call({:start_game, player1_id, player2_id}, _from, state) do
+    # Seed random number generator with game_id for deterministic behavior
+    # This ensures both host and guest generate identical food positions
+    seed = :erlang.phash2(state.game_id)
+    :rand.seed(:exsss, {seed, seed, seed})
+
     # Initialize game state
     new_state = %{state |
       player1_id: player1_id,
@@ -112,6 +133,32 @@ defmodule MaculaArcade.Games.Snake.GameServer do
   end
 
   @impl true
+  def handle_call({:submit_action, player_id, direction}, _from, state)
+      when direction in [:up, :down, :left, :right] do
+    cond do
+      state.game_status != :running ->
+        {:reply, {:error, :game_not_running}, state}
+
+      player_id == state.player1_id and not opposite?(direction, state.player1_direction) ->
+        {:reply, {:ok, 0}, %{state | player1_direction: direction}}
+
+      player_id == state.player2_id and not opposite?(direction, state.player2_direction) ->
+        {:reply, {:ok, 0}, %{state | player2_direction: direction}}
+
+      player_id == state.player1_id or player_id == state.player2_id ->
+        # Invalid direction change (would reverse)
+        {:reply, {:error, :invalid_direction}, state}
+
+      true ->
+        {:reply, {:error, :not_in_game}, state}
+    end
+  end
+
+  def handle_call({:submit_action, _player_id, _direction}, _from, state) do
+    {:reply, {:error, :invalid_action}, state}
+  end
+
+  @impl true
   def handle_cast({:update_direction, player_id, direction}, state)
       when direction in [:up, :down, :left, :right] do
     new_state = cond do
@@ -131,6 +178,16 @@ defmodule MaculaArcade.Games.Snake.GameServer do
   @impl true
   def handle_info(:tick, %{game_status: :running} = state) do
     Logger.debug("Tick for game #{state.game_id}")
+
+    # Apply bot AI if enabled
+    state = if @bot_enabled do
+      %{state |
+        player1_direction: bot_choose_direction(state.player1_snake, state.player1_direction, state.food_position, state.player2_snake),
+        player2_direction: bot_choose_direction(state.player2_snake, state.player2_direction, state.food_position, state.player1_snake)
+      }
+    else
+      state
+    end
 
     # Move snakes
     new_player1_snake = move_snake(state.player1_snake, state.player1_direction)
@@ -312,15 +369,25 @@ defmodule MaculaArcade.Games.Snake.GameServer do
       game_id: state.game_id,
       player1_id: state.player1_id,
       player2_id: state.player2_id,
-      player1_snake: state.player1_snake,
-      player2_snake: state.player2_snake,
+      player1_snake: tuples_to_lists(state.player1_snake),
+      player2_snake: tuples_to_lists(state.player2_snake),
       player1_score: state.player1_score,
       player2_score: state.player2_score,
-      food_position: state.food_position,
+      food_position: tuple_to_list_or_nil(state.food_position),
       game_status: state.game_status,
       winner: state.winner
     }
   end
+
+  # Convert list of tuples to list of lists for JSON serialization
+  defp tuples_to_lists(nil), do: nil
+  defp tuples_to_lists(positions) when is_list(positions) do
+    Enum.map(positions, fn {x, y} -> [x, y] end)
+  end
+
+  # Convert single tuple to list for JSON serialization
+  defp tuple_to_list_or_nil(nil), do: nil
+  defp tuple_to_list_or_nil({x, y}), do: [x, y]
 
   defp broadcast_state(state) do
     game_topic = "arcade.game.#{state.game_id}.state"
@@ -337,5 +404,56 @@ defmodule MaculaArcade.Games.Snake.GameServer do
 
     # Also broadcast locally via Phoenix PubSub (for single-container)
     Phoenix.PubSub.broadcast(MaculaArcade.PubSub, game_topic, {:game_state_update, state_data})
+  end
+
+  ## Bot AI Functions
+
+  # Simple AI that tries to move towards food while avoiding walls and itself
+  defp bot_choose_direction(snake, current_direction, food_position, other_snake) do
+    [head | _] = snake
+    {head_x, head_y} = head
+    {food_x, food_y} = food_position
+
+    # Calculate possible directions (excluding reverse of current)
+    possible = [:up, :down, :left, :right]
+    |> Enum.reject(&opposite?(&1, current_direction))
+
+    # Score each direction
+    scored = Enum.map(possible, fn dir ->
+      new_pos = move_position(head, dir)
+      score = direction_score(new_pos, food_position, snake, other_snake)
+      {dir, score}
+    end)
+
+    # Choose the direction with best score
+    {best_dir, _score} = Enum.max_by(scored, fn {_dir, score} -> score end)
+    best_dir
+  end
+
+  defp direction_score(pos, food_position, own_snake, other_snake) do
+    {x, y} = pos
+    {food_x, food_y} = food_position
+
+    # Start with base score
+    score = 100
+
+    # Penalty for wall collision
+    score = if wall_collision?(pos), do: score - 1000, else: score
+
+    # Penalty for self collision
+    score = if pos in own_snake, do: score - 1000, else: score
+
+    # Penalty for colliding with other snake
+    score = if pos in other_snake, do: score - 1000, else: score
+
+    # Bonus for getting closer to food
+    old_dist = abs(elem(hd(own_snake), 0) - food_x) + abs(elem(hd(own_snake), 1) - food_y)
+    new_dist = abs(x - food_x) + abs(y - food_y)
+    score = score + (old_dist - new_dist) * 10
+
+    # Small penalty for being near walls
+    score = if x < 2 or x > @grid_width - 3 or y < 2 or y > @grid_height - 3, do: score - 5, else: score
+
+    score
   end
 end

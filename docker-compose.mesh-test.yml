@@ -1,25 +1,28 @@
 version: '3.8'
 
 services:
-  # Gateway node - acts as bootstrap registry
+  # Bootstrap node - first node in the mesh (v0.8.5 always-on architecture)
   arcade-gateway:
     build:
-      context: ./system
-      dockerfile: ../Dockerfile
+      context: .
+      dockerfile: Dockerfile
+      additional_contexts:
+        macula: ../macula
     container_name: arcade-gateway
     hostname: arcade-gateway
     environment:
-      # Gateway mode
-      MACULA_START_GATEWAY: "true"
-      MACULA_GATEWAY_PORT: "4433"
+      # Macula v0.8.5 - All nodes have all capabilities (always-on)
+      MACULA_QUIC_PORT: "4433"
       MACULA_REALM: "macula.arcade"
+      HEALTH_PORT: "8080"
+      # No MACULA_BOOTSTRAP_URL - this IS the bootstrap node
 
       # Phoenix config
       PORT: "4000"
       PHX_HOST: "arcade-gateway"
       SECRET_KEY_BASE: "WMw7VW0JQKZKbLLq6Y1hPrHvCvnqZvvnWMw7VW0JQKZKbLLq6Y1hPrHvCvnqZvvn"
 
-      # No TLS certs needed for local testing (using self-signed)
+      # TLS auto-generated in v0.8.5 (optional override)
       MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
       MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
 
@@ -30,12 +33,13 @@ services:
       LOG_LEVEL: "info"
     ports:
       - "4000:4000"   # Phoenix HTTP
-      - "4433:4433"   # Macula Gateway (HTTP/3)
+      - "4433:4433/udp"   # Macula QUIC (UDP)
+      - "8080:8080"   # Macula Health
     networks:
       arcade-mesh:
         ipv4_address: 172.25.0.10
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4000/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
       timeout: 3s
       retries: 5
@@ -43,23 +47,31 @@ services:
     volumes:
       - gateway-certs:/opt/macula/certs
 
-  # Peer node 1
+  # Peer node 1 (v0.8.5 - all nodes have all capabilities)
   arcade-peer1:
     build:
-      context: ./system
-      dockerfile: ../Dockerfile
+      context: .
+      dockerfile: Dockerfile
+      additional_contexts:
+        macula: ../macula
     container_name: arcade-peer1
     hostname: arcade-peer1
     environment:
-      # Edge peer mode (connects to gateway)
-      MACULA_START_GATEWAY: "false"
+      # Macula v0.8.5 - All nodes have all capabilities
+      MACULA_QUIC_PORT: "4433"
       MACULA_REALM: "macula.arcade"
-      MACULA_BOOTSTRAP_REGISTRY: "https://arcade-gateway:4433"
+      HEALTH_PORT: "8080"
+      # Connect to bootstrap node
+      MACULA_BOOTSTRAP_URL: "https://arcade-gateway:4433"
 
       # Phoenix config
       PORT: "4000"
       PHX_HOST: "arcade-peer1"
       SECRET_KEY_BASE: "XNx8WX1KRLaLcMMr7Z2iQsIwDworaAwowXNx8WX1KRLaLcMMr7Z2iQsIwDworaAwo"
+
+      # TLS auto-generated in v0.8.5
+      MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
+      MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
 
       # Database (in-memory)
       DATABASE_PATH: ":memory:"
@@ -68,6 +80,8 @@ services:
       LOG_LEVEL: "info"
     ports:
       - "4001:4000"
+      - "4434:4433/udp"
+      - "8081:8080"
     networks:
       arcade-mesh:
         ipv4_address: 172.25.0.11
@@ -75,29 +89,37 @@ services:
       arcade-gateway:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4000/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
       timeout: 3s
       retries: 5
       start_period: 30s
 
-  # Peer node 2
+  # Peer node 2 (v0.8.5 - all nodes have all capabilities)
   arcade-peer2:
     build:
-      context: ./system
-      dockerfile: ../Dockerfile
+      context: .
+      dockerfile: Dockerfile
+      additional_contexts:
+        macula: ../macula
     container_name: arcade-peer2
     hostname: arcade-peer2
     environment:
-      # Edge peer mode (connects to gateway)
-      MACULA_START_GATEWAY: "false"
+      # Macula v0.8.5 - All nodes have all capabilities
+      MACULA_QUIC_PORT: "4433"
       MACULA_REALM: "macula.arcade"
-      MACULA_BOOTSTRAP_REGISTRY: "https://arcade-gateway:4433"
+      HEALTH_PORT: "8080"
+      # Connect to bootstrap node
+      MACULA_BOOTSTRAP_URL: "https://arcade-gateway:4433"
 
       # Phoenix config
       PORT: "4000"
       PHX_HOST: "arcade-peer2"
       SECRET_KEY_BASE: "YOy9XY2LSMbMdNNs8a3jRtJxExpsbBxpxYOy9XY2LSMbMdNNs8a3jRtJxExpsbBxp"
+
+      # TLS auto-generated in v0.8.5
+      MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
+      MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
 
       # Database (in-memory)
       DATABASE_PATH: ":memory:"
@@ -106,6 +128,8 @@ services:
       LOG_LEVEL: "info"
     ports:
       - "4002:4000"
+      - "4435:4433/udp"
+      - "8082:8080"
     networks:
       arcade-mesh:
         ipv4_address: 172.25.0.12
@@ -113,45 +137,7 @@ services:
       arcade-gateway:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4000/"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-      start_period: 30s
-
-  # Peer node 3
-  arcade-peer3:
-    build:
-      context: ./system
-      dockerfile: ../Dockerfile
-    container_name: arcade-peer3
-    hostname: arcade-peer3
-    environment:
-      # Edge peer mode (connects to gateway)
-      MACULA_START_GATEWAY: "false"
-      MACULA_REALM: "macula.arcade"
-      MACULA_BOOTSTRAP_REGISTRY: "https://arcade-gateway:4433"
-
-      # Phoenix config
-      PORT: "4000"
-      PHX_HOST: "arcade-peer3"
-      SECRET_KEY_BASE: "ZPz0YZ3MTNcNeOOt9b4kSuKyFyqtcCyqyZPz0YZ3MTNcNeOOt9b4kSuKyFyqtcCyq"
-
-      # Database (in-memory)
-      DATABASE_PATH: ":memory:"
-
-      # Logging
-      LOG_LEVEL: "info"
-    ports:
-      - "4003:4000"
-    networks:
-      arcade-mesh:
-        ipv4_address: 172.25.0.13
-    depends_on:
-      arcade-gateway:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4000/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
       timeout: 3s
       retries: 5

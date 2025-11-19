@@ -26,6 +26,16 @@ export const SnakeCanvas = {
     this.canvas.width = GRID_WIDTH * CELL_SIZE;
     this.canvas.height = GRID_HEIGHT * CELL_SIZE;
 
+    // Read initial game state from data attribute
+    const gameStateJson = this.el.getAttribute('data-game-state');
+    if (gameStateJson) {
+      try {
+        this.gameState = JSON.parse(gameStateJson);
+      } catch (e) {
+        console.error('Failed to parse initial game state:', e);
+      }
+    }
+
     // Initial render
     this.render();
 
