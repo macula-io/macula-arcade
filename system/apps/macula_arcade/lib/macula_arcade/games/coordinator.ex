@@ -81,6 +81,14 @@ defmodule MaculaArcade.Games.Coordinator do
     GenServer.call(__MODULE__, :list_active_games)
   end
 
+  @doc """
+  Notifies that a game has ended, removing players from in_game set.
+  Called by GameServer when game finishes.
+  """
+  def game_ended(game_id, player1_id, player2_id, winner) do
+    GenServer.cast(__MODULE__, {:game_ended, game_id, player1_id, player2_id, winner})
+  end
+
   ## Server Callbacks
 
   @impl true
@@ -125,6 +133,24 @@ defmodule MaculaArcade.Games.Coordinator do
   def handle_info(:attempt_matchmaking, state) do
     new_state = attempt_matchmaking(state)
     {:noreply, new_state}
+  end
+
+  @impl true
+  def handle_cast({:game_ended, game_id, player1_id, player2_id, winner}, state) do
+    Logger.info("Game #{game_id} ended, winner: #{inspect(winner)}")
+
+    # Remove players from in_game set
+    new_players_in_game = state.players_in_game
+    |> MapSet.delete(player1_id)
+    |> MapSet.delete(player2_id)
+
+    # Remove from active games
+    new_active_games = Map.delete(state.active_games, game_id)
+
+    {:noreply, %{state |
+      players_in_game: new_players_in_game,
+      active_games: new_active_games
+    }}
   end
 
   ## Client Handlers
@@ -369,21 +395,15 @@ defmodule MaculaArcade.Games.Coordinator do
       player1_id = initial_state["player1_id"]
       player2_id = initial_state["player2_id"]
 
-      # Start a local GameServer for the guest peer
-      # This enables local state updates via Phoenix PubSub
-      {:ok, game_pid} =
-        DynamicSupervisor.start_child(
-          MaculaArcade.GameSupervisor,
-          {GameServer, [game_id: match_id]}
-        )
+      # IMPORTANT: Guest does NOT start a local GameServer!
+      # The host's GameServer broadcasts state via mesh pub/sub.
+      # Guest LiveViews subscribe to mesh topics and receive state updates.
+      # Starting a local GameServer would create a duplicate game with different state.
 
-      # Start the game with same player order
-      {:ok, ^match_id} = GameServer.start_game(game_pid, player1_id, player2_id)
-
-      Logger.info("Guest started local GameServer for game #{match_id}")
+      Logger.info("Guest will receive game state from host via mesh for game #{match_id}")
 
       # Broadcast to local Phoenix PubSub for UI updates
-      # This ensures guests also see the game start
+      # This ensures guests' LiveViews know the game started and can subscribe to state
       Phoenix.PubSub.broadcast(MaculaArcade.PubSub, "arcade.game.start", {
         :game_started,
         %{
@@ -403,11 +423,12 @@ defmodule MaculaArcade.Games.Coordinator do
       |> Map.delete(player1_id)
       |> Map.delete(player2_id)
 
-      # Track game
+      # Track game (no local pid since we're guest)
       game_info = %{
-        pid: game_pid,
+        pid: nil,  # No local GameServer for guest
         players: [player1_id, player2_id],
-        started_at: System.system_time(:second)
+        started_at: System.system_time(:second),
+        is_guest: true
       }
 
       {:noreply, %{state |

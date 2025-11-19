@@ -143,6 +143,57 @@ services:
       retries: 5
       start_period: 30s
 
+  # Bot node - headless bot client for scalability testing
+  arcade-bot1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      additional_contexts:
+        macula: ../macula
+    container_name: arcade-bot1
+    hostname: arcade-bot1
+    environment:
+      # Macula v0.8.5 - All nodes have all capabilities
+      MACULA_QUIC_PORT: "4433"
+      MACULA_REALM: "macula.arcade"
+      HEALTH_PORT: "8080"
+      # Connect to bootstrap node
+      MACULA_BOOTSTRAP_URL: "https://arcade-gateway:4433"
+
+      # Phoenix config (headless, but still needs minimal config)
+      PORT: "4000"
+      PHX_HOST: "arcade-bot1"
+      SECRET_KEY_BASE: "ZPz0YZ3MTNcNeOOt9b4kStKyFyqtcCyqyZPz0YZ3MTNcNeOOt9b4kStKyFyqtcCyqy"
+
+      # TLS auto-generated in v0.8.5
+      MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
+      MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
+
+      # Database (in-memory)
+      DATABASE_PATH: ":memory:"
+
+      # Bot configuration - disabled for PvP demo
+      BOT_COUNT: "0"
+
+      # Logging
+      LOG_LEVEL: "info"
+    ports:
+      - "4003:4000"
+      - "4436:4433/udp"
+      - "8083:8080"
+    networks:
+      arcade-mesh:
+        ipv4_address: 172.25.0.13
+    depends_on:
+      arcade-gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
 networks:
   arcade-mesh:
     driver: bridge

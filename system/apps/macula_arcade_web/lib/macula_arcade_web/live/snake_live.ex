@@ -4,8 +4,7 @@ defmodule MaculaArcadeWeb.SnakeLive do
 
   Handles:
   - Player registration and matchmaking
-  - Game state display
-  - Player input (arrow keys)
+  - Game state display (AI-controlled snakes)
   - Real-time updates from Macula mesh
   """
 
@@ -17,6 +16,8 @@ defmodule MaculaArcadeWeb.SnakeLive do
   @impl true
   def mount(_params, _session, socket) do
     player_id = generate_player_id()
+    # Capture LiveView pid for use in mesh callbacks
+    live_view_pid = self()
 
     # Subscribe to game start events early (before user clicks Find Game)
     # This ensures we don't miss the event due to race conditions
@@ -27,7 +28,7 @@ defmodule MaculaArcadeWeb.SnakeLive do
     # Subscribe via Macula mesh (for multi-container)
     case NodeManager.subscribe("arcade.game.start", fn event_data ->
            # Convert mesh event to LiveView message
-           send(self(), {:game_started, event_data})
+           send(live_view_pid, {:game_started, event_data})
            :ok
          end) do
       {:ok, _sub_ref} ->
@@ -50,6 +51,16 @@ defmodule MaculaArcadeWeb.SnakeLive do
   @impl true
   def handle_event("join_queue", _params, socket) do
     Logger.info("Player #{socket.assigns.player_id} joining queue")
+
+    # Reset state if coming from a finished game (Play Again)
+    socket = if socket.assigns.status == :playing do
+      socket
+      |> assign(:game_id, nil)
+      |> assign(:game_state, nil)
+      |> assign(:status, :lobby)
+    else
+      socket
+    end
 
     # Register for matchmaking (v0.2.0 protocol)
     case Coordinator.register_player(socket.assigns.player_id) do
@@ -95,10 +106,12 @@ defmodule MaculaArcadeWeb.SnakeLive do
     # Check if this player is in the game
     if player_id in [p1, p2] do
       Logger.info("Player #{player_id} matched in game #{game_id} - transitioning to :playing")
+      # Capture LiveView pid for use in mesh callbacks
+      live_view_pid = self()
 
       # Subscribe to game state updates via mesh (for multi-container)
       case NodeManager.subscribe("arcade.game.#{game_id}.state", fn state_data ->
-             send(self(), {:game_state_update, state_data})
+             send(live_view_pid, {:game_state_update, state_data})
              :ok
            end) do
         {:ok, _sub_ref} -> :ok
@@ -110,7 +123,7 @@ defmodule MaculaArcadeWeb.SnakeLive do
 
       # Subscribe to player input via mesh (for multi-container)
       case NodeManager.subscribe("arcade.game.#{game_id}.input", fn input_data ->
-             send(self(), {:player_input, input_data})
+             send(live_view_pid, {:player_input, input_data})
              :ok
            end) do
         {:ok, _sub_ref} -> :ok
@@ -124,13 +137,19 @@ defmodule MaculaArcadeWeb.SnakeLive do
         |> assign(:waiting, false)
         |> assign(:game_state, %{
           game_id: game_id,
+          player1_id: p1,
+          player2_id: p2,
           player1_snake: [],
           player2_snake: [],
           player1_score: 0,
           player2_score: 0,
           food_position: {0, 0},
           game_status: :running,
-          winner: nil
+          winner: nil,
+          player1_events: [],
+          player2_events: [],
+          player1_asshole_factor: 0,
+          player2_asshole_factor: 0
         })
 
       {:noreply, socket}
@@ -140,10 +159,21 @@ defmodule MaculaArcadeWeb.SnakeLive do
   end
 
   @impl true
-  def handle_info({:game_state_update, game_state}, socket) do
+  def handle_info({:game_state_update, message}, socket) do
+    # Extract payload from mesh message envelope (may have :topic and :payload keys)
+    # or use the message directly if it's already the game state
+    payload = case message do
+      %{payload: p} -> p
+      %{"payload" => p} -> p
+      state -> state
+    end
+
+    # Normalize to atom keys for template access
+    game_state = normalize_game_state(payload)
+
     # Log at info level every 60 updates (once per second at 60 FPS)
     if rem(:erlang.unique_integer([:positive]), 60) == 0 do
-      Logger.info("SnakeLive received game_state_update for game #{inspect(game_state[:game_id] || game_state["game_id"])}")
+      Logger.info("SnakeLive received game_state_update for game #{inspect(game_state.game_id)}")
     end
 
     socket =
@@ -198,48 +228,120 @@ defmodule MaculaArcadeWeb.SnakeLive do
 
         <%= if @status == :playing && @game_state do %>
           <div class="game-container">
-            <div class="flex justify-between mb-4 text-xl">
-              <div class="flex-1">
-                <span class="text-blue-400">Player 1:</span>
-                <span class="ml-2 font-bold"><%= @game_state.player1_score %></span>
-              </div>
-              <div class="flex-1 text-right">
-                <span class="text-red-400">Player 2:</span>
-                <span class="ml-2 font-bold"><%= @game_state.player2_score %></span>
-              </div>
+            <%# Player identification banner %>
+            <div class="text-center mb-4 text-lg">
+              You are
+              <%= if @player_id == @game_state.player1_id do %>
+                <span class="text-blue-400 font-bold">Player 1 (Blue)</span>
+              <% else %>
+                <span class="text-red-400 font-bold">Player 2 (Red)</span>
+              <% end %>
             </div>
 
-            <canvas
-              id="snake-canvas"
-              phx-hook="SnakeCanvas"
-              data-game-state={Jason.encode!(serialize_game_state(@game_state))}
-              class="border-4 border-gray-700 mx-auto"
-              width="800"
-              height="600"
-            >
-            </canvas>
+            <%# 3-Column Layout: Player 1 | Arena | Player 2 %>
+            <div class="flex justify-center gap-4 items-stretch">
+              <%# Player 1 Panel (Left Column) - matches arena height %>
+              <div class="w-48 flex flex-col" style="height: 608px;">
+                <div class="text-center mb-2">
+                  <div class="text-blue-400 font-semibold text-lg">
+                    Player 1
+                    <%= if @player_id == @game_state.player1_id do %>
+                      <span class="text-xs text-gray-400">(You)</span>
+                    <% end %>
+                  </div>
+                  <div class="text-4xl font-bold text-blue-300"><%= @game_state.player1_score %></div>
+                </div>
+                <%# Character Description %>
+                <div class="text-xs text-center mb-1 px-2">
+                  <span class="text-gray-400"><%= character_description(@game_state.player1_asshole_factor) %></span>
+                </div>
+                <%# Personality Indicator %>
+                <div class="text-xs text-gray-500 text-center mb-2">
+                  <%= asshole_indicator(@game_state.player1_asshole_factor) %>
+                </div>
+                <%# Event Feed - fills remaining height %>
+                <div class="flex-1 bg-gray-800 rounded-lg p-3 flex flex-col overflow-hidden">
+                  <div class="text-xs text-gray-500 mb-2 uppercase tracking-wide">Events</div>
+                  <div class="flex-1 overflow-y-auto flex flex-col-reverse font-mono text-sm">
+                    <%= for event <- @game_state.player1_events do %>
+                      <div class="text-blue-300 truncate py-0.5"><%= format_event(event) %></div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
 
-            <div class="text-center mt-4 text-gray-400">
-              Use arrow keys to move
-            </div>
-
-            <%= if @game_state.game_status == :finished do %>
-              <div class="text-center mt-8">
-                <h2 class="text-3xl font-bold mb-4">
-                  <%= if @game_state.winner == @player_id do %>
-                    🎉 You Win! 🎉
-                  <% else %>
-                    💀 Game Over 💀
-                  <% end %>
-                </h2>
-                <button
-                  phx-click="join_queue"
-                  class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              <%# Arena (Center Column) %>
+              <div class="flex flex-col">
+                <canvas
+                  id="snake-canvas"
+                  phx-hook="SnakeCanvas"
+                  data-game-state={Jason.encode!(serialize_game_state(@game_state))}
+                  data-player-id={@player_id}
+                  class="border-4 border-gray-700 rounded"
+                  width="800"
+                  height="600"
                 >
-                  Play Again
-                </button>
+                </canvas>
               </div>
-            <% end %>
+
+              <%# Player 2 Panel (Right Column) - matches arena height %>
+              <div class="w-48 flex flex-col" style="height: 608px;">
+                <div class="text-center mb-2">
+                  <div class="text-red-400 font-semibold text-lg">
+                    Player 2
+                    <%= if @player_id == @game_state.player2_id do %>
+                      <span class="text-xs text-gray-400">(You)</span>
+                    <% end %>
+                  </div>
+                  <div class="text-4xl font-bold text-red-300"><%= @game_state.player2_score %></div>
+                </div>
+                <%# Character Description %>
+                <div class="text-xs text-center mb-1 px-2">
+                  <span class="text-gray-400"><%= character_description(@game_state.player2_asshole_factor) %></span>
+                </div>
+                <%# Personality Indicator %>
+                <div class="text-xs text-gray-500 text-center mb-2">
+                  <%= asshole_indicator(@game_state.player2_asshole_factor) %>
+                </div>
+                <%# Event Feed - fills remaining height %>
+                <div class="flex-1 bg-gray-800 rounded-lg p-3 flex flex-col overflow-hidden">
+                  <div class="text-xs text-gray-500 mb-2 uppercase tracking-wide">Events</div>
+                  <div class="flex-1 overflow-y-auto flex flex-col-reverse font-mono text-sm">
+                    <%= for event <- @game_state.player2_events do %>
+                      <div class="text-red-300 truncate py-0.5"><%= format_event(event) %></div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <%# Game Commentary/Feedback/Result (Bottom) %>
+            <div class="mt-4 text-center">
+              <%= if @game_state.game_status == :finished do %>
+                <div class="bg-gray-800 rounded-lg p-6">
+                  <h2 class="text-3xl font-bold mb-4">
+                    <%= cond do %>
+                      <% @game_state.winner == :draw -> %>
+                        🤝 Draw! 🤝
+                      <% @game_state.winner == @player_id -> %>
+                        🎉 You Win! 🎉
+                      <% true -> %>
+                        💀 Game Over 💀
+                    <% end %>
+                  </h2>
+                  <button
+                    phx-click="join_queue"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg"
+                  >
+                    Play Again
+                  </button>
+                </div>
+              <% else %>
+                <div class="text-gray-400">
+                  AI-controlled snakes battling it out
+                </div>
+              <% end %>
+            </div>
           </div>
         <% end %>
       </div>
@@ -275,11 +377,97 @@ defmodule MaculaArcadeWeb.SnakeLive do
     :crypto.strong_rand_bytes(8) |> Base.encode16(case: :lower)
   end
 
+  # Normalize game state to use atom keys for template access
+  defp normalize_game_state(state) when is_map(state) do
+    # Handle game_status conversion (string "running"/"finished" to atom)
+    game_status = case get_field(state, :game_status) do
+      "running" -> :running
+      "finished" -> :finished
+      status when is_atom(status) -> status
+      _ -> :running
+    end
+
+    # Handle winner (could be "nil" string, "draw" string, or actual player_id)
+    winner = case get_field(state, :winner) do
+      "nil" -> nil
+      nil -> nil
+      "draw" -> :draw
+      :draw -> :draw
+      w -> w
+    end
+
+    %{
+      game_id: get_field(state, :game_id),
+      player1_id: get_field(state, :player1_id),
+      player2_id: get_field(state, :player2_id),
+      player1_snake: get_field(state, :player1_snake) || [],
+      player2_snake: get_field(state, :player2_snake) || [],
+      player1_score: get_field(state, :player1_score) || 0,
+      player2_score: get_field(state, :player2_score) || 0,
+      food_position: get_field(state, :food_position) || {0, 0},
+      game_status: game_status,
+      winner: winner,
+      player1_events: get_field(state, :player1_events) || [],
+      player2_events: get_field(state, :player2_events) || [],
+      player1_asshole_factor: get_field(state, :player1_asshole_factor) || 0,
+      player2_asshole_factor: get_field(state, :player2_asshole_factor) || 0
+    }
+  end
+
   defp key_to_direction("ArrowUp"), do: :up
   defp key_to_direction("ArrowDown"), do: :down
   defp key_to_direction("ArrowLeft"), do: :left
   defp key_to_direction("ArrowRight"), do: :right
   defp key_to_direction(_), do: nil
+
+  # Format event for display
+  defp format_event(%{"type" => "food", "value" => score}), do: "+#{score}"
+  defp format_event(%{"type" => "turn", "value" => "up"}), do: "^ UP"
+  defp format_event(%{"type" => "turn", "value" => "down"}), do: "v DOWN"
+  defp format_event(%{"type" => "turn", "value" => "left"}), do: "< LEFT"
+  defp format_event(%{"type" => "turn", "value" => "right"}), do: "> RIGHT"
+  defp format_event(%{"type" => "collision", "value" => "wall"}), do: "WALL!"
+  defp format_event(%{"type" => "collision", "value" => "self"}), do: "SELF!"
+  defp format_event(%{"type" => "collision", "value" => "snake"}), do: "SNAKE!"
+  defp format_event(%{"type" => "collision", "value" => "head_to_head"}), do: "CRASH!"
+  defp format_event(%{"type" => "win", "value" => _}), do: "WIN!"
+  defp format_event(%{type: "food", value: score}), do: "+#{score}"
+  defp format_event(%{type: "turn", value: "up"}), do: "^ UP"
+  defp format_event(%{type: "turn", value: "down"}), do: "v DOWN"
+  defp format_event(%{type: "turn", value: "left"}), do: "< LEFT"
+  defp format_event(%{type: "turn", value: "right"}), do: "> RIGHT"
+  defp format_event(%{type: "collision", value: "wall"}), do: "WALL!"
+  defp format_event(%{type: "collision", value: "self"}), do: "SELF!"
+  defp format_event(%{type: "collision", value: "snake"}), do: "SNAKE!"
+  defp format_event(%{type: "collision", value: "head_to_head"}), do: "CRASH!"
+  defp format_event(%{type: "win", value: _}), do: "WIN!"
+  defp format_event(_), do: "?"
+
+  # Character description based on asshole factor
+  defp character_description(factor) when is_nil(factor), do: ""
+  defp character_description(factor) when factor < 20 do
+    "A noble serpent who plays fair and avoids dirty tricks"
+  end
+  defp character_description(factor) when factor < 40 do
+    "A relaxed snake, prefers food over confrontation"
+  end
+  defp character_description(factor) when factor < 60 do
+    "Balanced fighter, will cut you off if given the chance"
+  end
+  defp character_description(factor) when factor < 80 do
+    "Ruthless hunter, actively seeks to trap opponents"
+  end
+  defp character_description(_factor) do
+    "Pure chaos agent, lives to make your life miserable"
+  end
+
+  # Asshole factor indicator with emoji scale
+  defp asshole_indicator(factor) when is_nil(factor), do: ""
+  defp asshole_indicator(factor) when factor < 20, do: "Personality: Gentleman"
+  defp asshole_indicator(factor) when factor < 40, do: "Personality: Chill"
+  defp asshole_indicator(factor) when factor < 60, do: "Personality: Competitive"
+  defp asshole_indicator(factor) when factor < 80, do: "Personality: Aggressive"
+  defp asshole_indicator(_factor), do: "Personality: Total Jerk"
 
   defp serialize_game_state(state) do
     # Handle both atom and string keys (from local state vs JSON)
