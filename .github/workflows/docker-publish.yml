@@ -28,13 +28,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Checkout macula dependency
-        uses: actions/checkout@v4
-        with:
-          repository: macula-io/macula
-          path: macula
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -58,12 +51,10 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile.prod
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-contexts: |
-            macula=./macula
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64

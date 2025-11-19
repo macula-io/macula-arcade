@@ -36,7 +36,7 @@ defmodule MaculaArcade.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:macula, path: "/macula", override: true},
+      {:macula, macula_dep()},
       {:dns_cluster, "~> 0.2.0"},
       {:phoenix_pubsub, "~> 2.1"},
       {:ecto_sql, "~> 3.13"},
@@ -45,6 +45,14 @@ defmodule MaculaArcade.MixProject do
       {:swoosh, "~> 1.16"},
       {:req, "~> 0.5"}
     ]
+  end
+
+  # Use path dependency in dev, hex package in prod
+  defp macula_dep do
+    case Mix.env() do
+      :prod -> "~> 0.8.6"
+      _env -> [path: "/macula", override: true]
+    end
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
