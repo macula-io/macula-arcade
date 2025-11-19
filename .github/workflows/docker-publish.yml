@@ -13,7 +13,7 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: maculaio/macula-arcade
+  IMAGE_NAME: maculacid/macula-arcade
 
 jobs:
   build-and-push:
