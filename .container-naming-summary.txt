@@ -1,0 +1,34 @@
+CONTAINER NAMING UPDATE
+=======================
+
+Date: 2025-01-21
+
+CONTAINER NAMING CONVENTION:
+
+DEMO (ports 4000+):
+- arcade-demo-gateway  (was: arcade-gateway)
+- arcade-demo-peer1    (was: arcade-peer1)
+- arcade-demo-peer2    (was: arcade-peer2)
+- arcade-demo-bot1     (was: arcade-bot1)
+
+DEV (ports 5000+):
+- dev-gateway
+- dev-peer1
+- dev-peer2
+- dev-bot1
+
+OLD CONTAINERS (currently running, from old deployment):
+- arcade-gateway
+- arcade-peer1
+- arcade-peer2
+- arcade-bot1
+
+BENEFITS:
+✅ Clear distinction: arcade-demo-* vs dev-*
+✅ Easy filtering: docker ps --filter "name=arcade-demo-"
+✅ No confusion when both environments running
+
+NEXT STEPS:
+1. Stop old containers: docker compose -f docker-compose.mesh-test.yml down
+2. Deploy with new names: ./deploy-demo.sh
+3. New containers will be: arcade-demo-gateway, etc.

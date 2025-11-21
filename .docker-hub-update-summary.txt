@@ -1,0 +1,30 @@
+DOCKER HUB INTEGRATION COMPLETE
+================================
+
+Date: 2025-01-21
+Docker Hub: maculacid/macula-arcade:0.2.2
+
+CHANGES MADE:
+✅ docker-compose.demo.yml: Now uses maculacid/macula-arcade:0.2.2 (no build)
+✅ deploy-demo.sh: Pulls from Docker Hub instead of building locally
+✅ DEMO_DEPLOYMENT.md: Updated instructions (pull not build)
+
+AVAILABLE TAGS:
+- latest
+- 0.2
+- 0.2.2
+
+DEMO DEPLOYMENT NOW:
+1. Pulls pre-built images from Docker Hub
+2. No local building required
+3. Fast deployment (~1-2 minutes)
+4. Reliable and consistent
+
+DEVELOPMENT:
+- Use docker-compose.dev.yml for local builds
+- Dev builds from ./system/ source
+- Separate ports (5000+) from demo (4000+)
+
+VERIFICATION:
+Run: ./deploy-demo.sh
+Expected: Pulls maculacid/macula-arcade:0.2.2 from Docker Hub

@@ -1,0 +1,30 @@
+# Elixir build artifacts
+system/_build/
+system/deps/
+system/.elixir_ls/
+
+# Mix lock file - should be generated from mix.exs
+system/mix.lock
+
+# Node modules
+system/assets/node_modules/
+
+# Git
+.git/
+.gitignore
+
+# Editor files
+.vscode/
+.idea/
+
+# Docker files
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Documentation
+*.md
+docs/
+
+# Test files
+system/test/

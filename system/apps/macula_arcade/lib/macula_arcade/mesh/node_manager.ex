@@ -3,21 +3,21 @@ defmodule MaculaArcade.Mesh.NodeManager do
   Manages the Macula mesh connection for the arcade node.
 
   This GenServer:
-  - Connects to the Macula mesh on startup
+  - Connects to the LOCAL Macula instance via process-to-process communication
   - Publishes node presence events
   - Manages the mesh client lifecycle
   - Provides access to the mesh client for game coordination
+
+  NOTE: In Macula v0.8.9+, in-VM workloads use `connect_local/1` which communicates
+  directly with the local gateway process, avoiding QUIC overhead. DHT bootstrapping
+  is handled at the platform level via MACULA_BOOTSTRAP_PEERS environment variable.
   """
 
   use GenServer
   require Logger
 
-  @realm "macula.arcade"
+  @realm "macula.arcade.dev"
   @presence_topic "arcade.node.presence"
-
-  defp mesh_url do
-    System.get_env("MACULA_BOOTSTRAP_REGISTRY", "https://arcade-gateway:4433")
-  end
 
   ## Client API
 
@@ -82,17 +82,15 @@ defmodule MaculaArcade.Mesh.NodeManager do
 
   @impl true
   def init(_opts) do
-    gateway_url = mesh_url()
-    Logger.info("NodeManager starting - connecting to Macula mesh at #{gateway_url}")
+    Logger.info("NodeManager starting - connecting to local Macula gateway")
 
-    # Connect to mesh
+    # Connect to local gateway via process-to-process communication
     connect_opts = %{
-      realm: @realm,
-      timeout: 10_000
+      realm: @realm
     }
 
-    with {:ok, client} <- :macula_client.connect(gateway_url, connect_opts) do
-      Logger.info("NodeManager connected to mesh successfully")
+    with {:ok, client} <- :macula_client.connect_local(connect_opts) do
+      Logger.info("NodeManager connected to local gateway successfully")
 
       # Publish presence
       node_id = node() |> Atom.to_string()
@@ -108,7 +106,7 @@ defmodule MaculaArcade.Mesh.NodeManager do
       {:ok, %{client: client, node_id: node_id}}
     else
       {:error, reason} ->
-        Logger.error("NodeManager failed to connect to mesh: #{inspect(reason)}")
+        Logger.error("NodeManager failed to connect to local gateway: #{inspect(reason)}")
         {:stop, {:connection_failed, reason}}
     end
   end

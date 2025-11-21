@@ -1,0 +1,302 @@
+
+07:44:36.991 [info] Loading 148 CA(s) from :otp store
+
+07:44:37.090 id=1 [debug] handled request client -> server initialize in 56ms
+
+07:44:37.096 [debug] sent notification server -> client window/logMessage
+
+07:44:37.097 [debug] handled notification client -> server textDocument/didOpen in 4ms
+
+07:44:37.099 [debug] NextLS v0.23.4 has initialized!
+
+07:44:37.099 [debug] sent notification server -> client window/logMessage
+
+07:44:37.099 [debug] Log file located at /home/rl/work/github.com/macula-io/macula-arcade/.elixir-tools/next-ls.log
+
+07:44:37.103 [debug] sent notification server -> client window/logMessage
+
+07:44:37.103 [info] [extension] Credo initializing with options %NextLS.InitOpts.Extensions.Credo{enable: true, cli_options: []}
+
+07:44:37.114 id=2 [debug] handled request client -> server textDocument/documentSymbol in 20ms
+
+07:44:38.302 [debug] sent notification server -> client window/logMessage
+
+07:44:38.302 [debug] Booting runtimes...
+
+07:44:38.305 id=27 [debug] sent request server -> client window/workDoneProgress/create
+
+07:44:38.307 [debug] sent notification server -> client $/progress
+
+07:44:38.314 [debug] sent notification server -> client window/logMessage
+
+07:44:38.314 [info] Beginning DB migration...
+
+07:44:38.317 [debug] sent notification server -> client window/logMessage
+
+07:44:38.318 [info] Database is on the latest version: 7
+
+07:44:38.318 [debug] sent notification server -> client window/logMessage
+
+07:44:38.318 [info] Finished DB migration...
+
+07:44:38.318 [debug] sent notification server -> client window/logMessage
+
+07:44:38.318 [info] Booting runtime for system.
+
+- elixir: /home/rl/.asdf/shims/elixir
+- zombie wrapper script: /home/rl/.local/share/.burrito/next_ls_erts-15.2_0.23.4/lib/next_ls-0.23.4/priv/cmd
+- working_dir: /home/rl/work/github.com/macula-io/macula-arcade/system
+- command: /home/rl/.asdf/shims/elixir --no-halt --sname nextls-runtime-1763707478317877184 --cookie HHYKTHK2JHVUZI3HDBMAF64GPJFPN4AV4Y7CQDE27SSFQKZPVAFQ==== -S mix loadpaths --no-compile
+
+Environment: 
+
+LSP=nextls
+NEXTLS_PARENT_PID=g1h3Im5leHQtbHMtMTc2MzcwNzQ3Njk5NzkxMjM4NUBob3N0MDAAAADoAAAAAGkgClY=
+MIX_ENV=dev
+MIX_TARGET=host
+MIX_BUILD_ROOT=.elixir-tools/_build
+ROOTDIR=false
+BINDIR=false
+RELEASE_ROOT=false
+RELEASE_SYS_CONFIG=false
+PATH=/home/rl/.asdf/shims:/home/rl/.local/share/.burrito/next_ls_erts-15.2_0.23.4/bin:/home/rl/.local/share/nvim/mason/bin:/home/rl/.asdf/installs/rust/1.90.0/bin:/home/rl/.asdf/shims:/usr/lib/ccache/bin/:/home/rl/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/var/lib/flatpak/exports/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/rl/go/bin:/opt/nvim-linux64/bin
+
+
+07:44:38.318 [debug] handled notification client -> server initialized in 1225ms
+
+07:44:38.800 [debug] sent notification server -> client window/logMessage
+
+07:44:38.800 [debug] sent notification server -> client $/progress
+
+07:44:38.800 [debug] Unchecked dependencies for environment dev:
+* telemetry_metrics (Hex package)
+  the dependency is not available, run "mix deps.get"
+
+
+07:44:38.801 [debug] sent notification server -> client window/logMessage
+
+07:44:38.801 [error] Runtime for folder system failed to initialize
+
+07:44:38.802 [debug] sent notification server -> client window/logMessage
+
+07:44:38.802 [error] The runtime for system has crashed with reason: {:shutdown, :unchecked_dependencies}
+
+07:44:38.802 [debug] sent notification server -> client window/logMessage
+
+07:44:38.802 [info] Booting runtime for system.
+
+- elixir: /home/rl/.asdf/shims/elixir
+- zombie wrapper script: /home/rl/.local/share/.burrito/next_ls_erts-15.2_0.23.4/lib/next_ls-0.23.4/priv/cmd
+- working_dir: /home/rl/work/github.com/macula-io/macula-arcade/system
+- command: /home/rl/.asdf/shims/elixir --no-halt --sname nextls-runtime-1763707478801729394 --cookie HHYKTHK2JHVUZI3HDBMAF64GPJFPN4AV4Y7CQDE27SSFQKZPVAFQ==== -S mix loadpaths --no-compile
+
+Environment: 
+
+LSP=nextls
+NEXTLS_PARENT_PID=g1h3Im5leHQtbHMtMTc2MzcwNzQ3Njk5NzkxMjM4NUBob3N0MDAAAADoAAAAAGkgClY=
+MIX_ENV=dev
+MIX_TARGET=host
+MIX_BUILD_ROOT=.elixir-tools/_build
+ROOTDIR=false
+BINDIR=false
+RELEASE_ROOT=false
+RELEASE_SYS_CONFIG=false
+PATH=/home/rl/.asdf/shims:/home/rl/.local/share/.burrito/next_ls_erts-15.2_0.23.4/bin:/home/rl/.local/share/nvim/mason/bin:/home/rl/.asdf/installs/rust/1.90.0/bin:/home/rl/.asdf/shims:/usr/lib/ccache/bin/:/home/rl/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/var/lib/flatpak/exports/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/rl/go/bin:/opt/nvim-linux64/bin
+
+
+07:44:38.803 [debug] sent notification server -> client window/logMessage
+
+07:44:38.803 [info] The runtime for system has successfully shut down.
+
+07:44:38.803 id=386 [debug] sent request server -> client window/showMessageRequest
+
+07:44:41.396 [debug] sent notification server -> client window/logMessage
+
+07:44:41.396 [info] Running `mix deps.get` in directory /home/rl/work/github.com/macula-io/macula-arcade/system
+
+07:44:43.640 [debug] sent notification server -> client window/logMessage
+
+07:44:43.640 [info] Restarting runtime system for directory /home/rl/work/github.com/macula-io/macula-arcade/system
+
+07:44:43.640 [debug] sent notification server -> client window/logMessage
+
+07:44:43.640 [info] * Getting heroicons (https://github.com/tailwindlabs/heroicons.git - v2.2.0)
+remote: Enumerating objects: 9314, done.        
+remote: Counting objects:   0% (1/9314)        remote: Counting objects:   1% (94/9314)        remote: Counting objects:   2% (187/9314)        remote: Counting objects:   3% (280/9314)        remote: Counting objects:   4% (373/9314)        remote: Counting objects:   5% (466/9314)        remote: Counting objects:   6% (559/9314)        remote: Counting objects:   7% (652/9314)        remote: Counting objects:   8% (746/9314)        remote: Counting objects:   9% (839/9314)        remote: Counting objects:  10% (932/9314)        remote: Counting objects:  11% (1025/9314)        remote: Counting objects:  12% (1118/9314)        remote: Counting objects:  13% (1211/9314)        remote: Counting objects:  14% (1304/9314)        remote: Counting objects:  15% (1398/9314)        remote: Counting objects:  16% (1491/9314)        remote: Counting objects:  17% (1584/9314)        remote: Counting objects:  18% (1677/9314)        remote: Counting objects:  19% (1770/9314)        remote: Counting objects:  20% (1863/9314)        remote: Counting objects:  21% (1956/9314)        remote: Counting objects:  22% (2050/9314)        remote: Counting objects:  23% (2143/9314)        remote: Counting objects:  24% (2236/9314)        remote: Counting objects:  25% (2329/9314)        remote: Counting objects:  26% (2422/9314)        remote: Counting objects:  27% (2515/9314)        remote: Counting objects:  28% (2608/9314)        remote: Counting objects:  29% (2702/9314)        remote: Counting objects:  30% (2795/9314)        remote: Counting objects:  31% (2888/9314)        remote: Counting objects:  32% (2981/9314)        remote: Counting objects:  33% (3074/9314)        remote: Counting objects:  34% (3167/9314)        remote: Counting objects:  35% (3260/9314)        remote: Counting objects:  36% (3354/9314)        remote: Counting objects:  37% (3447/9314)        remote: Counting objects:  38% (3540/9314)        remote: Counting objects:  39% (3633/9314)        remote: Counting objects:  40% (3726/9314)        remote: Counting objects:  41% (3819/9314)        remote: Counting objects:  42% (3912/9314)        remote: Counting objects:  43% (4006/9314)        remote: Counting objects:  44% (4099/9314)        remote: Counting objects:  45% (4192/9314)        remote: Counting objects:  46% (4285/9314)        remote: Counting objects:  47% (4378/9314)        remote: Counting objects:  48% (4471/9314)        remote: Counting objects:  49% (4564/9314)        remote: Counting objects:  50% (4657/9314)        remote: Counting objects:  51% (4751/9314)        remote: Counting objects:  52% (4844/9314)        remote: Counting objects:  53% (4937/9314)        remote: Counting objects:  54% (5030/9314)        remote: Counting objects:  55% (5123/9314)        remote: Counting objects:  56% (5216/9314)        remote: Counting objects:  57% (5309/9314)        remote: Counting objects:  58% (5403/9314)        remote: Counting objects:  59% (5496/9314)        remote: Counting objects:  60% (5589/9314)        remote: Counting objects:  61% (5682/9314)        remote: Counting objects:  62% (5775/9314)        remote: Counting objects:  63% (5868/9314)        remote: Counting objects:  64% (5961/9314)        remote: Counting objects:  65% (6055/9314)        remote: Counting objects:  66% (6148/9314)        remote: Counting objects:  67% (6241/9314)        remote: Counting objects:  68% (6334/9314)        remote: Counting objects:  69% (6427/9314)        remote: Counting objects:  70% (6520/9314)        remote: Counting objects:  71% (6613/9314)        remote: Counting objects:  72% (6707/9314)        remote: Counting objects:  73% (6800/9314)        remote: Counting objects:  74% (6893/9314)        remote: Counting objects:  75% (6986/9314)        remote: Counting objects:  76% (7079/9314)        remote: Counting objects:  77% (7172/9314)        remote: Counting objects:  78% (7265/9314)        remote: Counting objects:  79% (7359/9314)        remote: Counting objects:  80% (7452/9314)        remote: Counting objects:  81% (7545/9314)        remote: Counting objects:  82% (7638/9314)        remote: Counting objects:  83% (7731/9314)        remote: Counting objects:  84% (7824/9314)        remote: Counting objects:  85% (7917/9314)        remote: Counting objects:  86% (8011/9314)        remote: Counting objects:  87% (8104/9314)        remote: Counting objects:  88% (8197/9314)        remote: Counting objects:  89% (8290/9314)        remote: Counting objects:  90% (8383/9314)        remote: Counting objects:  91% (8476/9314)        remote: Counting objects:  92% (8569/9314)        remote: Counting objects:  93% (8663/9314)        remote: Counting objects:  94% (8756/9314)        remote: Counting objects:  95% (8849/9314)        remote: Counting objects:  96% (8942/9314)        remote: Counting objects:  97% (9035/9314)        remote: Counting objects:  98% (9128/9314)        remote: Counting objects:  99% (9221/9314)        remote: Counting objects: 100% (9314/9314)        remote: Counting objects: 100% (9314/9314), done.        
+remote: Compressing objects:   0% (1/5467)        remote: Compressing objects:   1% (55/5467)        remote: Compressing objects:   2% (110/5467)        remote: Compressing objects:   3% (165/5467)        remote: Compressing objects:   4% (219/5467)        remote: Compressing objects:   5% (274/5467)        remote: Compressing objects:   6% (329/5467)        remote: Compressing objects:   7% (383/5467)        remote: Compressing objects:   8% (438/5467)        remote: Compressing objects:   9% (493/5467)        remote: Compressing objects:  10% (547/5467)        remote: Compressing objects:  11% (602/5467)        remote: Compressing objects:  12% (657/5467)        remote: Compressing objects:  13% (711/5467)        remote: Compressing objects:  14% (766/5467)        remote: Compressing objects:  15% (821/5467)        remote: Compressing objects:  16% (875/5467)        remote: Compressing objects:  17% (930/5467)        remote: Compressing objects:  18% (985/5467)        remote: Compressing objects:  19% (1039/5467)        remote: Compressing objects:  20% (1094/5467)        remote: Compressing objects:  21% (1149/5467)        remote: Compressing objects:  22% (1203/5467)        remote: Compressing objects:  23% (1258/5467)        remote: Compressing objects:  24% (1313/5467)        remote: Compressing objects:  25% (1367/5467)        remote: Compressing objects:  26% (1422/5467)        remote: Compressing objects:  27% (1477/5467)        remote: Compressing objects:  28% (1531/5467)        remote: Compressing objects:  29% (1586/5467)        remote: Compressing objects:  30% (1641/5467)        remote: Compressing objects:  31% (1695/5467)        remote: Compressing objects:  32% (1750/5467)        remote: Compressing objects:  33% (1805/5467)        remote: Compressing objects:  34% (1859/5467)        remote: Compressing objects:  35% (1914/5467)        remote: Compressing objects:  36% (1969/5467)        remote: Compressing objects:  37% (2023/5467)        remote: Compressing objects:  38% (2078/5467)        remote: Compressing objects:  39% (2133/5467)        remote: Compressing objects:  40% (2187/5467)        remote: Compressing objects:  41% (2242/5467)        remote: Compressing objects:  42% (2297/5467)        remote: Compressing objects:  43% (2351/5467)        remote: Compressing objects:  44% (2406/5467)        remote: Compressing objects:  45% (2461/5467)        remote: Compressing objects:  46% (2515/5467)        remote: Compressing objects:  47% (2570/5467)        remote: Compressing objects:  48% (2625/5467)        remote: Compressing objects:  49% (2679/5467)        remote: Compressing objects:  50% (2734/5467)        remote: Compressing objects:  51% (2789/546 (truncated)
+
+07:44:43.641 [debug] sent notification server -> client window/logMessage
+
+07:44:43.641 [info] Beginning DB migration...
+
+07:44:43.641 [debug] sent notification server -> client window/logMessage
+
+07:44:43.641 [info] Database is on the latest version: 7
+
+07:44:43.641 [debug] sent notification server -> client window/logMessage
+
+07:44:43.641 [info] Finished DB migration...
+
+07:44:43.641 [debug] sent notification server -> client window/logMessage
+
+07:44:43.641 [info] Booting runtime for system.
+
+- elixir: /home/rl/.asdf/shims/elixir
+- zombie wrapper script: /home/rl/.local/share/.burrito/next_ls_erts-15.2_0.23.4/lib/next_ls-0.23.4/priv/cmd
+- working_dir: /home/rl/work/github.com/macula-io/macula-arcade/system
+- command: /home/rl/.asdf/shims/elixir --no-halt --sname nextls-runtime-1763707483641654778 --cookie HHYKTHK2JHVUZI3HDBMAF64GPJFPN4AV4Y7CQDE27SSFQKZPVAFQ==== -S mix loadpaths --no-compile
+
+Environment: 
+
+LSP=nextls
+NEXTLS_PARENT_PID=g1h3Im5leHQtbHMtMTc2MzcwNzQ3Njk5NzkxMjM4NUBob3N0MDAAAAD5AAAAAGkgClY=
+MIX_ENV=dev
+MIX_TARGET=host
+MIX_BUILD_ROOT=.elixir-tools/_build
+ROOTDIR=false
+BINDIR=false
+RELEASE_ROOT=false
+RELEASE_SYS_CONFIG=false
+PATH=/home/rl/.asdf/shims:/home/rl/.local/share/.burrito/next_ls_erts-15.2_0.23.4/bin:/home/rl/.local/share/nvim/mason/bin:/home/rl/.asdf/installs/rust/1.90.0/bin:/home/rl/.asdf/shims:/usr/lib/ccache/bin/:/home/rl/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/var/lib/flatpak/exports/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/rl/go/bin:/opt/nvim-linux64/bin
+
+
+07:44:44.133 [debug] sent notification server -> client window/logMessage
+
+07:44:44.133 [info] ** (ArgumentError) The module Phoenix.CodeReloader was given as a child to a supervisor but it does not exist
+    (elixir 1.19.2) lib/supervisor.ex:814: Supervisor.init_child/1
+    (elixir 1.19.2) lib/supervisor.ex:922: Supervisor.child_spec/2
+    (elixir 1.19.2) lib/enum.ex:1688: Enum."-map/2-lists^map/1-1-"/2
+    (mix 1.19.2) lib/mix/pubsub.ex:80: Mix.PubSub.listener_supervisor/0
+    (mix 1.19.2) lib/mix/pubsub.ex:62: Mix.PubSub.start_listeners/0
+    (mix 1.19.2) lib/mix/tasks/deps.loadpaths.ex:83: Mix.Tasks.Deps.Loadpaths.run/1
+    (mix 1.19.2) lib/mix/task.ex:499: anonymous fn/3 in Mix.Task.run_task/5
+    (mix 1.19.2) lib/mix/tasks/loadpaths.ex:43: Mix.Tasks.Loadpaths.run/1
+
+
+07:44:44.139 [debug] sent notification server -> client $/progress
+
+07:44:44.139 [debug] sent notification server -> client window/logMessage
+
+07:44:44.139 [error] Runtime for folder system failed to initialize
+
+07:44:44.139 [debug] sent notification server -> client window/logMessage
+
+07:44:44.139 [info] The runtime for system has successfully shut down.
+
+07:44:52.503 [debug] handled notification client -> server textDocument/didChange in 5ms
+
+07:44:52.948 [debug] handled notification client -> server textDocument/didChange in 470µs
+
+07:44:53.098 [debug] handled notification client -> server textDocument/didChange in 483µs
+
+07:44:53.247 [debug] handled notification client -> server textDocument/didChange in 544µs
+
+07:44:53.482 [debug] handled notification client -> server textDocument/didChange in 602µs
+
+07:44:53.744 [debug] handled notification client -> server textDocument/didChange in 686µs
+
+07:44:54.755 [debug] handled notification client -> server textDocument/didChange in 464µs
+
+07:44:58.524 [debug] handled notification client -> server textDocument/didChange in 738µs
+
+07:44:58.746 [debug] handled notification client -> server textDocument/didChange in 707µs
+
+07:45:01.420 [debug] handled notification client -> server textDocument/didChange in 446µs
+
+07:45:01.568 [debug] handled notification client -> server textDocument/didChange in 521µs
+
+07:45:01.894 id=3 [debug] handled request client -> server textDocument/documentSymbol in 1ms
+
+07:45:05.744 [debug] handled notification client -> server textDocument/didChange in 563µs
+
+07:45:05.909 [debug] handled notification client -> server textDocument/didChange in 427µs
+
+07:45:06.929 [debug] handled notification client -> server textDocument/didChange in 450µs
+
+07:45:07.413 [debug] handled notification client -> server textDocument/didChange in 517µs
+
+07:45:08.046 [debug] handled notification client -> server textDocument/didChange in 510µs
+
+07:45:08.799 [debug] handled notification client -> server textDocument/didChange in 396µs
+
+07:45:09.265 [debug] handled notification client -> server textDocument/didChange in 397µs
+
+07:45:13.724 [debug] handled notification client -> server textDocument/didChange in 614µs
+
+07:45:13.873 [debug] handled notification client -> server textDocument/didChange in 499µs
+
+07:45:16.117 [debug] handled notification client -> server textDocument/didChange in 464µs
+
+07:45:18.742 [debug] handled notification client -> server textDocument/didChange in 593µs
+
+07:45:19.608 [debug] handled notification client -> server textDocument/didChange in 523µs
+
+07:45:19.799 [debug] handled notification client -> server textDocument/didChange in 436µs
+
+07:45:20.304 [debug] handled notification client -> server textDocument/didChange in 530µs
+
+07:45:20.548 [debug] handled notification client -> server textDocument/didChange in 519µs
+
+07:45:21.520 [debug] handled notification client -> server textDocument/didChange in 527µs
+
+07:45:21.669 [debug] handled notification client -> server textDocument/didChange in 461µs
+
+07:45:23.301 [debug] handled notification client -> server textDocument/didChange in 461µs
+
+07:45:23.450 [debug] handled notification client -> server textDocument/didChange in 451µs
+
+07:45:29.242 [debug] handled notification client -> server textDocument/didChange in 622µs
+
+07:45:30.625 [debug] handled notification client -> server textDocument/didChange in 507µs
+
+07:45:33.075 [debug] handled notification client -> server textDocument/didChange in 615µs
+
+07:45:34.643 [debug] handled notification client -> server textDocument/didChange in 398µs
+
+07:45:35.443 [debug] handled notification client -> server textDocument/didChange in 477µs
+
+07:45:36.209 [debug] handled notification client -> server textDocument/didChange in 582µs
+
+07:45:37.700 [debug] handled notification client -> server textDocument/didChange in 625µs
+
+07:45:38.559 [debug] handled notification client -> server textDocument/didChange in 537µs
+
+07:45:42.530 [debug] handled notification client -> server textDocument/didChange in 441µs
+
+07:45:48.152 [debug] handled notification client -> server textDocument/didChange in 644µs
+
+07:45:48.301 [debug] handled notification client -> server textDocument/didChange in 552µs
+
+07:46:08.537 id=4 [debug] handled request client -> server textDocument/documentSymbol in 1ms
+
+07:46:11.983 [debug] handled notification client -> server textDocument/didChange in 573µs
+
+07:46:11.990 id=5 [debug] handled request client -> server textDocument/documentSymbol in 1ms
+
+07:46:14.458 [debug] handled notification client -> server textDocument/didChange in 563µs
+
+07:46:14.703 [debug] handled notification client -> server textDocument/didChange in 492µs
+
+07:46:14.910 [debug] handled notification client -> server textDocument/didChange in 500µs
+
+07:46:15.510 [debug] handled notification client -> server textDocument/didChange in 579µs
+
+07:46:15.658 [debug] handled notification client -> server textDocument/didChange in 455µs
+
+07:46:15.808 [debug] handled notification client -> server textDocument/didChange in 476µs
+
+07:46:15.991 [debug] handled notification client -> server textDocument/didChange in 403µs
+
+07:46:16.233 [debug] handled notification client -> server textDocument/didChange in 492µs
+
+07:46:16.461 [debug] handled notification client -> server textDocument/didChange in 477µs
+
+07:46:17.208 [debug] handled notification client -> server textDocument/didChange in 563µs
+
+07:46:24.131 id=6 [debug] handled request client -> server textDocument/documentSymbol in 1ms
+
+07:46:26.510 [debug] handled notification client -> server textDocument/didChange in 418µs
+
+07:46:26.517 [debug] handled notification client -> server textDocument/didChange in 592µs
+
+07:46:26.518 id=7 [debug] handled request client -> server textDocument/documentSymbol in 1ms

@@ -97,8 +97,12 @@ if config_env() == :prod do
 
   config :macula_arcade, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
-  # Macula v0.8.5 Configuration - Always-On Architecture
+  # Macula v0.8.7 Configuration - Platform-Level DHT Bootstrapping
   # All nodes have all capabilities: Bootstrap + Gateway + Peer
+  #
+  # DHT network formation is handled by macula via MACULA_BOOTSTRAP_PEERS env var.
+  # Applications simply connect to their local macula instance (which is already
+  # part of the DHT network).
 
   # Certificate paths for TLS
   # If not provided, macula will auto-generate self-signed certificates
@@ -111,22 +115,18 @@ if config_env() == :prod do
   # QUIC port for mesh communication
   quic_port = String.to_integer(System.get_env("MACULA_QUIC_PORT") || "4433")
 
-  # Bootstrap URL - leave nil for first/bootstrap node, set for joining nodes
-  bootstrap_url = System.get_env("MACULA_BOOTSTRAP_URL")
-
   # Health check port
   health_port = String.to_integer(System.get_env("HEALTH_PORT") || "8080")
 
   config :macula,
-    # TLS certificate paths (v0.8.5 uses application config, not env vars)
+    # TLS certificate paths
     cert_path: cert_path,
     key_path: key_path,
     # Realm for multi-tenancy
     realm: realm,
     # QUIC port for mesh communication
     quic_port: quic_port,
-    # Bootstrap URL for joining existing mesh (nil = be the bootstrap node)
-    bootstrap_url: bootstrap_url,
     # Health check port
     health_port: health_port
+    # NOTE: bootstrap_url removed in v0.8.7 - use MACULA_BOOTSTRAP_PEERS env var instead
 end

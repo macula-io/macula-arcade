@@ -1,0 +1,216 @@
+# Macula Arcade - Development Environment
+#
+# This runs a separate development instance on different ports
+# so you can develop while keeping the stable demo running.
+#
+# Ports:
+#   Dev Gateway:  5000 (HTTP), 5433 (QUIC), 9080 (Health)
+#   Dev Peer 1:   5001 (HTTP), 5434 (QUIC), 9081 (Health)
+#   Dev Peer 2:   5002 (HTTP), 5435 (QUIC), 9082 (Health)
+#   Dev Bot:      5003 (HTTP), 5436 (QUIC), 9083 (Health)
+#
+# Demo ports remain: 4000-4003, 8080-8083, 4433-4436
+#
+# Usage:
+#   ./deploy-dev.sh              # Automated deployment
+#   docker compose -f docker-compose.dev.yml up --build
+#   docker compose -f docker-compose.dev.yml down
+
+services:
+  # Development Gateway - Bootstrap node
+  dev-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        BUILD_DATE: ${BUILD_DATE:-unknown}
+        VCS_REF: ${VCS_REF:-unknown}
+    image: macula-arcade:dev
+    container_name: dev-gateway
+    hostname: dev-gateway
+    restart: unless-stopped
+    environment:
+      # Macula v0.8.7 - Platform-level DHT bootstrapping
+      MACULA_QUIC_PORT: "5433"
+      MACULA_REALM: "macula.arcade.dev"
+      HEALTH_PORT: "9080"
+      # No MACULA_BOOTSTRAP_PEERS - this IS the bootstrap node
+
+      # Phoenix config
+      PORT: "4000"
+      PHX_HOST: "dev-gateway"
+      SECRET_KEY_BASE: "DEVWMw7VW0JQKZKbLLq6Y1hPrHvCvnqZvvnDEVWMw7VW0JQKZKbLLq6Y1hPrHvCv"
+
+      # TLS
+      MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
+      MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
+
+      # Database (in-memory for dev)
+      DATABASE_PATH: ":memory:"
+
+      # Logging (debug for development)
+      LOG_LEVEL: "debug"
+    ports:
+      - "5000:4000"       # Phoenix HTTP
+      - "5433:5433/udp"   # Macula QUIC
+      - "9080:9080"       # Health
+    networks:
+      arcade-dev-mesh:
+        ipv4_address: 172.26.0.10
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9080/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+    volumes:
+      - dev-gateway-certs:/opt/macula/certs
+
+  # Development Peer 1
+  dev-peer1:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        BUILD_DATE: ${BUILD_DATE:-unknown}
+        VCS_REF: ${VCS_REF:-unknown}
+    image: macula-arcade:dev
+    container_name: dev-peer1
+    hostname: dev-peer1
+    restart: unless-stopped
+    environment:
+      # Macula v0.8.7 - Platform-level DHT bootstrapping
+      MACULA_QUIC_PORT: "5434"
+      MACULA_REALM: "macula.arcade.dev"
+      HEALTH_PORT: "9081"
+      MACULA_BOOTSTRAP_PEERS: "https://dev-gateway:5433"
+
+      PORT: "4000"
+      PHX_HOST: "dev-peer1"
+      SECRET_KEY_BASE: "DEVXNx8WX1KRLaLcMMr7Z2iQsIwDworaAwoDEVXNx8WX1KRLaLcMMr7Z2iQsIwDwo"
+
+      MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
+      MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
+
+      DATABASE_PATH: ":memory:"
+      LOG_LEVEL: "debug"
+    ports:
+      - "5001:4000"
+      - "5434:5434/udp"
+      - "9081:9081"
+    networks:
+      arcade-dev-mesh:
+        ipv4_address: 172.26.0.11
+    depends_on:
+      dev-gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9081/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+  # Development Peer 2
+  dev-peer2:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        BUILD_DATE: ${BUILD_DATE:-unknown}
+        VCS_REF: ${VCS_REF:-unknown}
+    image: macula-arcade:dev
+    container_name: dev-peer2
+    hostname: dev-peer2
+    restart: unless-stopped
+    environment:
+      # Macula v0.8.7 - Platform-level DHT bootstrapping
+      MACULA_QUIC_PORT: "5435"
+      MACULA_REALM: "macula.arcade.dev"
+      HEALTH_PORT: "9082"
+      MACULA_BOOTSTRAP_PEERS: "https://dev-gateway:5433"
+
+      PORT: "4000"
+      PHX_HOST: "dev-peer2"
+      SECRET_KEY_BASE: "DEVYOy9XY2LSMbMdNNs8a3jRtJxExpsbBxpDEVYOy9XY2LSMbMdNNs8a3jRtJxExp"
+
+      MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
+      MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
+
+      DATABASE_PATH: ":memory:"
+      LOG_LEVEL: "debug"
+    ports:
+      - "5002:4000"
+      - "5435:5435/udp"
+      - "9082:9082"
+    networks:
+      arcade-dev-mesh:
+        ipv4_address: 172.26.0.12
+    depends_on:
+      dev-gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9082/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+  # Development Bot
+  dev-bot1:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        BUILD_DATE: ${BUILD_DATE:-unknown}
+        VCS_REF: ${VCS_REF:-unknown}
+    image: macula-arcade:dev
+    container_name: dev-bot1
+    hostname: dev-bot1
+    restart: unless-stopped
+    environment:
+      # Macula v0.8.7 - Platform-level DHT bootstrapping
+      MACULA_QUIC_PORT: "5436"
+      MACULA_REALM: "macula.arcade.dev"
+      HEALTH_PORT: "9083"
+      MACULA_BOOTSTRAP_PEERS: "https://dev-gateway:5433"
+
+      PORT: "4000"
+      PHX_HOST: "dev-bot1"
+      SECRET_KEY_BASE: "DEVZPz0YZ3MTNcNeOOt9b4kStKyFyqtcCyqDEVZPz0YZ3MTNcNeOOt9b4kStKyFyq"
+
+      MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
+      MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
+
+      DATABASE_PATH: ":memory:"
+
+      # Bot disabled by default in dev
+      BOT_COUNT: "0"
+
+      LOG_LEVEL: "debug"
+    ports:
+      - "5003:4000"
+      - "5436:5436/udp"
+      - "9083:9083"
+    networks:
+      arcade-dev-mesh:
+        ipv4_address: 172.26.0.13
+    depends_on:
+      dev-gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9083/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+networks:
+  arcade-dev-mesh:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.26.0.0/24
+
+volumes:
+  dev-gateway-certs:
