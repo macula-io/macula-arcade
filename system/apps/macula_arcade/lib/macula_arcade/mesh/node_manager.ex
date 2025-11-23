@@ -89,7 +89,7 @@ defmodule MaculaArcade.Mesh.NodeManager do
       realm: @realm
     }
 
-    with {:ok, client} <- :macula_client.connect_local(connect_opts) do
+    with {:ok, client} <- :macula.connect_local(connect_opts) do
       Logger.info("NodeManager connected to local gateway successfully")
 
       # Publish presence
@@ -100,7 +100,7 @@ defmodule MaculaArcade.Mesh.NodeManager do
         type: "arcade_node"
       }
 
-      :macula_client.publish(client, @presence_topic, presence_data)
+      :macula.publish(client, @presence_topic, presence_data)
       Logger.info("NodeManager published presence on #{@presence_topic}")
 
       {:ok, %{client: client, node_id: node_id}}
@@ -118,44 +118,44 @@ defmodule MaculaArcade.Mesh.NodeManager do
 
   @impl true
   def handle_call({:publish, topic, data, opts}, _from, %{client: client} = state) do
-    result = :macula_client.publish(client, topic, data, opts)
+    result = :macula.publish(client, topic, data, opts)
     {:reply, result, state}
   end
 
   @impl true
   def handle_call({:subscribe, topic, callback}, _from, %{client: client} = state) do
-    result = :macula_client.subscribe(client, topic, callback)
+    result = :macula.subscribe(client, topic, callback)
     {:reply, result, state}
   end
 
   @impl true
   def handle_call({:call_service, procedure, args, opts}, _from, %{client: client} = state) do
-    result = :macula_client.call(client, procedure, args, opts)
+    result = :macula.call(client, procedure, args, opts)
     {:reply, result, state}
   end
 
   @impl true
   def handle_call({:advertise_service, procedure, handler, opts}, _from, %{client: client} = state) do
-    result = :macula_client.advertise(client, procedure, handler, opts)
+    result = :macula.advertise(client, procedure, handler, opts)
     {:reply, result, state}
   end
 
   @impl true
   def handle_call({:discover_subscribers, topic}, _from, %{client: client} = state) do
-    result = :macula_client.discover_subscribers(client, topic)
+    result = :macula.discover_subscribers(client, topic)
     {:reply, result, state}
   end
 
   @impl true
   def handle_call(:get_node_id, _from, %{client: client} = state) do
-    result = :macula_client.get_node_id(client)
+    result = :macula.get_node_id(client)
     {:reply, result, state}
   end
 
   @impl true
   def terminate(_reason, %{client: client}) do
     Logger.info("NodeManager shutting down - disconnecting from mesh")
-    :macula_client.disconnect(client)
+    :macula.disconnect(client)
     :ok
   end
 end

@@ -36,7 +36,7 @@ defmodule MaculaArcade.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:macula, "~> 0.8.25"},
+      {:macula, "~> 0.10.0"},
       {:dns_cluster, "~> 0.2.0"},
       {:phoenix_pubsub, "~> 2.1"},
       {:ecto_sql, "~> 3.13"},

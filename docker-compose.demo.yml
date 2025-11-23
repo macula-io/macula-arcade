@@ -10,10 +10,10 @@
 
 services:
   # Bootstrap node - first node in the mesh
-  arcade-demo-gateway:
+  arcade-gateway:
     image: maculacid/macula-arcade:0.2.2
-    container_name: arcade-demo-gateway
-    hostname: arcade-demo-gateway
+    container_name: arcade-gateway
+    hostname: arcade-gateway
     restart: unless-stopped
     environment:
       # Macula v0.8.7 - Platform-level DHT bootstrapping
@@ -24,7 +24,7 @@ services:
 
       # Phoenix config
       PORT: "4000"
-      PHX_HOST: "arcade-demo-gateway"
+      PHX_HOST: "arcade-gateway"
       SECRET_KEY_BASE: "WMw7VW0JQKZKbLLq6Y1hPrHvCvnqZvvnWMw7VW0JQKZKbLLq6Y1hPrHvCvnqZvvn"
 
       # TLS auto-generated in v0.8.5 (optional override)
@@ -37,9 +37,9 @@ services:
       # Logging
       LOG_LEVEL: "info"
     ports:
-      - "4000:4000"       # Phoenix HTTP
-      - "4433:4433/udp"   # Macula QUIC (UDP)
-      - "8080:8080"       # Macula Health
+      - "4000:4000" # Phoenix HTTP
+      - "4433:4433/udp" # Macula QUIC (UDP)
+      - "8080:8080" # Macula Health
     networks:
       arcade-mesh:
         ipv4_address: 172.25.0.10
@@ -53,10 +53,10 @@ services:
       - gateway-certs:/opt/macula/certs
 
   # Peer node 1
-  arcade-demo-peer1:
+  arcade-peer1:
     image: maculacid/macula-arcade:0.2.2
-    container_name: arcade-demo-peer1
-    hostname: arcade-demo-peer1
+    container_name: arcade-peer1
+    hostname: arcade-peer1
     restart: unless-stopped
     environment:
       # Macula v0.8.7 - Platform-level DHT bootstrapping
@@ -64,11 +64,11 @@ services:
       MACULA_REALM: "macula.arcade"
       HEALTH_PORT: "8080"
       # Connect to bootstrap node via platform config
-      MACULA_BOOTSTRAP_PEERS: "https://arcade-demo-gateway:4433"
+      MACULA_BOOTSTRAP_PEERS: "https://arcade-gateway:4433"
 
       # Phoenix config
       PORT: "4000"
-      PHX_HOST: "arcade-demo-peer1"
+      PHX_HOST: "arcade-peer1"
       SECRET_KEY_BASE: "XNx8WX1KRLaLcMMr7Z2iQsIwDworaAwowXNx8WX1KRLaLcMMr7Z2iQsIwDworaAwo"
 
       # TLS auto-generated in v0.8.5
@@ -88,7 +88,7 @@ services:
       arcade-mesh:
         ipv4_address: 172.25.0.11
     depends_on:
-      arcade-demo-gateway:
+      arcade-gateway:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
@@ -98,10 +98,10 @@ services:
       start_period: 30s
 
   # Peer node 2
-  arcade-demo-peer2:
+  arcade-peer2:
     image: maculacid/macula-arcade:0.2.2
-    container_name: arcade-demo-peer2
-    hostname: arcade-demo-peer2
+    container_name: arcade-peer2
+    hostname: arcade-peer2
     restart: unless-stopped
     environment:
       # Macula v0.8.7 - Platform-level DHT bootstrapping
@@ -109,11 +109,11 @@ services:
       MACULA_REALM: "macula.arcade"
       HEALTH_PORT: "8080"
       # Connect to bootstrap node via platform config
-      MACULA_BOOTSTRAP_PEERS: "https://arcade-demo-gateway:4433"
+      MACULA_BOOTSTRAP_PEERS: "https://arcade-gateway:4433"
 
       # Phoenix config
       PORT: "4000"
-      PHX_HOST: "arcade-demo-peer2"
+      PHX_HOST: "arcade-peer2"
       SECRET_KEY_BASE: "YOy9XY2LSMbMdNNs8a3jRtJxExpsbBxpxYOy9XY2LSMbMdNNs8a3jRtJxExpsbBxp"
 
       # TLS auto-generated in v0.8.5
@@ -133,7 +133,7 @@ services:
       arcade-mesh:
         ipv4_address: 172.25.0.12
     depends_on:
-      arcade-demo-gateway:
+      arcade-gateway:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
@@ -143,10 +143,10 @@ services:
       start_period: 30s
 
   # Bot node - headless bot client for scalability testing
-  arcade-demo-bot1:
+  arcade-bot1:
     image: maculacid/macula-arcade:0.2.2
-    container_name: arcade-demo-bot1
-    hostname: arcade-demo-bot1
+    container_name: arcade-bot1
+    hostname: arcade-bot1
     restart: unless-stopped
     environment:
       # Macula v0.8.7 - Platform-level DHT bootstrapping
@@ -154,11 +154,11 @@ services:
       MACULA_REALM: "macula.arcade"
       HEALTH_PORT: "8080"
       # Connect to bootstrap node via platform config
-      MACULA_BOOTSTRAP_PEERS: "https://arcade-demo-gateway:4433"
+      MACULA_BOOTSTRAP_PEERS: "https://arcade-gateway:4433"
 
       # Phoenix config (headless, but still needs minimal config)
       PORT: "4000"
-      PHX_HOST: "arcade-demo-bot1"
+      PHX_HOST: "arcade-bot1"
       SECRET_KEY_BASE: "ZPz0YZ3MTNcNeOOt9b4kStKyFyqtcCyqyZPz0YZ3MTNcNeOOt9b4kStKyFyqtcCyqy"
 
       # TLS auto-generated in v0.8.5
@@ -181,7 +181,7 @@ services:
       arcade-mesh:
         ipv4_address: 172.25.0.13
     depends_on:
-      arcade-demo-gateway:
+      arcade-gateway:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]

@@ -30,7 +30,8 @@ services:
     hostname: dev-gateway
     restart: unless-stopped
     environment:
-      # Macula v0.8.7 - Platform-level DHT bootstrapping
+      # Macula v0.8.20 - P2P Mesh with DHT-based peer discovery
+      MACULA_HOSTNAME: "dev-gateway"
       MACULA_QUIC_PORT: "5433"
       MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "9080"
@@ -79,7 +80,8 @@ services:
     hostname: dev-peer1
     restart: unless-stopped
     environment:
-      # Macula v0.8.7 - Platform-level DHT bootstrapping
+      # Macula v0.8.20 - P2P Mesh with DHT-based peer discovery
+      MACULA_HOSTNAME: "dev-peer1"
       MACULA_QUIC_PORT: "5434"
       MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "9081"
@@ -124,7 +126,8 @@ services:
     hostname: dev-peer2
     restart: unless-stopped
     environment:
-      # Macula v0.8.7 - Platform-level DHT bootstrapping
+      # Macula v0.8.20 - P2P Mesh with DHT-based peer discovery
+      MACULA_HOSTNAME: "dev-peer2"
       MACULA_QUIC_PORT: "5435"
       MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "9082"
@@ -169,7 +172,8 @@ services:
     hostname: dev-bot1
     restart: unless-stopped
     environment:
-      # Macula v0.8.7 - Platform-level DHT bootstrapping
+      # Macula v0.8.20 - P2P Mesh with DHT-based peer discovery
+      MACULA_HOSTNAME: "dev-bot1"
       MACULA_QUIC_PORT: "5436"
       MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "9083"
