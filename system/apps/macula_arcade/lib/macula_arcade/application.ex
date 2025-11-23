@@ -7,6 +7,10 @@ defmodule MaculaArcade.Application do
 
   @impl true
   def start(_type, _args) do
+    # Connect to Macula platform before starting children
+    # This ensures the client PID is available when Coordinator starts
+    {:ok, _client} = MaculaArcade.Mesh.connect()
+
     children = [
       # No database needed - arcade uses pure in-memory game state
       # MaculaArcade.Repo,
@@ -14,7 +18,6 @@ defmodule MaculaArcade.Application do
       #  repos: Application.fetch_env!(:macula_arcade, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:macula_arcade, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: MaculaArcade.PubSub},
-      MaculaArcade.Mesh.NodeManager,
       {DynamicSupervisor, name: MaculaArcade.GameSupervisor, strategy: :one_for_one},
       MaculaArcade.Games.Coordinator
     ] ++ bot_children()

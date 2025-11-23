@@ -12,7 +12,7 @@ defmodule MaculaArcade.Games.Coordinator do
 
   use GenServer
   require Logger
-  alias MaculaArcade.Mesh.NodeManager
+  alias MaculaArcade.Mesh
   alias MaculaArcade.Games.Snake.GameServer
 
   # Event topics (past tense - things that happened)
@@ -265,7 +265,8 @@ defmodule MaculaArcade.Games.Coordinator do
   end
 
   defp get_node_id do
-    case NodeManager.get_node_id() do
+    client = Mesh.client()
+    case :macula.get_node_id(client) do
       {:ok, id} -> {:ok, id}
       id when is_binary(id) -> {:ok, id}
       _ -> {:error, :not_connected}
@@ -288,9 +289,10 @@ defmodule MaculaArcade.Games.Coordinator do
       handle_submit_action_rpc(args)
     end
 
-    with {:ok, _} <- NodeManager.advertise_service(@register_player_proc, register_handler),
-         {:ok, _} <- NodeManager.advertise_service(@find_opponents_proc, find_handler),
-         {:ok, _} <- NodeManager.advertise_service(@submit_action_proc, action_handler) do
+    client = Mesh.client()
+    with {:ok, _} <- :macula.advertise(client, @register_player_proc, register_handler),
+         {:ok, _} <- :macula.advertise(client, @find_opponents_proc, find_handler),
+         {:ok, _} <- :macula.advertise(client, @submit_action_proc, action_handler) do
       Logger.info("Registered RPC handlers for Snake Duel")
       :ok
     else
@@ -303,6 +305,7 @@ defmodule MaculaArcade.Games.Coordinator do
 
   defp subscribe_to_events do
     coordinator_pid = self()
+    client = Mesh.client()
 
     events = [
       @player_registered_topic,
@@ -319,7 +322,7 @@ defmodule MaculaArcade.Games.Coordinator do
         :ok
       end
 
-      case NodeManager.subscribe(topic, callback) do
+      case :macula.subscribe(client, topic, callback) do
         {:ok, ref} ->
           {:cont, [ref | acc]}
 
@@ -542,7 +545,8 @@ defmodule MaculaArcade.Games.Coordinator do
   defp find_opponents_from_dht(state) do
     # For now, use find_opponents RPC
     # In future, query DHT directly
-    case NodeManager.call_service(@find_opponents_proc, %{
+    client = Mesh.client()
+    case :macula.call(client, @find_opponents_proc, %{
       "exclude_player_id" => nil,
       "limit" => 10
     }, %{timeout: 3000}) do
@@ -866,10 +870,11 @@ defmodule MaculaArcade.Games.Coordinator do
   end
 
   defp publish_event(topic, payload) do
-    Logger.info("Publishing event to #{topic}")
-    case NodeManager.publish(topic, payload) do
+    Logger.debug("Publishing event to #{topic}")
+    client = Mesh.client()
+    case :macula.publish(client, topic, payload) do
       :ok ->
-        Logger.info("Published event to #{topic}")
+        Logger.debug("Published event to #{topic}")
         :ok
 
       {:error, reason} ->

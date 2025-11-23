@@ -11,7 +11,7 @@ defmodule MaculaArcadeWeb.SnakeLive do
   use MaculaArcadeWeb, :live_view
   require Logger
   alias MaculaArcade.Games.Coordinator
-  alias MaculaArcade.Mesh.NodeManager
+  alias MaculaArcade.Mesh
 
   @impl true
   def mount(_params, _session, socket) do
@@ -26,7 +26,8 @@ defmodule MaculaArcadeWeb.SnakeLive do
     Phoenix.PubSub.subscribe(MaculaArcade.PubSub, "arcade.game.start")
 
     # Subscribe via Macula mesh (for multi-container)
-    case NodeManager.subscribe("arcade.game.start", fn event_data ->
+    client = Mesh.client()
+    case :macula.subscribe(client, "arcade.game.start", fn event_data ->
            # Convert mesh event to LiveView message
            send(live_view_pid, {:game_started, event_data})
            :ok
@@ -89,7 +90,8 @@ defmodule MaculaArcadeWeb.SnakeLive do
          {:ok, direction} when not is_nil(direction) <- {:ok, direction} do
       # Publish direction change to mesh
       topic = "arcade.game.#{game_id}.input"
-      NodeManager.publish(topic, %{
+      client = Mesh.client()
+      :macula.publish(client, topic, %{
         player_id: socket.assigns.player_id,
         direction: direction
       })
@@ -110,7 +112,8 @@ defmodule MaculaArcadeWeb.SnakeLive do
       live_view_pid = self()
 
       # Subscribe to game state updates via mesh (for multi-container)
-      case NodeManager.subscribe("arcade.game.#{game_id}.state", fn state_data ->
+      client = Mesh.client()
+      case :macula.subscribe(client, "arcade.game.#{game_id}.state", fn state_data ->
              send(live_view_pid, {:game_state_update, state_data})
              :ok
            end) do
@@ -122,7 +125,8 @@ defmodule MaculaArcadeWeb.SnakeLive do
       Phoenix.PubSub.subscribe(MaculaArcade.PubSub, "arcade.game.#{game_id}.state")
 
       # Subscribe to player input via mesh (for multi-container)
-      case NodeManager.subscribe("arcade.game.#{game_id}.input", fn input_data ->
+      client = Mesh.client()
+      case :macula.subscribe(client, "arcade.game.#{game_id}.input", fn input_data ->
              send(live_view_pid, {:player_input, input_data})
              :ok
            end) do

@@ -13,7 +13,7 @@ defmodule MaculaArcade.Games.BotClient do
   require Logger
   alias MaculaArcade.Games.Coordinator
   alias MaculaArcade.Games.Snake.GameServer
-  alias MaculaArcade.Mesh.NodeManager
+  alias MaculaArcade.Mesh
 
   defstruct [
     :player_id,
@@ -53,7 +53,8 @@ defmodule MaculaArcade.Games.BotClient do
     Phoenix.PubSub.subscribe(MaculaArcade.PubSub, "arcade.game.start")
 
     # Subscribe via Macula mesh
-    case NodeManager.subscribe("arcade.game.start", fn event_data ->
+    client = Mesh.client()
+    case :macula.subscribe(client, "arcade.game.start", fn event_data ->
            send(self(), {:game_started, event_data})
            :ok
          end) do

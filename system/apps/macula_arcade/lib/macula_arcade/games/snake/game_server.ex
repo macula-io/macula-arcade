@@ -11,7 +11,7 @@ defmodule MaculaArcade.Games.Snake.GameServer do
 
   use GenServer
   require Logger
-  alias MaculaArcade.Mesh.NodeManager
+  alias MaculaArcade.Mesh
   alias MaculaArcade.Games.Coordinator
 
   # Grid is 40x30 cells
@@ -575,9 +575,10 @@ defmodule MaculaArcade.Games.Snake.GameServer do
     state_data = serialize_state(state)
 
     # Broadcast via mesh (for multi-container)
-    # Use try/catch to prevent NodeManager crashes from affecting game
+    # Use try/catch to prevent mesh crashes from affecting game
     try do
-      NodeManager.publish(game_topic, state_data)
+      client = Mesh.client()
+      :macula.publish(client, game_topic, state_data)
     catch
       :exit, reason ->
         Logger.warning("Failed to publish game state via mesh: #{inspect(reason)}")
