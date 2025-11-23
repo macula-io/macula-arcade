@@ -37,6 +37,8 @@ defmodule MaculaArcade.Games.Coordinator do
     @moduledoc false
     defstruct [
       :node_id,
+      :leader_node_id,       # Current Raft leader (from Platform Layer)
+      :is_leader,            # Boolean: are we the leader?
       :waiting_players,      # Map of player_id => %{timestamp, player_name, node_id}
       :remote_players,       # Map of player_id => %{timestamp, player_name, node_id} - players on other nodes
       :pending_matches,      # Map of match_id => %{player1, player2, timestamp}
@@ -100,6 +102,8 @@ defmodule MaculaArcade.Games.Coordinator do
 
     state = %State{
       node_id: nil,
+      leader_node_id: nil,
+      is_leader: false,
       waiting_players: %{},
       remote_players: %{},
       pending_matches: %{},
@@ -132,6 +136,33 @@ defmodule MaculaArcade.Games.Coordinator do
   @impl true
   def handle_info(:attempt_matchmaking, state) do
     new_state = attempt_matchmaking(state)
+    {:noreply, new_state}
+  end
+
+  @impl true
+  def handle_info({:leader_changed, change}, state) do
+    old_leader = change.old_leader || change["old_leader"]
+    new_leader = change.new_leader || change["new_leader"]
+
+    was_leader = state.is_leader
+    is_leader_now = (new_leader == state.node_id)
+
+    Logger.info("Leader changed: #{inspect_node_id(old_leader)} -> #{inspect_node_id(new_leader)}")
+    Logger.info("We were leader: #{was_leader}, We are leader now: #{is_leader_now}")
+
+    new_state = %{state |
+      leader_node_id: new_leader,
+      is_leader: is_leader_now
+    }
+
+    # If we just became leader, we might want to trigger matchmaking
+    new_state = if not was_leader and is_leader_now do
+      Logger.info("We are now the leader - triggering matchmaking")
+      attempt_matchmaking(new_state)
+    else
+      new_state
+    end
+
     {:noreply, new_state}
   end
 
@@ -252,13 +283,18 @@ defmodule MaculaArcade.Games.Coordinator do
 
   defp initialize_mesh_connection(state) do
     with {:ok, node_id} <- get_node_id(),
+         {:ok, leader_info} <- get_leader_info(node_id),
+         :ok <- subscribe_to_leader_changes(),
          :ok <- register_rpc_handlers(),
          {:ok, subs} <- subscribe_to_events() do
 
       Logger.info("Game Coordinator initialized on node #{inspect_node_id(node_id)}")
+      Logger.info("Current leader: #{inspect_node_id(leader_info.leader_node_id)}, We are leader: #{leader_info.is_leader}")
 
       {:ok, %{state |
         node_id: node_id,
+        leader_node_id: leader_info.leader_node_id,
+        is_leader: leader_info.is_leader,
         subscriptions: subs
       }}
     end
@@ -270,6 +306,39 @@ defmodule MaculaArcade.Games.Coordinator do
       {:ok, id} -> {:ok, id}
       id when is_binary(id) -> {:ok, id}
       _ -> {:error, :not_connected}
+    end
+  end
+
+  defp get_leader_info(our_node_id) do
+    case Mesh.get_leader() do
+      {:ok, leader_node_id} ->
+        is_leader = (leader_node_id == our_node_id)
+        {:ok, %{leader_node_id: leader_node_id, is_leader: is_leader}}
+
+      {:error, :no_leader} ->
+        Logger.warning("No Raft leader elected yet")
+        {:ok, %{leader_node_id: nil, is_leader: false}}
+
+      {:error, reason} ->
+        Logger.error("Failed to get leader: #{inspect(reason)}")
+        {:error, reason}
+    end
+  end
+
+  defp subscribe_to_leader_changes do
+    coordinator_pid = self()
+
+    case Mesh.subscribe_leader_changes(fn change ->
+      send(coordinator_pid, {:leader_changed, change})
+      :ok
+    end) do
+      {:ok, _ref} ->
+        Logger.info("Subscribed to leader changes")
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("Failed to subscribe to leader changes: #{inspect(reason)}")
+        :ok  # Non-critical, continue anyway
     end
   end
 

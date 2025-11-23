@@ -26,6 +26,7 @@ defmodule MaculaArcade.Mesh do
   Connects to the local Macula platform and stores the client PID.
 
   Called automatically during application startup.
+  Registers with Platform Layer for distributed coordination.
   """
   def connect do
     Logger.info("[Mesh] Connecting to local Macula platform (realm: #{@realm})")
@@ -36,6 +37,21 @@ defmodule MaculaArcade.Mesh do
 
         # Store client PID in persistent_term for fast access
         :persistent_term.put(@client_key, client)
+
+        # Register with Platform Layer (v0.10.0+)
+        case :macula.register_workload(client, %{
+          workload_name: "macula_arcade",
+          workload_type: "game_server",
+          capabilities: ["matchmaking", "game_hosting"]
+        }) do
+          {:ok, platform_info} ->
+            Logger.info("[Mesh] Registered with Platform Layer: #{inspect(platform_info)}")
+            Logger.info("[Mesh] Leader node: #{inspect(platform_info.leader_node)}")
+            Logger.info("[Mesh] Cluster size: #{platform_info.cluster_size}")
+
+          {:error, reason} ->
+            Logger.warning("[Mesh] Failed to register with Platform Layer: #{inspect(reason)}")
+        end
 
         # Publish initial presence
         node_id = node() |> Atom.to_string()
@@ -94,5 +110,43 @@ defmodule MaculaArcade.Mesh do
       nil -> {:error, :not_connected}
       client when is_pid(client) -> {:ok, client}
     end
+  end
+
+  @doc """
+  Gets the current Raft leader node ID.
+
+  Returns {:ok, node_id} or {:error, :no_leader}.
+  """
+  def get_leader do
+    client = client()
+    :macula.get_leader(client)
+  end
+
+  @doc """
+  Subscribes to leader change notifications.
+
+  Callback will be called with %{old_leader: binary(), new_leader: binary()}.
+  """
+  def subscribe_leader_changes(callback) do
+    client = client()
+    :macula.subscribe_leader_changes(client, callback)
+  end
+
+  @doc """
+  Proposes a CRDT update for distributed shared state.
+
+  Uses LWW-Register (Last-Write-Wins) by default.
+  """
+  def propose_crdt_update(key, value, opts \\ %{}) do
+    client = client()
+    :macula.propose_crdt_update(client, key, value, opts)
+  end
+
+  @doc """
+  Reads a CRDT value from distributed shared state.
+  """
+  def read_crdt(key, opts \\ %{}) do
+    client = client()
+    :macula.read_crdt(client, key)
   end
 end
