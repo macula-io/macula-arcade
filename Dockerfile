@@ -1,6 +1,9 @@
 # Build stage
 FROM hexpm/elixir:1.17.3-erlang-27.1.2-debian-bookworm-20241016-slim AS build
 
+# Cache bust argument (set via docker-compose)
+ARG CACHE_BUST=1
+
 # Install build dependencies (including cmake for quicer/msquic)
 RUN apt-get update -y && \
     apt-get install -y build-essential git curl cmake && \

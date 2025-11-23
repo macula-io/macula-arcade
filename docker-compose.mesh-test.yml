@@ -1,21 +1,23 @@
 version: '3.8'
 
 services:
-  # Bootstrap node - first node in the mesh (v0.8.5 always-on architecture)
+  # Bootstrap node - first node in the mesh (v0.10.0 with Platform Layer)
   arcade-gateway:
     build:
       context: .
       dockerfile: Dockerfile
       additional_contexts:
         macula: ../macula
+      args:
+        CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-gateway
     hostname: arcade-gateway
     environment:
-      # Macula v0.8.5 - All nodes have all capabilities (always-on)
+      # Macula v0.10.0 - Platform Layer with Raft/CRDTs
       MACULA_QUIC_PORT: "4433"
-      MACULA_REALM: "macula.arcade"
+      MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "8080"
-      # No MACULA_BOOTSTRAP_URL - this IS the bootstrap node
+      # No MACULA_BOOTSTRAP_PEERS - this IS the bootstrap node
 
       # Phoenix config
       PORT: "4000"
@@ -47,22 +49,24 @@ services:
     volumes:
       - gateway-certs:/opt/macula/certs
 
-  # Peer node 1 (v0.8.5 - all nodes have all capabilities)
+  # Peer node 1 (v0.10.0 with Platform Layer)
   arcade-peer1:
     build:
       context: .
       dockerfile: Dockerfile
       additional_contexts:
         macula: ../macula
+      args:
+        CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-peer1
     hostname: arcade-peer1
     environment:
-      # Macula v0.8.5 - All nodes have all capabilities
+      # Macula v0.10.0 - Platform Layer with Raft/CRDTs
       MACULA_QUIC_PORT: "4433"
-      MACULA_REALM: "macula.arcade"
+      MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "8080"
       # Connect to bootstrap node
-      MACULA_BOOTSTRAP_URL: "https://arcade-gateway:4433"
+      MACULA_BOOTSTRAP_PEERS: "arcade-gateway:4433"
 
       # Phoenix config
       PORT: "4000"
@@ -95,22 +99,24 @@ services:
       retries: 5
       start_period: 30s
 
-  # Peer node 2 (v0.8.5 - all nodes have all capabilities)
+  # Peer node 2 (v0.10.0 with Platform Layer)
   arcade-peer2:
     build:
       context: .
       dockerfile: Dockerfile
       additional_contexts:
         macula: ../macula
+      args:
+        CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-peer2
     hostname: arcade-peer2
     environment:
-      # Macula v0.8.5 - All nodes have all capabilities
+      # Macula v0.10.0 - Platform Layer with Raft/CRDTs
       MACULA_QUIC_PORT: "4433"
-      MACULA_REALM: "macula.arcade"
+      MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "8080"
       # Connect to bootstrap node
-      MACULA_BOOTSTRAP_URL: "https://arcade-gateway:4433"
+      MACULA_BOOTSTRAP_PEERS: "arcade-gateway:4433"
 
       # Phoenix config
       PORT: "4000"
@@ -150,15 +156,17 @@ services:
       dockerfile: Dockerfile
       additional_contexts:
         macula: ../macula
+      args:
+        CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-bot1
     hostname: arcade-bot1
     environment:
-      # Macula v0.8.5 - All nodes have all capabilities
+      # Macula v0.10.0 - Platform Layer with Raft/CRDTs
       MACULA_QUIC_PORT: "4433"
-      MACULA_REALM: "macula.arcade"
+      MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "8080"
       # Connect to bootstrap node
-      MACULA_BOOTSTRAP_URL: "https://arcade-gateway:4433"
+      MACULA_BOOTSTRAP_PEERS: "arcade-gateway:4433"
 
       # Phoenix config (headless, but still needs minimal config)
       PORT: "4000"
