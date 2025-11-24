@@ -9,7 +9,7 @@ cd "$SCRIPT_DIR"
 
 VERSION="0.2.2"
 IMAGE="maculacid/macula-arcade:${VERSION}"
-COMPOSE_FILE="docker-compose.demo.yml"
+COMPOSE_FILE="docker-compose.yml"
 
 echo "=================================================="
 echo "Macula Arcade Demo Deployment"
