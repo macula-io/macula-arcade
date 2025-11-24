@@ -51,7 +51,7 @@ All version references have been synchronized across the project.
 
 3. **Build Docker Image:**
    ```bash
-   docker build -t macula-arcade:v0.3.0 -f Dockerfile.dev .
+   docker build -t macula-arcade:v0.3.0 -f system/Dockerfile system
    docker tag macula-arcade:v0.3.0 macula-arcade:latest
    ```
 
