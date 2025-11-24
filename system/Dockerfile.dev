@@ -1,0 +1,102 @@
+# Development Dockerfile - Uses local macula repository
+#
+# This Dockerfile is for development and testing with the latest
+# local macula code. It copies the macula source into the build
+# and uses it as a path dependency.
+
+# ==============================================================================
+# Build Stage
+# ==============================================================================
+FROM hexpm/elixir:1.17.3-erlang-27.1.2-ubuntu-jammy-20240808 AS builder
+
+# Install build dependencies
+RUN apt-get update -y && \
+    apt-get install -y build-essential git curl cmake && \
+    apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+# Install hex + rebar
+RUN mix local.hex --force && \
+    mix local.rebar --force
+
+# Set working directory
+WORKDIR /app
+
+# Copy local macula into the build (from build context)
+COPY --from=macula . /macula
+
+# Copy mix files
+COPY mix.exs mix.lock ./
+COPY config config
+COPY apps/macula_arcade/mix.exs apps/macula_arcade/
+COPY apps/macula_arcade/mix.exs.dev apps/macula_arcade/
+COPY apps/macula_arcade_web/mix.exs apps/macula_arcade_web/
+
+# Swap to dev mix.exs that uses path dependency for macula
+RUN mv apps/macula_arcade/mix.exs.dev apps/macula_arcade/mix.exs
+
+# Install mix dependencies
+ENV MIX_ENV=prod
+RUN mix deps.get --only $MIX_ENV
+
+# Copy application code
+COPY apps apps
+
+# Copy TLS certificates for Macula gateway
+COPY priv priv
+
+# Compile application and build assets
+RUN mix compile
+
+# Setup and build assets using Phoenix asset pipeline
+RUN mix assets.setup
+RUN mix assets.deploy
+
+# Build release
+RUN mix release
+
+# ==============================================================================
+# Runtime Stage
+# ==============================================================================
+FROM ubuntu:22.04
+
+# Install runtime dependencies
+RUN apt-get update -y && \
+    apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates curl && \
+    apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+# Set locale
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+# Create app user
+RUN useradd --create-home app
+WORKDIR /home/app
+
+# Copy release from builder
+COPY --from=builder --chown=app:app /app/_build/prod/rel/macula_arcade ./
+
+# Copy TLS certificates for Macula gateway
+# Macula library expects certificates at /opt/macula/certs/
+RUN mkdir -p /opt/macula/certs
+COPY --from=builder --chown=app:app /app/priv/certs/server-cert.pem /opt/macula/certs/cert.pem
+COPY --from=builder --chown=app:app /app/priv/certs/server-key.pem /opt/macula/certs/key.pem
+RUN chmod 644 /opt/macula/certs/cert.pem && chmod 600 /opt/macula/certs/key.pem
+
+# Switch to app user
+USER app
+
+# Expose ports
+EXPOSE 4000
+
+# Set environment
+ENV MIX_ENV=prod
+ENV PHX_SERVER=true
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:8080/health || exit 1
+
+# Start the release
+CMD ["bin/macula_arcade", "start"]

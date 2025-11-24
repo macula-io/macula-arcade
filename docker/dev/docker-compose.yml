@@ -21,7 +21,11 @@ services:
   dev-gateway:
     build:
       context: ../../system
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+      additional_contexts:
+        macula: ../../../macula
+      additional_contexts:
+        macula: ../../../macula
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
@@ -71,7 +75,9 @@ services:
   dev-peer1:
     build:
       context: ../../system
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+      additional_contexts:
+        macula: ../../../macula
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
@@ -117,7 +123,9 @@ services:
   dev-peer2:
     build:
       context: ../../system
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+      additional_contexts:
+        macula: ../../../macula
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
@@ -163,7 +171,9 @@ services:
   dev-bot1:
     build:
       context: ../../system
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+      additional_contexts:
+        macula: ../../../macula
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}

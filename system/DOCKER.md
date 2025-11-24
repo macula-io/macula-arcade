@@ -1,14 +1,35 @@
 # Docker Build Configuration
 
-This directory contains two Dockerfiles for different use cases:
+This directory contains three Dockerfiles for different use cases:
 
-## Dockerfile (Development/Testing)
+## Dockerfile.dev (Development with Local Macula)
 
-**Purpose:** Local development and testing environments
+**Purpose:** Development with local macula repository (for testing unreleased macula changes)
 
 **Used by:**
 - `docker/dev/docker-compose.yml` - Development environment
-- `docker/test/docker-compose.yml` - Testing environment
+
+**Characteristics:**
+- Base: Ubuntu 22.04 (jammy)
+- **Uses local macula from path** (`/macula` in build context)
+- Mix path dependency: `{:macula, path: "/macula"}`
+- Pre-built certificates from `priv/certs/`
+- Health check configured
+- Allows testing macula changes before publishing to hex
+
+**Build command:**
+```bash
+docker build -f Dockerfile.dev \
+  --build-context macula=../../../macula \
+  -t macula-arcade:dev .
+```
+
+## Dockerfile (Testing/Demo)
+
+**Purpose:** Testing with published macula from hex.pm
+
+**Used by:**
+- `docker/prod/docker-compose.yml` - Production testing environment (when testing before CI/CD)
 
 **Characteristics:**
 - Base: Ubuntu 22.04 (jammy)
