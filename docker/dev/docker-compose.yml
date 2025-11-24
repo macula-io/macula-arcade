@@ -24,8 +24,6 @@ services:
       dockerfile: Dockerfile.dev
       additional_contexts:
         macula: ../../../macula
-      additional_contexts:
-        macula: ../../../macula
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
