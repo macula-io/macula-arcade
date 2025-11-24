@@ -1,206 +1,348 @@
 # Macula Arcade
 
-A multiplayer browser-based arcade platform built on [Macula](https://github.com/macula-io/macula) HTTP/3 mesh networking.
+**Interactive multiplayer arcade platform demonstrating [Macula](https://github.com/macula-io/macula) HTTP/3 mesh networking**
 
-## Features
+[![Macula Version](https://img.shields.io/badge/macula-v0.10.0-blue)](https://hex.pm/packages/macula)
+[![Snake Protocol](https://img.shields.io/badge/protocol-v0.2.0-green)](docs/architecture/SNAKE_DUEL_ARCHITECTURE.md)
 
-- **Snake Battle Royale**: 2-player competitive snake game
-- **Mesh Networking**: Players automatically discover each other via Macula
-- **Real-time Multiplayer**: 60 FPS game loop with live state synchronization
-- **Browser-Based**: No downloads, just run and play at `localhost:4000`
-- **Containerized**: Single Docker container deployment
+---
 
-## Architecture
+## What is Macula Arcade?
 
-```
-┌─────────────────────────────────────────────┐
-│          Phoenix LiveView (Port 4000)       │
-│  ┌────────────┐          ┌──────────────┐  │
-│  │ Snake UI   │          │ Canvas Hook  │  │
-│  └────────────┘          └──────────────┘  │
-└──────────────────┬──────────────────────────┘
-                   │
-┌──────────────────┴──────────────────────────┐
-│         Macula Mesh (QUIC/HTTP3)            │
-│  ┌───────────┐  ┌─────────┐  ┌──────────┐  │
-│  │ Node Mgr  │  │ Pub/Sub │  │ Discovery│  │
-│  └───────────┘  └─────────┘  └──────────┘  │
-└─────────────────────────────────────────────┘
-                   │
-┌──────────────────┴──────────────────────────┐
-│          Game Engine (OTP/GenServer)        │
-│  ┌────────────┐          ┌──────────────┐  │
-│  │GameServer  │          │ Coordinator  │  │
-│  │(60 FPS)    │          │(Matchmaking) │  │
-│  └────────────┘          └──────────────┘  │
-└─────────────────────────────────────────────┘
-```
+Macula Arcade showcases **decentralized gaming** over a mesh network. Players discover each other automatically, matchmake across nodes, and play in real-time - no central server required.
+
+### Current Features
+
+- ✅ **Snake Duel** - 2-player competitive snake game
+- ✅ **Cross-node matchmaking** - Players on different servers automatically matched
+- ✅ **Real-time sync** - 60 FPS game loop over HTTP/3 (QUIC)
+- ✅ **Platform Layer** - Leader election, distributed state (Raft + CRDTs)
+- ✅ **Browser-based** - No downloads, just open http://localhost:4000
+
+---
 
 ## Quick Start
 
-### Using Docker
+### 🎮 Try the Demo (Pre-built Images)
 
 ```bash
-# Build the image
-cd system
-docker build -t macula-arcade:latest .
-
-# Run instance 1
-docker run -d -p 4000:4000 --name arcade1 macula-arcade:latest
-
-# Run instance 2 (on another machine or different port)
-docker run -d -p 4001:4000 --name arcade2 macula-arcade:latest
-
-# Open browser
-# Player 1: http://localhost:4000/snake
-# Player 2: http://localhost:4001/snake (or another machine at :4000)
+cd docker/demo
+./deploy-demo.sh
 ```
 
-### Development Mode
+Open http://localhost:4000 and click "Find Game"!
+
+See [docker/demo/](docker/demo/) for details.
+
+### 🔧 Development Mode
 
 ```bash
-cd system
-
-# Install dependencies
-mix deps.get
-cd apps/macula_arcade_web/assets && npm install && cd -
-
-# Run Phoenix server
-mix phx.server
-
-# Visit http://localhost:4000/snake
+cd docker/dev
+./deploy-dev.sh
 ```
 
-## How It Works
+Development environment with hot-reload on ports 5000-5003.
 
-### Automatic Matchmaking
+See [docker/dev/](docker/dev/) for details.
 
-1. Player opens browser at `/snake`
-2. Clicks "Find Game"
-3. NodeManager publishes player presence on Macula mesh topic `arcade.matchmaking.snake`
-4. Coordinator pairs 2 waiting players
-5. GameServer starts, broadcasting state on `arcade.game.{game_id}.state`
-6. Both players' LiveViews render game in real-time
+### 🧪 Test Latest Code
 
-### Mesh Discovery
+```bash
+cd docker/test
+./test.sh rebuild
+```
 
-Each container runs a Macula client that:
-- Connects to mesh endpoint (`https://localhost:4433`)
-- Publishes presence to mesh
-- Discovers other nodes via Macula pub/sub
-- Routes game events through the mesh
+Tests unreleased features from local repos.
 
-### Game State Synchronization
+See [docker/test/README.md](docker/test/README.md) for details.
 
-- GameServer runs at 60 FPS (16ms tick)
-- State broadcasted via Macula pub/sub
-- Player input sent via dedicated topics
-- Canvas hook renders state in browser
+---
 
-## Games
+## Architecture
 
-### Snake Battle Royale
+### The Stack
 
-**Rules:**
-- 2 players, each controls a snake
-- Collect food to grow and score points
-- Avoid walls, your own tail, and opponent's snake
-- Head-to-head collision = draw
-- Last snake alive wins
+```
+┌─────────────────────────────────────────────┐
+│      Phoenix LiveView (Web UI)              │
+│   ┌────────────┐       ┌──────────────┐    │
+│   │ Snake UI   │       │Canvas Render │    │
+│   └────────────┘       └──────────────┘    │
+└──────────────────┬──────────────────────────┘
+                   │
+┌──────────────────┴──────────────────────────┐
+│   Macula Platform (HTTP/3 mesh)             │
+│ ┌─────────┐ ┌─────────┐ ┌──────────────┐   │
+│ │ Raft    │ │ CRDTs   │ │ DHT Pub/Sub  │   │
+│ │ Leader  │ │ State   │ │ Events       │   │
+│ └─────────┘ └─────────┘ └──────────────┘   │
+└──────────────────┬──────────────────────────┘
+                   │
+┌──────────────────┴──────────────────────────┐
+│      Game Engine (Elixir/OTP)               │
+│ ┌────────────┐         ┌──────────────┐    │
+│ │GameServer  │         │ Coordinator  │    │
+│ │(60 FPS)    │         │(Matchmaking) │    │
+│ └────────────┘         └──────────────┘    │
+└─────────────────────────────────────────────┘
+```
 
-**Controls:**
-- Arrow keys to change direction
-- Cannot reverse direction (no 180° turns)
+### How Matchmaking Works
 
-**Grid:** 40x30 cells
+1. **Player registers** - Publishes `player_registered` event to DHT
+2. **Coordinator matches** - Leader proposes matches via `match_proposed`
+3. **Players confirm** - Both confirm via `match_found`
+4. **Host starts game** - Deterministically selected host starts GameServer
+5. **State syncs** - 60 FPS state broadcast via DHT pub/sub
 
-## Tech Stack
+**Key insight:** Events are facts (past tense), not commands.
+See [docs/architecture/SNAKE_DUEL_ARCHITECTURE.md](docs/architecture/SNAKE_DUEL_ARCHITECTURE.md)
 
-- **Backend**: Elixir 1.15 + OTP 26
-- **Web**: Phoenix 1.8 + LiveView
-- **Networking**: Macula v0.5.0 (HTTP/3 over QUIC)
-- **Frontend**: HTML5 Canvas + JavaScript hooks
-- **Containerization**: Docker multi-stage build
+---
+
+## Documentation
+
+### 📚 Start Here
+
+- **[docs/README.md](docs/README.md)** - Documentation index
+- **[docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md)** ⭐ - Complete architecture guide
+  - Explains "mesh of meshes" vision
+  - All abbreviations (HTTP/3, DHT, Raft, CRDT, mDNS)
+  - When to use what (local cluster vs global mesh)
+  - Scale limits and trade-offs
+
+### 🏗️ Architecture
+
+- [ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) - Main architecture doc
+- [SNAKE_DUEL_ARCHITECTURE.md](docs/architecture/SNAKE_DUEL_ARCHITECTURE.md) - Game protocol
+- [MESH_PATTERNS.md](docs/architecture/MESH_PATTERNS.md) - Distributed patterns
+- [DHT_MATCHMAKING_IMPLEMENTATION.md](docs/architecture/DHT_MATCHMAKING_IMPLEMENTATION.md) - DHT details
+
+### 🚀 Deployment
+
+- [DEMO_DEPLOYMENT.md](docs/deployment/DEMO_DEPLOYMENT.md) - Production deployment
+- [ENVIRONMENTS.md](docs/deployment/ENVIRONMENTS.md) - Docker comparison
+- [docker/README.md](docker/README.md) - Docker environments overview
+
+### 💻 Development
+
+- [DEVELOPMENT.md](docs/development/DEVELOPMENT.md) - Dev setup
+- [VERSION_SYNC.md](docs/development/VERSION_SYNC.md) - Version management
+- [NEURAL_SNAKE_VISION.md](docs/development/NEURAL_SNAKE_VISION.md) - Future: AI snakes
+
+---
 
 ## Project Structure
 
 ```
 macula-arcade/
-├── system/
+├── docker/                    # Docker environments
+│   ├── demo/                  # Stable demo (Docker Hub)
+│   ├── dev/                   # Development (hot-reload)
+│   └── test/                  # Testing (local builds)
+│
+├── docs/                      # Documentation
+│   ├── architecture/          # Design docs
+│   ├── deployment/            # Deployment guides
+│   └── development/           # Dev guides
+│
+├── system/                    # Elixir umbrella app
 │   ├── apps/
-│   │   ├── macula_arcade/          # Domain app
-│   │   │   ├── lib/
-│   │   │   │   ├── mesh/
-│   │   │   │   │   └── node_manager.ex
-│   │   │   │   └── games/
-│   │   │   │       ├── coordinator.ex
-│   │   │   │       └── snake/
-│   │   │   │           └── game_server.ex
-│   │   └── macula_arcade_web/      # Web app
-│   │       ├── lib/
-│   │       │   └── live/
-│   │       │       └── snake_live.ex
-│   │       └── assets/
-│   │           └── js/
-│   │               └── snake_canvas.js
+│   │   ├── macula_arcade/     # Domain logic
+│   │   │   ├── mesh.ex        # Macula connection
+│   │   │   └── games/
+│   │   │       ├── coordinator.ex
+│   │   │       └── snake/game_server.ex
+│   │   └── macula_arcade_web/ # Phoenix UI
+│   │       └── live/snake_live.ex
 │   ├── Dockerfile
 │   └── mix.exs
-└── README.md
+│
+└── README.md                  # This file
 ```
+
+---
+
+## Tech Stack
+
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| **Mesh** | Macula Platform | v0.10.0 |
+| **Transport** | HTTP/3 (QUIC) | RFC 9114 |
+| **Consensus** | Raft | Via macula |
+| **State** | CRDTs (LWW-Register) | Via macula |
+| **Backend** | Elixir + OTP | 1.17 + 27.1 |
+| **Web** | Phoenix + LiveView | 1.8 |
+| **Frontend** | HTML5 Canvas | Native |
+| **Container** | Docker | Multi-stage |
+
+---
+
+## Snake Battle Royale
+
+**Rules:**
+- 🎯 2 players control snakes
+- 🍎 Eat food to grow and score
+- ⚠️ Avoid walls, your tail, opponent
+- ⚔️ Head-to-head = draw (highest score wins)
+- 🏆 Last snake alive wins
+
+**Controls:**
+- Arrow keys change direction
+- No 180° turns allowed
+
+**Grid:** 40x30 cells at 20 FPS
+
+---
 
 ## Configuration
 
-### Macula Connection
+### Mesh Connection
 
-Edit `apps/macula_arcade/lib/macula_arcade/mesh/node_manager.ex`:
+Edit `system/apps/macula_arcade/lib/macula_arcade/mesh.ex`:
 
 ```elixir
-@realm "macula.arcade"
-@mesh_url "https://localhost:4433"
+@realm "macula.arcade.dev"
+@presence_topic "arcade.node.presence"
 ```
 
 ### Game Settings
 
-Edit `apps/macula_arcade/lib/macula_arcade/games/snake/game_server.ex`:
+Edit `system/apps/macula_arcade/lib/macula_arcade/games/snake/game_server.ex`:
 
 ```elixir
 @grid_width 40
 @grid_height 30
-@tick_interval 16  # ~60 FPS
+@tick_interval 50  # ~20 FPS
+@bot_enabled true  # AI controls both snakes
 ```
 
-## Publishing to Docker Hub
+---
+
+## Key Concepts
+
+### Macula Platform Layer (v0.10.0)
+
+Provides coordination primitives for workloads:
+
+```elixir
+# Register with platform
+{:ok, info} = :macula.register_workload(client, %{
+  workload_name: "macula_arcade",
+  workload_type: "game_server"
+})
+
+# Query leader
+{:ok, leader_id} = :macula.get_leader(client)
+
+# Subscribe to leader changes
+:macula.subscribe_leader_changes(client, callback)
+
+# CRDTs for shared state
+:macula.propose_crdt_update(client, "queue", player_list)
+{:ok, value} = :macula.read_crdt(client, "queue")
+```
+
+**Scale:** Cluster-local (5-100 nodes, <50ms latency)
+
+### DHT Pub/Sub
+
+Global mesh messaging:
+
+```elixir
+# Publish event
+:macula.publish(client, "arcade.snake.player_registered", %{
+  player_id: id,
+  node_id: node,
+  timestamp: now
+})
+
+# Subscribe to events
+{:ok, ref} = :macula.subscribe(client, "arcade.snake.match_found", callback)
+```
+
+**Scale:** Planet-wide (millions of nodes)
+
+See [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) for when to use what.
+
+---
+
+## Common Questions
+
+### Can this scale globally?
+
+Yes! Macula uses a **"mesh of meshes"** architecture:
+
+- **Local clusters** (5-100 nodes) use Raft + CRDTs for fast coordination
+- **Global mesh** (millions of nodes) uses DHT pub/sub for eventual consistency
+- Hybrid deployments get best of both worlds
+
+See [ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) for details.
+
+### What's the difference between demo/dev/test?
+
+| Environment | Purpose | Ports | Image Source |
+|-------------|---------|-------|--------------|
+| **demo/** | Stable showcase | 4000-4003 | Docker Hub |
+| **dev/** | Active development | 5000-5003 | Local build |
+| **test/** | Testing unreleased | 4000-4003 | Local build |
+
+See [docker/README.md](docker/README.md)
+
+### How do I test Platform Layer features?
 
 ```bash
-cd system
-
-# Build
-docker build -t yourusername/macula-arcade:latest .
-
-# Tag
-docker tag macula-arcade:latest yourusername/macula-arcade:0.1.0
-
-# Push
-docker push yourusername/macula-arcade:latest
-docker push yourusername/macula-arcade:0.1.0
+cd docker/test
+./test.sh rebuild
+./test.sh logs-gateway | grep "Leader"
 ```
+
+See [docker/test/README.md](docker/test/README.md)
+
+---
 
 ## Roadmap
 
-- [ ] 4Pong (2-4 players, one paddle per wall)
+### v0.3.0 - Multi-Game Support
+- [ ] 4Pong (2-4 players, paddle per wall)
+- [ ] Game lobbies and room selection
 - [ ] Spectator mode
-- [ ] Game statistics and leaderboards
+
+### v0.4.0 - Advanced Features
+- [ ] Statistics and leaderboards
 - [ ] Custom skins and themes
-- [ ] Tournament mode
-- [ ] Multiple game rooms
-- [ ] Voice chat via WebRTC
+- [ ] Tournament brackets
+- [ ] Voice chat (WebRTC)
+
+### v0.5.0 - AI Evolution
+- [ ] TWEANN (evolving neural networks)
+- [ ] Genetic algorithms
+- [ ] AI vs AI tournaments
+
+See [NEURAL_SNAKE_VISION.md](docs/development/NEURAL_SNAKE_VISION.md)
+
+---
+
+## Contributing
+
+1. Read [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md)
+2. Set up dev environment: [docs/development/DEVELOPMENT.md](docs/development/DEVELOPMENT.md)
+3. Check [docs/README.md](docs/README.md) for all guides
+4. File issues: https://github.com/macula-io/macula-arcade/issues
+
+---
 
 ## License
 
 Apache 2.0
 
+---
+
 ## Links
 
-- [Macula Platform](https://github.com/macula-io/macula)
-- [Phoenix Framework](https://phoenixframework.org/)
-- [LiveView](https://hexdocs.pm/phoenix_live_view/)
+- **Macula Platform**: https://github.com/macula-io/macula
+- **Phoenix Framework**: https://phoenixframework.org/
+- **Phoenix LiveView**: https://hexdocs.pm/phoenix_live_view/
+- **QUIC Protocol**: https://www.rfc-editor.org/rfc/rfc9000.html
+- **Raft Consensus**: https://raft.github.io/
+- **CRDTs**: https://crdt.tech/
