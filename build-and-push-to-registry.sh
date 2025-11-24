@@ -19,8 +19,8 @@ print_status "Building macula-arcade image..."
 docker build \
     --build-arg CACHE_BUST=$(date +%s) \
     -t ${REGISTRY}/${IMAGE_NAME}:${TAG} \
-    -f Dockerfile \
-    .
+    -f system/Dockerfile \
+    system
 
 print_status "Pushing to registry ${REGISTRY}..."
 docker push ${REGISTRY}/${IMAGE_NAME}:${TAG}

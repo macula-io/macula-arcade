@@ -20,7 +20,7 @@ services:
   # Development Gateway - Bootstrap node
   dev-gateway:
     build:
-      context: ../..
+      context: ../../system
       dockerfile: Dockerfile
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
@@ -70,7 +70,7 @@ services:
   # Development Peer 1
   dev-peer1:
     build:
-      context: ../..
+      context: ../../system
       dockerfile: Dockerfile
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
@@ -116,7 +116,7 @@ services:
   # Development Peer 2
   dev-peer2:
     build:
-      context: ../..
+      context: ../../system
       dockerfile: Dockerfile
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
@@ -162,7 +162,7 @@ services:
   # Development Bot
   dev-bot1:
     build:
-      context: ../..
+      context: ../../system
       dockerfile: Dockerfile
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
