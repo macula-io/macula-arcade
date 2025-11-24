@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Macula Arcade Test Environment
+# Macula Arcade Production Environment
 #
-# Tests latest code from local macula + macula-arcade repos
-# Builds from scratch with cache busting
+# Production deployment using Dockerfile.prod with runtime cert generation
+# Optimized for cloud/k8s deployments
 #
 # Usage:
-#   ./test.sh build     - Build containers
-#   ./test.sh up        - Start containers
-#   ./test.sh down      - Stop containers
-#   ./test.sh rebuild   - Clean + build + start
-#   ./test.sh logs      - Follow all logs
-#   ./test.sh clean     - Remove everything
+#   ./deploy.sh build     - Build production containers
+#   ./deploy.sh up        - Start containers
+#   ./deploy.sh down      - Stop containers
+#   ./deploy.sh deploy    - Clean + build + start
+#   ./deploy.sh logs      - Follow all logs
+#   ./deploy.sh clean     - Remove everything
 
 # Generate cache bust
 export CACHE_BUST=$(date +%s)
@@ -21,13 +21,13 @@ COMPOSE_FILE="docker-compose.yml"
 
 case "${1:-help}" in
   build)
-    echo "=== Building Test Environment (v0.10.0) ==="
+    echo "=== Building Production Environment (v0.10.0) ==="
     echo "Cache bust: ${CACHE_BUST}"
     docker compose -f ${COMPOSE_FILE} build --no-cache
     ;;
 
   up)
-    echo "=== Starting Test Environment ==="
+    echo "=== Starting Production Environment ==="
     docker compose -f ${COMPOSE_FILE} up -d
     echo ""
     echo "✅ Containers started!"
@@ -37,21 +37,21 @@ case "${1:-help}" in
     echo "Peer 2:   http://localhost:4002"
     echo "Bot 1:    http://localhost:4003"
     echo ""
-    echo "💡 Tip: ./test.sh logs"
+    echo "💡 Tip: ./deploy.sh logs"
     ;;
 
   down)
-    echo "=== Stopping Test Environment ==="
+    echo "=== Stopping Production Environment ==="
     docker compose -f ${COMPOSE_FILE} down
     ;;
 
-  rebuild)
-    echo "=== Rebuilding Test Environment ==="
+  deploy)
+    echo "=== Deploying Production Environment ==="
     docker compose -f ${COMPOSE_FILE} down -v
     docker compose -f ${COMPOSE_FILE} build --no-cache
     docker compose -f ${COMPOSE_FILE} up -d
     echo ""
-    echo "✅ Rebuilt and started!"
+    echo "✅ Deployed!"
     echo ""
     echo "Gateway:  http://localhost:4000"
     echo "Peer 1:   http://localhost:4001"
@@ -92,18 +92,18 @@ case "${1:-help}" in
 
   help|*)
     cat <<EOF
-🧪 Macula Arcade Test Environment
+🚀 Macula Arcade Production Environment
 
 Purpose:
-  Test latest code from local repos (macula + macula-arcade)
-  Platform Layer integration (Raft + CRDTs)
-  Macula v0.10.0 features
+  Production deployment with optimized images
+  Uses Dockerfile.prod (Debian Slim, health checks, runtime certs)
+  Suitable for cloud/k8s deployments
 
 Commands:
-  build           Build containers (with cache bust)
+  build           Build production containers (with cache bust)
   up              Start containers
   down            Stop containers
-  rebuild         Clean + build + start (recommended)
+  deploy          Clean + build + start (recommended)
   logs            Follow all logs
   logs-gateway    Follow gateway logs
   logs-peer1      Follow peer1 logs
@@ -112,9 +112,9 @@ Commands:
   clean           Remove everything (ask confirmation)
 
 Examples:
-  ./test.sh rebuild         # Fresh build and start
-  ./test.sh logs-gateway    # Watch gateway logs
-  ./test.sh down            # Stop everything
+  ./deploy.sh deploy        # Fresh deployment
+  ./deploy.sh logs-gateway  # Watch gateway logs
+  ./deploy.sh down          # Stop everything
 
 URLs:
   Gateway:  http://localhost:4000
@@ -124,6 +124,9 @@ URLs:
 
 Note: Ports conflict with demo environment.
       Only run one at a time!
+
+For Kubernetes deployments, see:
+  k8s/README.md
 EOF
     ;;
 esac

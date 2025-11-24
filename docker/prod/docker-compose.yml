@@ -3,7 +3,7 @@ services:
   arcade-gateway:
     build:
       context: ../../system
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
       args:
         CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-gateway
@@ -49,7 +49,7 @@ services:
   arcade-peer1:
     build:
       context: ../../system
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
       args:
         CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-peer1
@@ -97,7 +97,7 @@ services:
   arcade-peer2:
     build:
       context: ../../system
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
       args:
         CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-peer2
@@ -145,7 +145,7 @@ services:
   arcade-bot1:
     build:
       context: ../../system
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
       args:
         CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-bot1

@@ -90,7 +90,7 @@ Each Docker environment has its own README:
 - [../docker/README.md](../docker/README.md) - Environment overview
 - [../docker/demo/](../docker/demo/) - Stable demo (Docker Hub images)
 - [../docker/dev/](../docker/dev/) - Development environment
-- [../docker/test/README.md](../docker/test/README.md) - Testing environment (local builds)
+- [../docker/prod/README.md](../docker/prod/README.md) - Production environment (local builds)
 
 ### Macula Platform
 Core platform documentation (in macula repo):
@@ -152,7 +152,7 @@ Wants to deploy Macula Arcade
 ### 🧪 QA / Tester
 Wants to test features
 
-1. [../docker/test/README.md](../docker/test/README.md) - Test environment
+1. [../docker/prod/README.md](../docker/prod/README.md) - Test environment
 2. [architecture/ARCHITECTURE.md](architecture/ARCHITECTURE.md) - What to test
 3. Test!
 

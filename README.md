@@ -48,13 +48,13 @@ See [docker/dev/](docker/dev/) for details.
 ### 🧪 Test Latest Code
 
 ```bash
-cd docker/test
-./test.sh rebuild
+cd docker/prod
+./deploy.sh rebuild
 ```
 
 Tests unreleased features from local repos.
 
-See [docker/test/README.md](docker/test/README.md) for details.
+See [docker/prod/README.md](docker/prod/README.md) for details.
 
 ---
 
@@ -292,12 +292,12 @@ See [docker/README.md](docker/README.md)
 ### How do I test Platform Layer features?
 
 ```bash
-cd docker/test
-./test.sh rebuild
-./test.sh logs-gateway | grep "Leader"
+cd docker/prod
+./deploy.sh rebuild
+./deploy.sh logs-gateway | grep "Leader"
 ```
 
-See [docker/test/README.md](docker/test/README.md)
+See [docker/prod/README.md](docker/prod/README.md)
 
 ---
 
