@@ -1,13 +1,11 @@
-version: '3.8'
-
 services:
   # Bootstrap node - first node in the mesh (v0.10.0 with Platform Layer)
   arcade-gateway:
     build:
-      context: .
+      context: ../..
       dockerfile: Dockerfile
       additional_contexts:
-        macula: ../macula
+        macula: ../../../macula
       args:
         CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-gateway
@@ -52,10 +50,10 @@ services:
   # Peer node 1 (v0.10.0 with Platform Layer)
   arcade-peer1:
     build:
-      context: .
+      context: ../..
       dockerfile: Dockerfile
       additional_contexts:
-        macula: ../macula
+        macula: ../../../macula
       args:
         CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-peer1
@@ -102,10 +100,10 @@ services:
   # Peer node 2 (v0.10.0 with Platform Layer)
   arcade-peer2:
     build:
-      context: .
+      context: ../..
       dockerfile: Dockerfile
       additional_contexts:
-        macula: ../macula
+        macula: ../../../macula
       args:
         CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-peer2
@@ -152,10 +150,10 @@ services:
   # Bot node - headless bot client for scalability testing
   arcade-bot1:
     build:
-      context: .
+      context: ../..
       dockerfile: Dockerfile
       additional_contexts:
-        macula: ../macula
+        macula: ../../../macula
       args:
         CACHE_BUST: "${CACHE_BUST:-1}"
     container_name: arcade-bot1

@@ -20,8 +20,8 @@ services:
   # Development Gateway - Bootstrap node
   dev-gateway:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ../..
+      dockerfile: Dockerfile
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
@@ -70,8 +70,8 @@ services:
   # Development Peer 1
   dev-peer1:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ../..
+      dockerfile: Dockerfile
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
@@ -116,8 +116,8 @@ services:
   # Development Peer 2
   dev-peer2:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ../..
+      dockerfile: Dockerfile
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
@@ -162,8 +162,8 @@ services:
   # Development Bot
   dev-bot1:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ../..
+      dockerfile: Dockerfile
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
