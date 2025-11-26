@@ -19,12 +19,14 @@ const COLORS = {
 
 export const SnakeCanvas = {
   mounted() {
+    console.log("[SnakeCanvas] mounted() called");
     this.canvas = this.el;
     this.ctx = this.canvas.getContext('2d');
     this.fireworks = [];
     this.particles = [];
     this.effectStarted = false;
     this.playerId = this.el.getAttribute('data-player-id');
+    console.log("[SnakeCanvas] playerId:", this.playerId);
 
     // Set canvas size
     this.canvas.width = GRID_WIDTH * CELL_SIZE;
@@ -32,9 +34,11 @@ export const SnakeCanvas = {
 
     // Read initial game state from data attribute
     const gameStateJson = this.el.getAttribute('data-game-state');
+    console.log("[SnakeCanvas] initial gameStateJson length:", gameStateJson?.length);
     if (gameStateJson) {
       try {
         this.gameState = JSON.parse(gameStateJson);
+        console.log("[SnakeCanvas] initial state parsed:", this.gameState?.game_id);
       } catch (e) {
         console.error('Failed to parse initial game state:', e);
       }
@@ -45,6 +49,7 @@ export const SnakeCanvas = {
 
     // Watch for state changes
     this.handleEvent("game_state_update", ({game_state}) => {
+      console.log("[SnakeCanvas] game_state_update event received:", game_state?.game_id, "status:", game_state?.game_status);
       this.gameState = game_state;
 
       // Start effect when game finishes
@@ -65,9 +70,12 @@ export const SnakeCanvas = {
   updated() {
     // Get game state from data attribute
     const gameStateJson = this.el.getAttribute('data-game-state');
+    console.log("[SnakeCanvas] updated() called, gameStateJson length:", gameStateJson?.length);
     if (gameStateJson) {
       try {
-        this.gameState = JSON.parse(gameStateJson);
+        const newState = JSON.parse(gameStateJson);
+        console.log("[SnakeCanvas] updated() parsed state:", newState?.game_id, "status:", newState?.game_status, "p1_score:", newState?.player1_score);
+        this.gameState = newState;
         this.render();
       } catch (e) {
         console.error('Failed to parse game state:', e);

@@ -24,22 +24,22 @@ WORKDIR /app
 # Copy local macula into the build (from build context)
 COPY --from=macula . /macula
 
-# Copy mix files
+# Copy mix files and create dev override
 COPY mix.exs mix.lock ./
 COPY config config
 COPY apps/macula_arcade/mix.exs apps/macula_arcade/
-COPY apps/macula_arcade/mix.exs.dev apps/macula_arcade/
 COPY apps/macula_arcade_web/mix.exs apps/macula_arcade_web/
 
-# Swap to dev mix.exs that uses path dependency for macula
-RUN mv apps/macula_arcade/mix.exs.dev apps/macula_arcade/mix.exs
+# Copy application code first
+COPY apps apps
 
-# Install mix dependencies
+# Override macula dependency to use local path (AFTER copying apps)
+RUN cd apps/macula_arcade && \
+    sed -i 's/{:macula, "~> 0.10.0"}/{:macula, path: "\/macula", override: true}/' mix.exs
+
+# Install mix dependencies (will use local path)
 ENV MIX_ENV=prod
 RUN mix deps.get --only $MIX_ENV
-
-# Copy application code
-COPY apps apps
 
 # Copy TLS certificates for Macula gateway
 COPY priv priv

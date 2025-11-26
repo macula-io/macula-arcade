@@ -12,14 +12,17 @@ defmodule MaculaArcade.Games.Snake.GameServer do
   use GenServer
   require Logger
   alias MaculaArcade.Mesh
-  alias MaculaArcade.Games.Coordinator
+  alias MaculaArcade.Gaming.Supervisor, as: GamingSupervisor
 
   # Grid is 40x30 cells
   @grid_width 40
   @grid_height 30
-  @tick_interval 50  # ~20 FPS (balanced for smooth gameplay over mesh)
+  @tick_interval 100  # 10 FPS (optimized for mesh bandwidth, still smooth for snake)
   @initial_snake_length 3
   @bot_enabled true  # AI controls both snakes - spectator mode
+  @countdown_interval 1000  # 1 second between countdown ticks
+  @ready_timeout 5000  # 5 seconds max wait for players to be ready
+  @startup_delay 500  # Fallback for schedule_first_tick (not used in ready-check flow)
 
   defmodule State do
     defstruct [
@@ -33,13 +36,17 @@ defmodule MaculaArcade.Games.Snake.GameServer do
       :player1_score,
       :player2_score,
       :food_position,
-      :game_status,  # :waiting | :running | :finished
+      :game_status,  # :waiting | :waiting_for_ready | :countdown | :running | :finished
       :winner,
       :timer_ref,
       :player1_asshole_factor,  # 0-100: willingness to play dirty
       :player2_asshole_factor,
+      :countdown,  # Current countdown value (3, 2, 1, 0)
+      :ready_subscription,  # Subscription ref for ready topic
+      tick: 0,  # Tick counter for deduplication
       player1_events: [],  # Event feed for player 1
-      player2_events: []   # Event feed for player 2
+      player2_events: [],   # Event feed for player 2
+      ready_players: MapSet.new()  # Set of player_ids that are ready
     ]
   end
 
@@ -85,6 +92,14 @@ defmodule MaculaArcade.Games.Snake.GameServer do
     GenServer.call(server, :get_state)
   end
 
+  @doc """
+  Mark a player as ready (after they've subscribed to game topics).
+  When both players are ready, countdown begins.
+  """
+  def player_ready(server, player_id) do
+    GenServer.cast(server, {:player_ready, player_id})
+  end
+
   ## Server Callbacks
 
   @impl true
@@ -106,8 +121,14 @@ defmodule MaculaArcade.Games.Snake.GameServer do
     # This creates more variety in food positions and AI decisions
     :rand.seed(:exsss, {:erlang.monotonic_time(), :erlang.unique_integer(), :erlang.phash2(state.game_id)})
 
+    # Subscribe to ready topic for this game
+    game_server_pid = self()
+    ready_topic = "arcade.game.#{state.game_id}.ready"
+    ready_sub = subscribe_to_ready_topic(ready_topic, game_server_pid)
+
     # Initialize game state with random personality traits
     # Asshole factor: 0 = fair play gentleman, 100 = total jerk who cuts you off
+    # Status is :waiting_for_ready until both players signal ready
     new_state = %{state |
       player1_id: player1_id,
       player2_id: player2_id,
@@ -118,19 +139,22 @@ defmodule MaculaArcade.Games.Snake.GameServer do
       player1_score: 0,
       player2_score: 0,
       food_position: spawn_food([]),
-      game_status: :running,
+      game_status: :waiting_for_ready,
       player1_asshole_factor: :rand.uniform(100),
-      player2_asshole_factor: :rand.uniform(100)
+      player2_asshole_factor: :rand.uniform(100),
+      countdown: nil,
+      ready_subscription: ready_sub,
+      ready_players: MapSet.new()
     }
 
-    # Start game loop
-    timer_ref = schedule_tick()
-    new_state = %{new_state | timer_ref: timer_ref}
-
-    # Broadcast initial state
+    # Broadcast initial state (shows game is waiting for players)
     broadcast_state(new_state)
 
-    Logger.info("Game #{new_state.game_id} started with #{player1_id} vs #{player2_id}")
+    # Start timeout timer - if players don't ready up in time, start anyway
+    timer_ref = Process.send_after(self(), :ready_timeout, @ready_timeout)
+    new_state = %{new_state | timer_ref: timer_ref}
+
+    Logger.info("Game #{new_state.game_id} created, waiting for players #{player1_id} and #{player2_id} to be ready")
     {:reply, {:ok, new_state.game_id}, new_state}
   end
 
@@ -183,6 +207,76 @@ defmodule MaculaArcade.Games.Snake.GameServer do
   end
 
   @impl true
+  def handle_cast({:player_ready, player_id}, %{game_status: :waiting_for_ready} = state) do
+    # Only accept ready from players in this game
+    new_state = handle_player_ready(player_id, state)
+    {:noreply, new_state}
+  end
+
+  @impl true
+  def handle_cast({:player_ready, _player_id}, state) do
+    # Game not waiting for ready - ignore
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_info({:mesh_ready, player_id}, %{game_status: :waiting_for_ready} = state) do
+    # Player ready event received via mesh subscription
+    new_state = handle_player_ready(player_id, state)
+    {:noreply, new_state}
+  end
+
+  @impl true
+  def handle_info({:mesh_ready, _player_id}, state) do
+    # Game not waiting for ready - ignore
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_info(:ready_timeout, %{game_status: :waiting_for_ready} = state) do
+    # Timeout waiting for players - start countdown anyway
+    Logger.info("Game #{state.game_id} ready timeout - starting countdown with #{MapSet.size(state.ready_players)} ready players")
+    new_state = start_countdown(state)
+    {:noreply, new_state}
+  end
+
+  @impl true
+  def handle_info(:ready_timeout, state) do
+    # Already past waiting_for_ready - ignore
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_info(:countdown_tick, %{game_status: :countdown, countdown: 0} = state) do
+    # Countdown finished - start the game!
+    Logger.info("Game #{state.game_id} countdown finished - GO!")
+    new_state = %{state | game_status: :running}
+    broadcast_state(new_state)
+
+    # Start game loop
+    timer_ref = schedule_tick()
+    {:noreply, %{new_state | timer_ref: timer_ref}}
+  end
+
+  @impl true
+  def handle_info(:countdown_tick, %{game_status: :countdown, countdown: n} = state) when n > 0 do
+    # Continue countdown
+    Logger.info("Game #{state.game_id} countdown: #{n}")
+    new_state = %{state | countdown: n - 1}
+    broadcast_state(new_state)
+
+    # Schedule next countdown tick
+    timer_ref = Process.send_after(self(), :countdown_tick, @countdown_interval)
+    {:noreply, %{new_state | timer_ref: timer_ref}}
+  end
+
+  @impl true
+  def handle_info(:countdown_tick, state) do
+    # Not in countdown state - ignore
+    {:noreply, state}
+  end
+
+  @impl true
   def handle_info(:tick, %{game_status: :running} = state) do
     Logger.debug("Tick for game #{state.game_id}")
 
@@ -227,8 +321,8 @@ defmodule MaculaArcade.Games.Snake.GameServer do
 
       Logger.info("Game #{state.game_id} finished, winner: #{inspect(final_winner)} (P1: #{state.player1_score}, P2: #{state.player2_score})")
 
-      # Notify Coordinator to remove players from in_game set
-      Coordinator.game_ended(state.game_id, state.player1_id, state.player2_id, final_winner)
+      # Notify Gaming.Supervisor to remove players from in_game set
+      GamingSupervisor.game_ended(state.game_id, state.player1_id, state.player2_id, final_winner)
 
       # Track collision events
       collision_state = track_collision_events(state, new_player1_snake, new_player2_snake, winner)
@@ -249,7 +343,8 @@ defmodule MaculaArcade.Games.Snake.GameServer do
       |> check_food_consumption(:player2)
     end
 
-    # Broadcast state
+    # Increment tick counter and broadcast state
+    new_state = %{new_state | tick: state.tick + 1}
     broadcast_state(new_state)
 
     # Schedule next tick
@@ -269,6 +364,82 @@ defmodule MaculaArcade.Games.Snake.GameServer do
   defp generate_game_id do
     :crypto.strong_rand_bytes(8) |> Base.encode16(case: :lower)
   end
+
+  ## Ready Check and Countdown Functions
+
+  defp subscribe_to_ready_topic(ready_topic, game_server_pid) do
+    try do
+      client = Mesh.client()
+      case :macula.subscribe(client, ready_topic, fn payload ->
+             # Extract player_id from payload
+             player_id = extract_player_id(payload)
+             send(game_server_pid, {:mesh_ready, player_id})
+             :ok
+           end) do
+        {:ok, ref} -> ref
+        {:error, _reason} -> nil
+      end
+    catch
+      :exit, _ -> nil
+    rescue
+      _ -> nil
+    end
+  end
+
+  defp extract_player_id(%{"player_id" => player_id}), do: player_id
+  defp extract_player_id(%{player_id: player_id}), do: player_id
+  defp extract_player_id(_), do: nil
+
+  defp handle_player_ready(player_id, state) when player_id in [state.player1_id, state.player2_id] do
+    # Add player to ready set
+    new_ready = MapSet.put(state.ready_players, player_id)
+    ready_count = MapSet.size(new_ready)
+
+    Logger.info("Game #{state.game_id} player #{player_id} ready (#{ready_count}/2)")
+
+    # Check if both players are ready
+    both_ready = MapSet.member?(new_ready, state.player1_id) and MapSet.member?(new_ready, state.player2_id)
+
+    state_with_ready = %{state | ready_players: new_ready}
+
+    if both_ready do
+      # Cancel ready timeout timer
+      cancel_timer(state.timer_ref)
+      # Both ready - start countdown!
+      Logger.info("Game #{state.game_id} both players ready - starting countdown!")
+      start_countdown(state_with_ready)
+    else
+      # Update state with new ready player, broadcast so UI shows who's ready
+      broadcast_state(state_with_ready)
+      state_with_ready
+    end
+  end
+
+  defp handle_player_ready(_player_id, state) do
+    # Player not in this game - ignore
+    state
+  end
+
+  defp start_countdown(state) do
+    # Cancel any existing timer
+    cancel_timer(state.timer_ref)
+
+    # Set initial countdown (3 seconds)
+    new_state = %{state |
+      game_status: :countdown,
+      countdown: 3
+    }
+
+    # Broadcast the countdown state immediately
+    broadcast_state(new_state)
+
+    # Schedule countdown tick
+    timer_ref = Process.send_after(self(), :countdown_tick, @countdown_interval)
+    %{new_state | timer_ref: timer_ref}
+  end
+
+  defp cancel_timer(nil), do: :ok
+  defp cancel_timer(ref), do: Process.cancel_timer(ref)
 
   defp initial_snake_position(:player1) do
     # Start on top-left area, heading right
@@ -467,6 +638,11 @@ defmodule MaculaArcade.Games.Snake.GameServer do
     Process.send_after(self(), :tick, @tick_interval)
   end
 
+  defp schedule_first_tick do
+    # First tick has longer delay to allow guests to subscribe in DHT
+    Process.send_after(self(), :tick, @startup_delay)
+  end
+
   defp serialize_state(state) do
     %{
       game_id: state.game_id,
@@ -482,7 +658,10 @@ defmodule MaculaArcade.Games.Snake.GameServer do
       player1_events: serialize_events(state.player1_events),
       player2_events: serialize_events(state.player2_events),
       player1_asshole_factor: state.player1_asshole_factor,
-      player2_asshole_factor: state.player2_asshole_factor
+      player2_asshole_factor: state.player2_asshole_factor,
+      countdown: state.countdown,
+      tick: state.tick,
+      ready_players: MapSet.to_list(state.ready_players || MapSet.new())
     }
   end
 
@@ -574,8 +753,8 @@ defmodule MaculaArcade.Games.Snake.GameServer do
     game_topic = "arcade.game.#{state.game_id}.state"
     state_data = serialize_state(state)
 
-    # Broadcast via mesh (for multi-container)
-    # Use try/catch to prevent mesh crashes from affecting game
+    # Broadcast via mesh only - handles both local and remote delivery
+    # Phoenix.PubSub removed to avoid duplicate messages
     try do
       client = Mesh.client()
       :macula.publish(client, game_topic, state_data)
@@ -583,9 +762,6 @@ defmodule MaculaArcade.Games.Snake.GameServer do
       :exit, reason ->
         Logger.warning("Failed to publish game state via mesh: #{inspect(reason)}")
     end
-
-    # Also broadcast locally via Phoenix PubSub (for single-container)
-    Phoenix.PubSub.broadcast(MaculaArcade.PubSub, game_topic, {:game_state_update, state_data})
   end
 
   ## Bot AI Functions

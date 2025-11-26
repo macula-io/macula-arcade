@@ -12,7 +12,8 @@ This directory contains three Dockerfiles for different use cases:
 **Characteristics:**
 - Base: Ubuntu 22.04 (jammy)
 - **Uses local macula from path** (`/macula` in build context)
-- Mix path dependency: `{:macula, path: "/macula"}`
+- Environment variable `MACULA_DEV_BUILD=true` triggers path dependency
+- Mix conditionally uses: `{:macula, path: "/macula"}` vs `{:macula, "~> 0.10.0"}`
 - Pre-built certificates from `priv/certs/`
 - Health check configured
 - Allows testing macula changes before publishing to hex
@@ -23,6 +24,12 @@ docker build -f Dockerfile.dev \
   --build-context macula=../../../macula \
   -t macula-arcade:dev .
 ```
+
+**How it works:**
+- The `apps/macula_arcade/mix.exs` checks `System.get_env("MACULA_DEV_BUILD")`
+- If "true", uses local path dependency: `{:macula, path: "/macula", override: true}`
+- If unset, uses hex.pm release: `{:macula, "~> 0.10.0"}`
+- This allows a single mix.exs to support both dev and prod builds
 
 ## Dockerfile (Testing/Demo)
 

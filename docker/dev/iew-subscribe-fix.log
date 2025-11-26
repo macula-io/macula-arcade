@@ -1,0 +1,2484 @@
+==================================================
+Macula Arcade - Development Environment
+Version: dev
+Git Commit: d6f5d34
+Build Date: 2025-11-25T00:19:37Z
+==================================================
+
+✓ Demo environment detected (running on ports 4000-4003)
+  Dev will use ports 5000-5003 (no conflict)
+
+Step 1/5: Stopping existing dev containers...
+✓ Dev containers stopped
+
+Step 2/5: Building dev images from local source...
+  This builds from ./system/ directory
+  (may take 2-3 minutes on first build)
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.91kB done
+#1 DONE 0.0s
+
+#2 [dev-bootstrap internal] load build definition from Dockerfile.dev
+#2 transferring dockerfile:
+#2 transferring dockerfile: 3.09kB done
+#2 DONE 0.1s
+
+#3 [dev-peer2 context macula] load .dockerignore
+#3 transferring macula: 203B done
+#3 DONE 0.1s
+
+#4 [dev-bootstrap internal] load metadata for docker.io/library/ubuntu:22.04
+#4 DONE 0.8s
+
+#5 [dev-peer2 internal] load metadata for docker.io/hexpm/elixir:1.17.3-erlang-27.1.2-ubuntu-jammy-20240808
+#5 DONE 1.2s
+
+#6 [dev-bot1 internal] load .dockerignore
+#6 transferring context: 375B done
+#6 DONE 0.1s
+
+#7 [dev-bot1 stage-1  1/10] FROM docker.io/library/ubuntu:22.04@sha256:104ae83764a5119017b8e8d6218fa0832b09df65aae7d5a6de29a85d813da2fb
+#7 CACHED
+
+#8 [dev-bot1 builder  1/17] FROM docker.io/hexpm/elixir:1.17.3-erlang-27.1.2-ubuntu-jammy-20240808@sha256:39251f44cfc9d20e426e957f3af2d896c65c734d04a73159160c4a69bc9a3937
+#8 resolve docker.io/hexpm/elixir:1.17.3-erlang-27.1.2-ubuntu-jammy-20240808@sha256:39251f44cfc9d20e426e957f3af2d896c65c734d04a73159160c4a69bc9a3937
+#8 resolve docker.io/hexpm/elixir:1.17.3-erlang-27.1.2-ubuntu-jammy-20240808@sha256:39251f44cfc9d20e426e957f3af2d896c65c734d04a73159160c4a69bc9a3937 0.1s done
+#8 ...
+
+#9 [dev-peer2 internal] load build context
+#9 transferring context: 8.16MB 0.0s done
+#9 DONE 0.2s
+
+#8 [dev-bootstrap builder  1/17] FROM docker.io/hexpm/elixir:1.17.3-erlang-27.1.2-ubuntu-jammy-20240808@sha256:39251f44cfc9d20e426e957f3af2d896c65c734d04a73159160c4a69bc9a3937
+#8 sha256:72a6c0b348f3a73bc837447c10619f31f201518bd0c359dce1ee22d08fe0a4a0 0B / 5.87MB 0.1s
+#8 sha256:39251f44cfc9d20e426e957f3af2d896c65c734d04a73159160c4a69bc9a3937 772B / 772B done
+#8 sha256:4b762af5d7e00f4011709184bc17aac183634cbb8ffac89399a673009fb03cc4 1.16kB / 1.16kB done
+#8 sha256:4e0f5aeb70da45374eb38a271d72b78df22edde54d0ca86103a6416a8b62533b 2.18kB / 2.18kB done
+#8 sha256:56ce9e37dcd04162f845362d1bfe8184afe808d5d353c64d512581a0af37d4cd 0B / 3.60MB 0.1s
+#8 sha256:4427a1ac9f233dac3d3cfa40b2d0ed5de73bb701f1a21abaaf530620c539cbfc 0B / 44.52MB 0.1s
+#8 ...
+
+#10 [dev-bootstrap context macula] load from client
+#10 transferring macula: 17.80MB 0.2s done
+#10 DONE 0.3s
+
+#8 [dev-bootstrap builder  1/17] FROM docker.io/hexpm/elixir:1.17.3-erlang-27.1.2-ubuntu-jammy-20240808@sha256:39251f44cfc9d20e426e957f3af2d896c65c734d04a73159160c4a69bc9a3937
+#8 sha256:56ce9e37dcd04162f845362d1bfe8184afe808d5d353c64d512581a0af37d4cd 3.60MB / 3.60MB 0.2s done
+#8 sha256:4427a1ac9f233dac3d3cfa40b2d0ed5de73bb701f1a21abaaf530620c539cbfc 7.32MB / 44.52MB 0.3s
+#8 extracting sha256:56ce9e37dcd04162f845362d1bfe8184afe808d5d353c64d512581a0af37d4cd
+#8 sha256:56ce9e37dcd04162f845362d1bfe8184afe808d5d353c64d512581a0af37d4cd 3.60MB / 3.60MB 0.2s done
+#8 sha256:4427a1ac9f233dac3d3cfa40b2d0ed5de73bb701f1a21abaaf530620c539cbfc 26.21MB / 44.52MB 0.4s
+#8 extracting sha256:56ce9e37dcd04162f845362d1bfe8184afe808d5d353c64d512581a0af37d4cd 0.1s done
+#8 sha256:72a6c0b348f3a73bc837447c10619f31f201518bd0c359dce1ee22d08fe0a4a0 5.87MB / 5.87MB 0.5s
+#8 sha256:4427a1ac9f233dac3d3cfa40b2d0ed5de73bb701f1a21abaaf530620c539cbfc 44.52MB / 44.52MB 0.5s
+#8 sha256:72a6c0b348f3a73bc837447c10619f31f201518bd0c359dce1ee22d08fe0a4a0 5.87MB / 5.87MB 0.5s done
+#8 sha256:4427a1ac9f233dac3d3cfa40b2d0ed5de73bb701f1a21abaaf530620c539cbfc 44.52MB / 44.52MB 0.6s done
+#8 extracting sha256:4427a1ac9f233dac3d3cfa40b2d0ed5de73bb701f1a21abaaf530620c539cbfc
+#8 extracting sha256:4427a1ac9f233dac3d3cfa40b2d0ed5de73bb701f1a21abaaf530620c539cbfc 0.8s done
+#8 extracting sha256:72a6c0b348f3a73bc837447c10619f31f201518bd0c359dce1ee22d08fe0a4a0
+#8 extracting sha256:72a6c0b348f3a73bc837447c10619f31f201518bd0c359dce1ee22d08fe0a4a0 0.1s done
+#8 DONE 2.6s
+
+#11 [dev-bot1 builder  2/17] RUN apt-get update -y &&     apt-get install -y build-essential git curl cmake &&     apt-get clean && rm -f /var/lib/apt/lists/*_*
+#11 0.372 Get:1 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
+#11 0.407 Get:2 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+#11 0.811 Get:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+#11 0.860 Get:4 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3532 kB]
+#11 0.917 Get:5 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+#11 1.024 Get:6 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
+#11 1.644 Get:7 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1290 kB]
+#11 1.682 Get:8 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [5988 kB]
+#11 1.830 Get:9 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
+#11 1.831 Get:10 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
+#11 1.838 Get:11 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
+#11 1.839 Get:12 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3876 kB]
+#11 1.864 Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1595 kB]
+#11 1.875 Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [6222 kB]
+#11 1.908 Get:15 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [60.9 kB]
+#11 1.947 Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [69.2 kB]
+#11 1.947 Get:17 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.2 kB]
+#11 1.948 Get:18 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [83.9 kB]
+#11 2.853 Fetched 43.1 MB in 3s (16.3 MB/s)
+#11 2.853 Reading package lists...
+#11 3.606 Reading package lists...
+#11 4.267 Building dependency tree...
+#11 4.421 Reading state information...
+#11 4.552 The following additional packages will be installed:
+#11 4.552   binutils binutils-common binutils-x86-64-linux-gnu bzip2 cmake-data cpp
+#11 4.552   cpp-11 dh-elpa-helper dirmngr dpkg-dev emacsen-common fakeroot
+#11 4.552   fontconfig-config fonts-dejavu-core g++ g++-11 gcc gcc-11 gcc-11-base
+#11 4.552   gcc-12-base git-man gnupg gnupg-l10n gnupg-utils gpg gpg-agent
+#11 4.552   gpg-wks-client gpg-wks-server gpgconf gpgsm gpgv less libalgorithm-diff-perl
+#11 4.552   libalgorithm-diff-xs-perl libalgorithm-merge-perl libarchive13 libasan6
+#11 4.552   libassuan0 libatomic1 libbinutils libbrotli1 libbsd0 libc-dev-bin
+#11 4.552   libc-devtools libc6 libc6-dev libcbor0.8 libcc1-0 libcrypt-dev libctf-nobfd0
+#11 4.552   libctf0 libcurl3-gnutls libcurl4 libdeflate0 libdpkg-perl libedit2
+#11 4.552   liberror-perl libexpat1 libfakeroot libfido2-1 libfile-fcntllock-perl
+#11 4.552   libfontconfig1 libfreetype6 libgcc-11-dev libgcc-s1 libgd3 libgdbm-compat4
+#11 4.553   libgdbm6 libgomp1 libicu70 libisl23 libitm1 libjbig0 libjpeg-turbo8 libjpeg8
+#11 4.553   libjsoncpp25 libksba8 libldap-2.5-0 libldap-common liblocale-gettext-perl
+#11 4.553   liblsan0 libmd0 libmpc3 libmpfr6 libnghttp2-14 libnpth0 libnsl-dev
+#11 4.553   libperl5.34 libpng16-16 libpsl5 libquadmath0 libreadline8 librhash0 librtmp1
+#11 4.553   libsasl2-2 libsasl2-modules libsasl2-modules-db libsqlite3-0 libssh-4
+#11 4.553   libstdc++-11-dev libstdc++6 libtiff5 libtirpc-dev libtsan0 libubsan1 libuv1
+#11 4.553   libwebp7 libx11-6 libx11-data libxau6 libxcb1 libxdmcp6 libxext6 libxml2
+#11 4.553   libxmuu1 libxpm4 linux-libc-dev lto-disabled-list make manpages manpages-dev
+#11 4.553   netbase openssh-client patch perl perl-base perl-modules-5.34
+#11 4.553   pinentry-curses publicsuffix readline-common rpcsvc-proto ucf xauth xz-utils
+#11 4.554 Suggested packages:
+#11 4.554   binutils-doc bzip2-doc cmake-doc ninja-build cmake-format cpp-doc
+#11 4.554   gcc-11-locales dbus-user-session libpam-systemd pinentry-gnome3 tor
+#11 4.554   debian-keyring g++-multilib g++-11-multilib gcc-11-doc gcc-multilib autoconf
+#11 4.554   automake libtool flex bison gdb gcc-doc gcc-11-multilib gettext-base
+#11 4.554   git-daemon-run | git-daemon-sysvinit git-doc git-email git-gui gitk gitweb
+#11 4.554   git-cvs git-mediawiki git-svn parcimonie xloadimage scdaemon lrzip glibc-doc
+#11 4.554   locales bzr libgd-tools gdbm-l10n libsasl2-modules-gssapi-mit
+#11 4.554   | libsasl2-modules-gssapi-heimdal libsasl2-modules-ldap libsasl2-modules-otp
+#11 4.554   libsasl2-modules-sql libstdc++-11-doc make-doc man-browser keychain
+#11 4.554   libpam-ssh monkeysphere ssh-askpass ed diffutils-doc perl-doc
+#11 4.554   libterm-readline-gnu-perl | libterm-readline-perl-perl
+#11 4.554   libtap-harness-archive-perl pinentry-doc readline-doc
+#11 4.554 Recommended packages:
+#11 4.554   libnss-nis libnss-nisplus
+#11 4.686 The following NEW packages will be installed:
+#11 4.686   binutils binutils-common binutils-x86-64-linux-gnu build-essential bzip2
+#11 4.686   cmake cmake-data cpp cpp-11 curl dh-elpa-helper dirmngr dpkg-dev
+#11 4.686   emacsen-common fakeroot fontconfig-config fonts-dejavu-core g++ g++-11 gcc
+#11 4.686   gcc-11 gcc-11-base git git-man gnupg gnupg-l10n gnupg-utils gpg gpg-agent
+#11 4.686   gpg-wks-client gpg-wks-server gpgconf gpgsm less libalgorithm-diff-perl
+#11 4.686   libalgorithm-diff-xs-perl libalgorithm-merge-perl libarchive13 libasan6
+#11 4.686   libassuan0 libatomic1 libbinutils libbrotli1 libbsd0 libc-dev-bin
+#11 4.686   libc-devtools libc6-dev libcbor0.8 libcc1-0 libcrypt-dev libctf-nobfd0
+#11 4.686   libctf0 libcurl3-gnutls libcurl4 libdeflate0 libdpkg-perl libedit2
+#11 4.686   liberror-perl libexpat1 libfakeroot libfido2-1 libfile-fcntllock-perl
+#11 4.686   libfontconfig1 libfreetype6 libgcc-11-dev libgd3 libgdbm-compat4 libgdbm6
+#11 4.686   libgomp1 libicu70 libisl23 libitm1 libjbig0 libjpeg-turbo8 libjpeg8
+#11 4.686   libjsoncpp25 libksba8 libldap-2.5-0 libldap-common liblocale-gettext-perl
+#11 4.686   liblsan0 libmd0 libmpc3 libmpfr6 libnghttp2-14 libnpth0 libnsl-dev
+#11 4.687   libperl5.34 libpng16-16 libpsl5 libquadmath0 libreadline8 librhash0 librtmp1
+#11 4.687   libsasl2-2 libsasl2-modules libsasl2-modules-db libsqlite3-0 libssh-4
+#11 4.687   libstdc++-11-dev libtiff5 libtirpc-dev libtsan0 libubsan1 libuv1 libwebp7
+#11 4.687   libx11-6 libx11-data libxau6 libxcb1 libxdmcp6 libxext6 libxml2 libxmuu1
+#11 4.687   libxpm4 linux-libc-dev lto-disabled-list make manpages manpages-dev netbase
+#11 4.687   openssh-client patch perl perl-modules-5.34 pinentry-curses publicsuffix
+#11 4.687   readline-common rpcsvc-proto ucf xauth xz-utils
+#11 4.687 The following packages will be upgraded:
+#11 4.688   gcc-12-base gpgv libc6 libgcc-s1 libstdc++6 perl-base
+#11 4.891 6 upgraded, 132 newly installed, 0 to remove and 26 not upgraded.
+#11 4.891 Need to get 115 MB of archives.
+#11 4.891 After this operation, 391 MB of additional disk space will be used.
+#11 4.891 Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 perl-base amd64 5.34.0-3ubuntu1.5 [1761 kB]
+#11 5.783 Get:2 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-12-base amd64 12.3.0-1ubuntu1~22.04.2 [20.6 kB]
+#11 5.784 Get:3 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgcc-s1 amd64 12.3.0-1ubuntu1~22.04.2 [53.9 kB]
+#11 5.788 Get:4 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libstdc++6 amd64 12.3.0-1ubuntu1~22.04.2 [699 kB]
+#11 5.826 Get:5 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6 amd64 2.35-0ubuntu3.11 [3235 kB]
+#11 ...
+
+#12 [dev-peer1 stage-1  2/10] RUN apt-get update -y &&     apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates curl &&     apt-get clean && rm -f /var/lib/apt/lists/*_*
+#12 0.350 Get:1 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
+#12 0.435 Get:2 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+#12 0.463 Get:3 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+#12 0.505 Get:4 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+#12 0.524 Get:5 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
+#12 0.576 Get:6 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
+#12 0.592 Get:7 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
+#12 0.639 Get:8 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
+#12 0.777 Get:9 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3876 kB]
+#12 0.799 Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [6222 kB]
+#12 0.834 Get:11 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [69.2 kB]
+#12 0.836 Get:12 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1595 kB]
+#12 0.845 Get:13 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.2 kB]
+#12 0.847 Get:14 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [83.9 kB]
+#12 0.961 Get:15 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [5988 kB]
+#12 1.861 Get:16 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1290 kB]
+#12 1.882 Get:17 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [60.9 kB]
+#12 1.885 Get:18 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3532 kB]
+#12 2.096 Fetched 43.1 MB in 2s (24.2 MB/s)
+#12 2.096 Reading package lists...
+#12 2.767 Reading package lists...
+#12 3.436 Building dependency tree...
+#12 3.592 Reading state information...
+#12 3.701 libstdc++6 is already the newest version (12.3.0-1ubuntu1~22.04.2).
+#12 3.701 The following additional packages will be installed:
+#12 3.701   libbrotli1 libcurl4 libgpm2 libldap-2.5-0 libldap-common libnghttp2-14
+#12 3.701   libpsl5 librtmp1 libsasl2-2 libsasl2-modules libsasl2-modules-db libssh-4
+#12 3.702   libtinfo5 publicsuffix
+#12 3.702 Suggested packages:
+#12 3.702   gpm libsasl2-modules-gssapi-mit | libsasl2-modules-gssapi-heimdal
+#12 3.702   libsasl2-modules-ldap libsasl2-modules-otp libsasl2-modules-sql
+#12 3.748 The following NEW packages will be installed:
+#12 3.748   ca-certificates curl libbrotli1 libcurl4 libgpm2 libldap-2.5-0
+#12 3.748   libldap-common libncurses5 libnghttp2-14 libpsl5 librtmp1 libsasl2-2
+#12 3.749   libsasl2-modules libsasl2-modules-db libssh-4 libtinfo5 locales openssl
+#12 3.749   publicsuffix
+#12 3.927 0 upgraded, 19 newly installed, 0 to remove and 0 not upgraded.
+#12 3.927 Need to get 7470 kB of archives.
+#12 3.927 After this operation, 25.6 MB of additional disk space will be used.
+#12 3.927 Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 openssl amd64 3.0.2-0ubuntu1.20 [1185 kB]
+#12 4.649 Get:2 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 ca-certificates all 20240203~22.04.1 [162 kB]
+#12 4.660 Get:3 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 locales all 2.35-0ubuntu3.11 [4247 kB]
+#12 4.964 Get:4 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libnghttp2-14 amd64 1.43.0-1ubuntu0.2 [76.9 kB]
+#12 4.965 Get:5 http://archive.ubuntu.com/ubuntu jammy/main amd64 libpsl5 amd64 0.21.0-1.2build2 [58.4 kB]
+#12 4.966 Get:6 http://archive.ubuntu.com/ubuntu jammy/main amd64 publicsuffix all 20211207.1025-1 [129 kB]
+#12 4.968 Get:7 http://archive.ubuntu.com/ubuntu jammy/main amd64 libbrotli1 amd64 1.0.9-2build6 [315 kB]
+#12 4.974 Get:8 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-modules-db amd64 2.1.27+dfsg2-3ubuntu1.2 [20.5 kB]
+#12 4.975 Get:9 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-2 amd64 2.1.27+dfsg2-3ubuntu1.2 [53.8 kB]
+#12 4.976 Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libldap-2.5-0 amd64 2.5.19+dfsg-0ubuntu0.22.04.1 [184 kB]
+#12 4.979 Get:11 http://archive.ubuntu.com/ubuntu jammy/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2build4 [58.2 kB]
+#12 4.981 Get:12 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libssh-4 amd64 0.9.6-2ubuntu0.22.04.5 [187 kB]
+#12 5.042 Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcurl4 amd64 7.81.0-1ubuntu1.21 [290 kB]
+#12 5.118 Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 curl amd64 7.81.0-1ubuntu1.21 [194 kB]
+#12 5.121 Get:15 http://archive.ubuntu.com/ubuntu jammy/main amd64 libgpm2 amd64 1.20.7-10build1 [15.3 kB]
+#12 5.121 Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libldap-common all 2.5.19+dfsg-0ubuntu0.22.04.1 [16.1 kB]
+#12 5.121 Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 libtinfo5 amd64 6.3-2ubuntu0.1 [100 kB]
+#12 5.122 Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 libncurses5 amd64 6.3-2ubuntu0.1 [107 kB]
+#12 5.123 Get:19 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-modules amd64 2.1.27+dfsg2-3ubuntu1.2 [68.8 kB]
+#12 5.204 debconf: delaying package configuration, since apt-utils is not installed
+#12 5.228 Fetched 7470 kB in 1s (5448 kB/s)
+#12 5.247 Selecting previously unselected package openssl.
+#12 5.247 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4393 files and directories currently installed.)
+#12 5.253 Preparing to unpack .../00-openssl_3.0.2-0ubuntu1.20_amd64.deb ...
+#12 5.331 Unpacking openssl (3.0.2-0ubuntu1.20) ...
+#12 5.385 Selecting previously unselected package ca-certificates.
+#12 5.387 Preparing to unpack .../01-ca-certificates_20240203~22.04.1_all.deb ...
+#12 5.391 Unpacking ca-certificates (20240203~22.04.1) ...
+#12 5.456 Selecting previously unselected package locales.
+#12 5.458 Preparing to unpack .../02-locales_2.35-0ubuntu3.11_all.deb ...
+#12 5.462 Unpacking locales (2.35-0ubuntu3.11) ...
+#12 5.594 Selecting previously unselected package libnghttp2-14:amd64.
+#12 5.596 Preparing to unpack .../03-libnghttp2-14_1.43.0-1ubuntu0.2_amd64.deb ...
+#12 5.603 Unpacking libnghttp2-14:amd64 (1.43.0-1ubuntu0.2) ...
+#12 5.637 Selecting previously unselected package libpsl5:amd64.
+#12 5.639 Preparing to unpack .../04-libpsl5_0.21.0-1.2build2_amd64.deb ...
+#12 5.642 Unpacking libpsl5:amd64 (0.21.0-1.2build2) ...
+#12 5.669 Selecting previously unselected package publicsuffix.
+#12 5.671 Preparing to unpack .../05-publicsuffix_20211207.1025-1_all.deb ...
+#12 5.676 Unpacking publicsuffix (20211207.1025-1) ...
+#12 5.711 Selecting previously unselected package libbrotli1:amd64.
+#12 5.713 Preparing to unpack .../06-libbrotli1_1.0.9-2build6_amd64.deb ...
+#12 5.717 Unpacking libbrotli1:amd64 (1.0.9-2build6) ...
+#12 5.747 Selecting previously unselected package libsasl2-modules-db:amd64.
+#12 5.749 Preparing to unpack .../07-libsasl2-modules-db_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+#12 5.753 Unpacking libsasl2-modules-db:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#12 5.784 Selecting previously unselected package libsasl2-2:amd64.
+#12 5.786 Preparing to unpack .../08-libsasl2-2_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+#12 5.790 Unpacking libsasl2-2:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#12 5.824 Selecting previously unselected package libldap-2.5-0:amd64.
+#12 5.826 Preparing to unpack .../09-libldap-2.5-0_2.5.19+dfsg-0ubuntu0.22.04.1_amd64.deb ...
+#12 5.830 Unpacking libldap-2.5-0:amd64 (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+#12 5.866 Selecting previously unselected package librtmp1:amd64.
+#12 5.868 Preparing to unpack .../10-librtmp1_2.4+20151223.gitfa8646d.1-2build4_amd64.deb ...
+#12 5.872 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build4) ...
+#12 5.905 Selecting previously unselected package libssh-4:amd64.
+#12 5.907 Preparing to unpack .../11-libssh-4_0.9.6-2ubuntu0.22.04.5_amd64.deb ...
+#12 5.911 Unpacking libssh-4:amd64 (0.9.6-2ubuntu0.22.04.5) ...
+#12 5.945 Selecting previously unselected package libcurl4:amd64.
+#12 5.948 Preparing to unpack .../12-libcurl4_7.81.0-1ubuntu1.21_amd64.deb ...
+#12 5.952 Unpacking libcurl4:amd64 (7.81.0-1ubuntu1.21) ...
+#12 5.982 Selecting previously unselected package curl.
+#12 5.984 Preparing to unpack .../13-curl_7.81.0-1ubuntu1.21_amd64.deb ...
+#12 5.989 Unpacking curl (7.81.0-1ubuntu1.21) ...
+#12 6.025 Selecting previously unselected package libgpm2:amd64.
+#12 6.027 Preparing to unpack .../14-libgpm2_1.20.7-10build1_amd64.deb ...
+#12 6.031 Unpacking libgpm2:amd64 (1.20.7-10build1) ...
+#12 6.061 Selecting previously unselected package libldap-common.
+#12 6.063 Preparing to unpack .../15-libldap-common_2.5.19+dfsg-0ubuntu0.22.04.1_all.deb ...
+#12 6.067 Unpacking libldap-common (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+#12 6.100 Selecting previously unselected package libtinfo5:amd64.
+#12 6.102 Preparing to unpack .../16-libtinfo5_6.3-2ubuntu0.1_amd64.deb ...
+#12 6.106 Unpacking libtinfo5:amd64 (6.3-2ubuntu0.1) ...
+#12 6.157 Selecting previously unselected package libncurses5:amd64.
+#12 6.159 Preparing to unpack .../17-libncurses5_6.3-2ubuntu0.1_amd64.deb ...
+#12 6.163 Unpacking libncurses5:amd64 (6.3-2ubuntu0.1) ...
+#12 6.197 Selecting previously unselected package libsasl2-modules:amd64.
+#12 6.199 Preparing to unpack .../18-libsasl2-modules_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+#12 6.203 Unpacking libsasl2-modules:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#12 6.241 Setting up libpsl5:amd64 (0.21.0-1.2build2) ...
+#12 6.257 Setting up libgpm2:amd64 (1.20.7-10build1) ...
+#12 6.269 Setting up libbrotli1:amd64 (1.0.9-2build6) ...
+#12 6.280 Setting up libsasl2-modules:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#12 6.299 Setting up libnghttp2-14:amd64 (1.43.0-1ubuntu0.2) ...
+#12 6.312 Setting up locales (2.35-0ubuntu3.11) ...
+#12 6.373 debconf: unable to initialize frontend: Dialog
+#12 6.373 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#12 6.373 debconf: falling back to frontend: Readline
+#12 6.373 debconf: unable to initialize frontend: Readline
+#12 6.373 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#12 6.373 debconf: falling back to frontend: Teletype
+#12 6.717 Generating locales (this might take a while)...
+#12 6.725 Generation complete.
+#12 6.753 Setting up libldap-common (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+#12 6.769 Setting up libsasl2-modules-db:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#12 6.782 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build4) ...
+#12 6.794 Setting up libsasl2-2:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#12 6.807 Setting up libssh-4:amd64 (0.9.6-2ubuntu0.22.04.5) ...
+#12 6.819 Setting up openssl (3.0.2-0ubuntu1.20) ...
+#12 6.836 Setting up libtinfo5:amd64 (6.3-2ubuntu0.1) ...
+#12 6.849 Setting up publicsuffix (20211207.1025-1) ...
+#12 6.861 Setting up libncurses5:amd64 (6.3-2ubuntu0.1) ...
+#12 6.874 Setting up libldap-2.5-0:amd64 (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+#12 6.886 Setting up ca-certificates (20240203~22.04.1) ...
+#12 6.942 debconf: unable to initialize frontend: Dialog
+#12 6.942 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#12 6.942 debconf: falling back to frontend: Readline
+#12 6.942 debconf: unable to initialize frontend: Readline
+#12 6.942 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#12 6.942 debconf: falling back to frontend: Teletype
+#12 7.262 Updating certificates in /etc/ssl/certs...
+#12 7.714 146 added, 0 removed; done.
+#12 7.745 Setting up libcurl4:amd64 (7.81.0-1ubuntu1.21) ...
+#12 7.758 Setting up curl (7.81.0-1ubuntu1.21) ...
+#12 7.771 Processing triggers for libc-bin (2.35-0ubuntu3.11) ...
+#12 7.790 Processing triggers for ca-certificates (20240203~22.04.1) ...
+#12 7.797 Updating certificates in /etc/ssl/certs...
+#12 8.156 0 added, 0 removed; done.
+#12 8.156 Running hooks in /etc/ca-certificates/update.d...
+#12 8.157 done.
+#12 DONE 8.6s
+
+#13 [dev-peer1 stage-1  3/10] RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+#13 0.191 Generating locales (this might take a while)...
+#13 0.199   en_US.UTF-8... done
+#13 1.010 Generation complete.
+#13 DONE 1.1s
+
+#11 [dev-bot1 builder  2/17] RUN apt-get update -y &&     apt-get install -y build-essential git curl cmake &&     apt-get clean && rm -f /var/lib/apt/lists/*_*
+#11 6.067 Get:6 http://archive.ubuntu.com/ubuntu jammy/main amd64 liblocale-gettext-perl amd64 1.07-4build3 [17.1 kB]
+#11 6.067 Get:7 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 perl-modules-5.34 all 5.34.0-3ubuntu1.5 [2977 kB]
+#11 6.165 Get:8 http://archive.ubuntu.com/ubuntu jammy/main amd64 libgdbm6 amd64 1.23-1 [33.9 kB]
+#11 6.165 Get:9 http://archive.ubuntu.com/ubuntu jammy/main amd64 libgdbm-compat4 amd64 1.23-1 [6606 B]
+#11 6.166 Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libperl5.34 amd64 5.34.0-3ubuntu1.5 [4797 kB]
+#11 6.302 Get:11 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 perl amd64 5.34.0-3ubuntu1.5 [232 kB]
+#11 6.303 Get:12 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gpgv amd64 2.2.27-3ubuntu2.4 [137 kB]
+#11 6.304 Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 less amd64 590-1ubuntu0.22.04.3 [142 kB]
+#11 6.305 Get:14 http://archive.ubuntu.com/ubuntu jammy/main amd64 libmd0 amd64 1.0.4-1build1 [23.0 kB]
+#11 6.305 Get:15 http://archive.ubuntu.com/ubuntu jammy/main amd64 libbsd0 amd64 0.11.5-1 [44.8 kB]
+#11 6.306 Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libexpat1 amd64 2.4.7-1ubuntu0.6 [92.1 kB]
+#11 6.326 Get:17 http://archive.ubuntu.com/ubuntu jammy/main amd64 libicu70 amd64 70.1-2 [10.6 MB]
+#11 6.462 Get:18 http://archive.ubuntu.com/ubuntu jammy/main amd64 readline-common all 8.1.2-1 [53.5 kB]
+#11 6.462 Get:19 http://archive.ubuntu.com/ubuntu jammy/main amd64 libreadline8 amd64 8.1.2-1 [153 kB]
+#11 6.463 Get:20 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsqlite3-0 amd64 3.37.2-2ubuntu0.5 [643 kB]
+#11 6.467 Get:21 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxml2 amd64 2.9.13+dfsg-1ubuntu0.10 [764 kB]
+#11 6.471 Get:22 http://archive.ubuntu.com/ubuntu jammy/main amd64 netbase all 6.3 [12.9 kB]
+#11 6.471 Get:23 http://archive.ubuntu.com/ubuntu jammy/main amd64 ucf all 3.0043 [56.1 kB]
+#11 6.472 Get:24 http://archive.ubuntu.com/ubuntu jammy/main amd64 libcbor0.8 amd64 0.8.0-2ubuntu1 [24.6 kB]
+#11 6.472 Get:25 http://archive.ubuntu.com/ubuntu jammy/main amd64 libedit2 amd64 3.1-20210910-1build1 [96.8 kB]
+#11 6.473 Get:26 http://archive.ubuntu.com/ubuntu jammy/main amd64 libfido2-1 amd64 1.10.0-1 [82.8 kB]
+#11 6.549 Get:27 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libnghttp2-14 amd64 1.43.0-1ubuntu0.2 [76.9 kB]
+#11 6.634 Get:28 http://archive.ubuntu.com/ubuntu jammy/main amd64 libpng16-16 amd64 1.6.37-3build5 [191 kB]
+#11 6.635 Get:29 http://archive.ubuntu.com/ubuntu jammy/main amd64 libpsl5 amd64 0.21.0-1.2build2 [58.4 kB]
+#11 6.636 Get:30 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libuv1 amd64 1.43.0-1ubuntu0.1 [92.7 kB]
+#11 6.637 Get:31 http://archive.ubuntu.com/ubuntu jammy/main amd64 libxau6 amd64 1:1.0.9-1build5 [7634 B]
+#11 6.637 Get:32 http://archive.ubuntu.com/ubuntu jammy/main amd64 libxdmcp6 amd64 1:1.1.3-0ubuntu5 [10.9 kB]
+#11 6.637 Get:33 http://archive.ubuntu.com/ubuntu jammy/main amd64 libxcb1 amd64 1.14-3ubuntu3 [49.0 kB]
+#11 6.638 Get:34 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx11-data all 2:1.7.5-1ubuntu0.3 [120 kB]
+#11 6.638 Get:35 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx11-6 amd64 2:1.7.5-1ubuntu0.3 [667 kB]
+#11 6.642 Get:36 http://archive.ubuntu.com/ubuntu jammy/main amd64 libxext6 amd64 2:1.3.4-1build1 [31.8 kB]
+#11 6.720 Get:37 http://archive.ubuntu.com/ubuntu jammy/main amd64 libxmuu1 amd64 2:1.1.3-3 [10.2 kB]
+#11 6.805 Get:38 http://archive.ubuntu.com/ubuntu jammy/main amd64 manpages all 5.10-1ubuntu1 [1375 kB]
+#11 6.813 Get:39 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 openssh-client amd64 1:8.9p1-3ubuntu0.13 [903 kB]
+#11 6.818 Get:40 http://archive.ubuntu.com/ubuntu jammy/main amd64 publicsuffix all 20211207.1025-1 [129 kB]
+#11 6.819 Get:41 http://archive.ubuntu.com/ubuntu jammy/main amd64 xauth amd64 1:1.1-1build2 [27.5 kB]
+#11 6.819 Get:42 http://archive.ubuntu.com/ubuntu jammy/main amd64 xz-utils amd64 5.2.5-2ubuntu1 [84.8 kB]
+#11 6.820 Get:43 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 binutils-common amd64 2.38-4ubuntu2.10 [223 kB]
+#11 6.821 Get:44 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libbinutils amd64 2.38-4ubuntu2.10 [658 kB]
+#11 6.825 Get:45 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libctf-nobfd0 amd64 2.38-4ubuntu2.10 [108 kB]
+#11 6.826 Get:46 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libctf0 amd64 2.38-4ubuntu2.10 [103 kB]
+#11 6.891 Get:47 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 binutils-x86-64-linux-gnu amd64 2.38-4ubuntu2.10 [2324 kB]
+#11 6.976 Get:48 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 binutils amd64 2.38-4ubuntu2.10 [3198 B]
+#11 6.976 Get:49 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-dev-bin amd64 2.35-0ubuntu3.11 [20.3 kB]
+#11 6.977 Get:50 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 linux-libc-dev amd64 5.15.0-161.171 [1307 kB]
+#11 6.988 Get:51 http://archive.ubuntu.com/ubuntu jammy/main amd64 libcrypt-dev amd64 1:4.4.27-1 [112 kB]
+#11 6.989 Get:52 http://archive.ubuntu.com/ubuntu jammy/main amd64 rpcsvc-proto amd64 1.4.2-0ubuntu6 [68.5 kB]
+#11 6.989 Get:53 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtirpc-dev amd64 1.3.2-2ubuntu0.1 [192 kB]
+#11 6.991 Get:54 http://archive.ubuntu.com/ubuntu jammy/main amd64 libnsl-dev amd64 1.3.0-2build2 [71.3 kB]
+#11 6.991 Get:55 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-dev amd64 2.35-0ubuntu3.11 [2100 kB]
+#11 7.002 Get:56 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11-base amd64 11.4.0-1ubuntu1~22.04.2 [20.8 kB]
+#11 7.061 Get:57 http://archive.ubuntu.com/ubuntu jammy/main amd64 libisl23 amd64 0.24-2build1 [727 kB]
+#11 7.148 Get:58 http://archive.ubuntu.com/ubuntu jammy/main amd64 libmpfr6 amd64 4.1.0-3build3 [1425 kB]
+#11 7.156 Get:59 http://archive.ubuntu.com/ubuntu jammy/main amd64 libmpc3 amd64 1.2.1-2build1 [46.9 kB]
+#11 7.156 Get:60 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 cpp-11 amd64 11.4.0-1ubuntu1~22.04.2 [10.0 MB]
+#11 7.220 Get:61 http://archive.ubuntu.com/ubuntu jammy/main amd64 cpp amd64 4:11.2.0-1ubuntu1 [27.7 kB]
+#11 7.220 Get:62 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcc1-0 amd64 12.3.0-1ubuntu1~22.04.2 [48.3 kB]
+#11 7.221 Get:63 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgomp1 amd64 12.3.0-1ubuntu1~22.04.2 [127 kB]
+#11 7.221 Get:64 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libitm1 amd64 12.3.0-1ubuntu1~22.04.2 [30.2 kB]
+#11 7.222 Get:65 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libatomic1 amd64 12.3.0-1ubuntu1~22.04.2 [10.4 kB]
+#11 7.222 Get:66 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasan6 amd64 11.4.0-1ubuntu1~22.04.2 [2283 kB]
+#11 7.241 Get:67 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 liblsan0 amd64 12.3.0-1ubuntu1~22.04.2 [1069 kB]
+#11 7.319 Get:68 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtsan0 amd64 11.4.0-1ubuntu1~22.04.2 [2262 kB]
+#11 ...
+
+#14 [dev-bootstrap stage-1  4/10] RUN useradd --create-home app
+#14 DONE 0.3s
+
+#11 [dev-bot1 builder  2/17] RUN apt-get update -y &&     apt-get install -y build-essential git curl cmake &&     apt-get clean && rm -f /var/lib/apt/lists/*_*
+#11 7.418 Get:69 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libubsan1 amd64 12.3.0-1ubuntu1~22.04.2 [976 kB]
+#11 7.423 Get:70 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libquadmath0 amd64 12.3.0-1ubuntu1~22.04.2 [154 kB]
+#11 7.424 Get:71 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgcc-11-dev amd64 11.4.0-1ubuntu1~22.04.2 [2517 kB]
+#11 7.436 Get:72 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11 amd64 11.4.0-1ubuntu1~22.04.2 [20.1 MB]
+#11 ...
+
+#15 [dev-peer1 stage-1  5/10] WORKDIR /home/app
+#15 DONE 0.2s
+
+#11 [dev-bot1 builder  2/17] RUN apt-get update -y &&     apt-get install -y build-essential git curl cmake &&     apt-get clean && rm -f /var/lib/apt/lists/*_*
+#11 7.539 Get:73 http://archive.ubuntu.com/ubuntu jammy/main amd64 gcc amd64 4:11.2.0-1ubuntu1 [5112 B]
+#11 7.540 Get:74 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libstdc++-11-dev amd64 11.4.0-1ubuntu1~22.04.2 [2101 kB]
+#11 7.633 Get:75 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 g++-11 amd64 11.4.0-1ubuntu1~22.04.2 [11.4 MB]
+#11 7.732 Get:76 http://archive.ubuntu.com/ubuntu jammy/main amd64 g++ amd64 4:11.2.0-1ubuntu1 [1412 B]
+#11 7.732 Get:77 http://archive.ubuntu.com/ubuntu jammy/main amd64 make amd64 4.3-4.1build1 [180 kB]
+#11 7.733 Get:78 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libdpkg-perl all 1.21.1ubuntu2.6 [237 kB]
+#11 7.735 Get:79 http://archive.ubuntu.com/ubuntu jammy/main amd64 bzip2 amd64 1.0.8-5build1 [34.8 kB]
+#11 7.735 Get:80 http://archive.ubuntu.com/ubuntu jammy/main amd64 patch amd64 2.7.6-7build2 [109 kB]
+#11 7.736 Get:81 http://archive.ubuntu.com/ubuntu jammy/main amd64 lto-disabled-list all 24 [12.5 kB]
+#11 7.736 Get:82 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 dpkg-dev all 1.21.1ubuntu2.6 [922 kB]
+#11 7.740 Get:83 http://archive.ubuntu.com/ubuntu jammy/main amd64 build-essential amd64 12.9ubuntu3 [4744 B]
+#11 7.767 Get:84 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libarchive13 amd64 3.6.0-1ubuntu1.5 [368 kB]
+#11 7.853 Get:85 http://archive.ubuntu.com/ubuntu jammy/main amd64 libbrotli1 amd64 1.0.9-2build6 [315 kB]
+#11 7.855 Get:86 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-modules-db amd64 2.1.27+dfsg2-3ubuntu1.2 [20.5 kB]
+#11 7.855 Get:87 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-2 amd64 2.1.27+dfsg2-3ubuntu1.2 [53.8 kB]
+#11 7.855 Get:88 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libldap-2.5-0 amd64 2.5.19+dfsg-0ubuntu0.22.04.1 [184 kB]
+#11 7.856 Get:89 http://archive.ubuntu.com/ubuntu jammy/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2build4 [58.2 kB]
+#11 7.857 Get:90 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libssh-4 amd64 0.9.6-2ubuntu0.22.04.5 [187 kB]
+#11 7.858 Get:91 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcurl4 amd64 7.81.0-1ubuntu1.21 [290 kB]
+#11 7.859 Get:92 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjsoncpp25 amd64 1.9.5-3 [80.0 kB]
+#11 7.859 Get:93 http://archive.ubuntu.com/ubuntu jammy/main amd64 librhash0 amd64 1.4.2-1ubuntu1 [125 kB]
+#11 7.938 Get:94 http://archive.ubuntu.com/ubuntu jammy/main amd64 dh-elpa-helper all 2.0.9ubuntu1 [7610 B]
+#11 8.023 Get:95 http://archive.ubuntu.com/ubuntu jammy/main amd64 emacsen-common all 3.0.4 [14.9 kB]
+#11 8.024 Get:96 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 cmake-data all 3.22.1-1ubuntu1.22.04.2 [1913 kB]
+#11 8.033 Get:97 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 cmake amd64 3.22.1-1ubuntu1.22.04.2 [5010 kB]
+#11 8.147 Get:98 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 curl amd64 7.81.0-1ubuntu1.21 [194 kB]
+#11 8.148 Get:99 http://archive.ubuntu.com/ubuntu jammy/main amd64 libassuan0 amd64 2.5.5-1build1 [38.2 kB]
+#11 8.149 Get:100 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gpgconf amd64 2.2.27-3ubuntu2.4 [94.5 kB]
+#11 8.149 Get:101 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libksba8 amd64 1.6.0-2ubuntu0.2 [119 kB]
+#11 8.337 Get:102 http://archive.ubuntu.com/ubuntu jammy/main amd64 libnpth0 amd64 1.6-3build2 [8664 B]
+#11 8.430 Get:103 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 dirmngr amd64 2.2.27-3ubuntu2.4 [293 kB]
+#11 8.799 Get:104 http://archive.ubuntu.com/ubuntu jammy/main amd64 libfakeroot amd64 1.28-1ubuntu1 [31.5 kB]
+#11 8.810 Get:105 http://archive.ubuntu.com/ubuntu jammy/main amd64 fakeroot amd64 1.28-1ubuntu1 [60.4 kB]
+#11 8.841 Get:106 http://archive.ubuntu.com/ubuntu jammy/main amd64 fonts-dejavu-core all 2.37-2build1 [1041 kB]
+#11 9.146 Get:107 http://archive.ubuntu.com/ubuntu jammy/main amd64 fontconfig-config all 2.13.1-4.2ubuntu5 [29.1 kB]
+#11 9.148 Get:108 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcurl3-gnutls amd64 7.81.0-1ubuntu1.21 [284 kB]
+#11 9.173 Get:109 http://archive.ubuntu.com/ubuntu jammy/main amd64 liberror-perl all 0.17029-1 [26.5 kB]
+#11 9.175 Get:110 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 git-man all 1:2.34.1-1ubuntu1.15 [955 kB]
+#11 9.306 Get:111 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 git amd64 1:2.34.1-1ubuntu1.15 [3166 kB]
+#11 9.486 Get:112 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gnupg-l10n all 2.2.27-3ubuntu2.4 [54.7 kB]
+#11 9.487 Get:113 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gnupg-utils amd64 2.2.27-3ubuntu2.4 [309 kB]
+#11 9.498 Get:114 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gpg amd64 2.2.27-3ubuntu2.4 [518 kB]
+#11 9.520 Get:115 http://archive.ubuntu.com/ubuntu jammy/main amd64 pinentry-curses amd64 1.1.1-1build2 [34.4 kB]
+#11 9.521 Get:116 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gpg-agent amd64 2.2.27-3ubuntu2.4 [209 kB]
+#11 9.528 Get:117 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gpg-wks-client amd64 2.2.27-3ubuntu2.4 [62.7 kB]
+#11 9.529 Get:118 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gpg-wks-server amd64 2.2.27-3ubuntu2.4 [57.5 kB]
+#11 9.531 Get:119 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gpgsm amd64 2.2.27-3ubuntu2.4 [197 kB]
+#11 9.535 Get:120 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gnupg all 2.2.27-3ubuntu2.4 [315 kB]
+#11 9.572 Get:121 http://archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-perl all 1.201-1 [41.8 kB]
+#11 9.657 Get:122 http://archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-xs-perl amd64 0.04-6build3 [11.9 kB]
+#11 9.658 Get:123 http://archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-merge-perl all 0.08-3 [12.0 kB]
+#11 9.658 Get:124 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libfreetype6 amd64 2.11.1+dfsg-1ubuntu0.3 [388 kB]
+#11 9.663 Get:125 http://archive.ubuntu.com/ubuntu jammy/main amd64 libfontconfig1 amd64 2.13.1-4.2ubuntu5 [131 kB]
+#11 9.665 Get:126 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg-turbo8 amd64 2.1.2-0ubuntu1 [134 kB]
+#11 9.667 Get:127 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjpeg8 amd64 8c-2ubuntu10 [2264 B]
+#11 9.667 Get:128 http://archive.ubuntu.com/ubuntu jammy/main amd64 libdeflate0 amd64 1.10-2 [70.9 kB]
+#11 9.668 Get:129 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libjbig0 amd64 2.1-3.1ubuntu0.22.04.1 [29.2 kB]
+#11 9.669 Get:130 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libwebp7 amd64 1.2.2-2ubuntu0.22.04.2 [206 kB]
+#11 9.742 Get:131 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtiff5 amd64 4.3.0-6ubuntu0.12 [185 kB]
+#11 9.828 Get:132 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxpm4 amd64 1:3.5.12-1ubuntu0.22.04.2 [36.7 kB]
+#11 9.828 Get:133 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgd3 amd64 2.3.0-2ubuntu2.3 [129 kB]
+#11 9.830 Get:134 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-devtools amd64 2.35-0ubuntu3.11 [29.0 kB]
+#11 9.830 Get:135 http://archive.ubuntu.com/ubuntu jammy/main amd64 libfile-fcntllock-perl amd64 0.22-3build7 [33.9 kB]
+#11 9.831 Get:136 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libldap-common all 2.5.19+dfsg-0ubuntu0.22.04.1 [16.1 kB]
+#11 9.831 Get:137 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-modules amd64 2.1.27+dfsg2-3ubuntu1.2 [68.8 kB]
+#11 9.832 Get:138 http://archive.ubuntu.com/ubuntu jammy/main amd64 manpages-dev all 5.10-1ubuntu1 [2309 kB]
+#11 9.948 debconf: delaying package configuration, since apt-utils is not installed
+#11 9.967 Fetched 115 MB in 5s (22.3 MB/s)
+#11 9.988 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4896 files and directories currently installed.)
+#11 9.994 Preparing to unpack .../perl-base_5.34.0-3ubuntu1.5_amd64.deb ...
+#11 10.07 Unpacking perl-base (5.34.0-3ubuntu1.5) over (5.34.0-3ubuntu1.3) ...
+#11 10.36 Setting up perl-base (5.34.0-3ubuntu1.5) ...
+#11 10.40 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4896 files and directories currently installed.)
+#11 10.40 Preparing to unpack .../gcc-12-base_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 10.41 Unpacking gcc-12-base:amd64 (12.3.0-1ubuntu1~22.04.2) over (12.3.0-1ubuntu1~22.04) ...
+#11 10.45 Setting up gcc-12-base:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 10.48 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4896 files and directories currently installed.)
+#11 10.49 Preparing to unpack .../libgcc-s1_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 10.50 Unpacking libgcc-s1:amd64 (12.3.0-1ubuntu1~22.04.2) over (12.3.0-1ubuntu1~22.04) ...
+#11 10.54 Setting up libgcc-s1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 10.58 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4896 files and directories currently installed.)
+#11 10.59 Preparing to unpack .../libstdc++6_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 10.61 Unpacking libstdc++6:amd64 (12.3.0-1ubuntu1~22.04.2) over (12.3.0-1ubuntu1~22.04) ...
+#11 10.65 Setting up libstdc++6:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 10.70 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4896 files and directories currently installed.)
+#11 10.71 Preparing to unpack .../libc6_2.35-0ubuntu3.11_amd64.deb ...
+#11 10.77 debconf: unable to initialize frontend: Dialog
+#11 10.77 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#11 10.77 debconf: falling back to frontend: Readline
+#11 10.77 debconf: unable to initialize frontend: Readline
+#11 10.77 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#11 10.77 debconf: falling back to frontend: Teletype
+#11 10.80 Unpacking libc6:amd64 (2.35-0ubuntu3.11) over (2.35-0ubuntu3.8) ...
+#11 10.98 Setting up libc6:amd64 (2.35-0ubuntu3.11) ...
+#11 11.04 debconf: unable to initialize frontend: Dialog
+#11 11.04 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#11 11.04 debconf: falling back to frontend: Readline
+#11 11.04 debconf: unable to initialize frontend: Readline
+#11 11.04 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#11 11.04 debconf: falling back to frontend: Teletype
+#11 12.11 Selecting previously unselected package liblocale-gettext-perl.
+#11 12.11 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4896 files and directories currently installed.)
+#11 12.11 Preparing to unpack .../0-liblocale-gettext-perl_1.07-4build3_amd64.deb ...
+#11 12.11 Unpacking liblocale-gettext-perl (1.07-4build3) ...
+#11 12.15 Selecting previously unselected package perl-modules-5.34.
+#11 12.15 Preparing to unpack .../1-perl-modules-5.34_5.34.0-3ubuntu1.5_all.deb ...
+#11 12.15 Unpacking perl-modules-5.34 (5.34.0-3ubuntu1.5) ...
+#11 12.38 Selecting previously unselected package libgdbm6:amd64.
+#11 12.38 Preparing to unpack .../2-libgdbm6_1.23-1_amd64.deb ...
+#11 12.38 Unpacking libgdbm6:amd64 (1.23-1) ...
+#11 12.42 Selecting previously unselected package libgdbm-compat4:amd64.
+#11 12.42 Preparing to unpack .../3-libgdbm-compat4_1.23-1_amd64.deb ...
+#11 12.42 Unpacking libgdbm-compat4:amd64 (1.23-1) ...
+#11 12.46 Selecting previously unselected package libperl5.34:amd64.
+#11 12.46 Preparing to unpack .../4-libperl5.34_5.34.0-3ubuntu1.5_amd64.deb ...
+#11 12.46 Unpacking libperl5.34:amd64 (5.34.0-3ubuntu1.5) ...
+#11 12.62 Selecting previously unselected package perl.
+#11 12.62 Preparing to unpack .../5-perl_5.34.0-3ubuntu1.5_amd64.deb ...
+#11 12.63 Unpacking perl (5.34.0-3ubuntu1.5) ...
+#11 12.66 Preparing to unpack .../6-gpgv_2.2.27-3ubuntu2.4_amd64.deb ...
+#11 12.68 Unpacking gpgv (2.2.27-3ubuntu2.4) over (2.2.27-3ubuntu2.1) ...
+#11 12.72 Setting up gpgv (2.2.27-3ubuntu2.4) ...
+#11 12.76 Selecting previously unselected package less.
+#11 12.76 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6898 files and directories currently installed.)
+#11 12.77 Preparing to unpack .../000-less_590-1ubuntu0.22.04.3_amd64.deb ...
+#11 12.77 Unpacking less (590-1ubuntu0.22.04.3) ...
+#11 12.81 Selecting previously unselected package libmd0:amd64.
+#11 12.81 Preparing to unpack .../001-libmd0_1.0.4-1build1_amd64.deb ...
+#11 12.81 Unpacking libmd0:amd64 (1.0.4-1build1) ...
+#11 12.84 Selecting previously unselected package libbsd0:amd64.
+#11 12.85 Preparing to unpack .../002-libbsd0_0.11.5-1_amd64.deb ...
+#11 12.85 Unpacking libbsd0:amd64 (0.11.5-1) ...
+#11 12.88 Selecting previously unselected package libexpat1:amd64.
+#11 12.89 Preparing to unpack .../003-libexpat1_2.4.7-1ubuntu0.6_amd64.deb ...
+#11 12.89 Unpacking libexpat1:amd64 (2.4.7-1ubuntu0.6) ...
+#11 12.92 Selecting previously unselected package libicu70:amd64.
+#11 12.92 Preparing to unpack .../004-libicu70_70.1-2_amd64.deb ...
+#11 12.93 Unpacking libicu70:amd64 (70.1-2) ...
+#11 13.04 Selecting previously unselected package readline-common.
+#11 13.04 Preparing to unpack .../005-readline-common_8.1.2-1_all.deb ...
+#11 13.05 Unpacking readline-common (8.1.2-1) ...
+#11 13.10 Selecting previously unselected package libreadline8:amd64.
+#11 13.10 Preparing to unpack .../006-libreadline8_8.1.2-1_amd64.deb ...
+#11 13.10 Unpacking libreadline8:amd64 (8.1.2-1) ...
+#11 13.14 Selecting previously unselected package libsqlite3-0:amd64.
+#11 13.14 Preparing to unpack .../007-libsqlite3-0_3.37.2-2ubuntu0.5_amd64.deb ...
+#11 13.15 Unpacking libsqlite3-0:amd64 (3.37.2-2ubuntu0.5) ...
+#11 13.19 Selecting previously unselected package libxml2:amd64.
+#11 13.19 Preparing to unpack .../008-libxml2_2.9.13+dfsg-1ubuntu0.10_amd64.deb ...
+#11 13.19 Unpacking libxml2:amd64 (2.9.13+dfsg-1ubuntu0.10) ...
+#11 13.23 Selecting previously unselected package netbase.
+#11 13.23 Preparing to unpack .../009-netbase_6.3_all.deb ...
+#11 13.24 Unpacking netbase (6.3) ...
+#11 13.27 Selecting previously unselected package ucf.
+#11 13.28 Preparing to unpack .../010-ucf_3.0043_all.deb ...
+#11 13.28 Moving old data out of the way
+#11 13.28 Unpacking ucf (3.0043) ...
+#11 13.32 Selecting previously unselected package libcbor0.8:amd64.
+#11 13.32 Preparing to unpack .../011-libcbor0.8_0.8.0-2ubuntu1_amd64.deb ...
+#11 13.33 Unpacking libcbor0.8:amd64 (0.8.0-2ubuntu1) ...
+#11 13.36 Selecting previously unselected package libedit2:amd64.
+#11 13.36 Preparing to unpack .../012-libedit2_3.1-20210910-1build1_amd64.deb ...
+#11 13.37 Unpacking libedit2:amd64 (3.1-20210910-1build1) ...
+#11 13.40 Selecting previously unselected package libfido2-1:amd64.
+#11 13.40 Preparing to unpack .../013-libfido2-1_1.10.0-1_amd64.deb ...
+#11 13.41 Unpacking libfido2-1:amd64 (1.10.0-1) ...
+#11 13.44 Selecting previously unselected package libnghttp2-14:amd64.
+#11 13.45 Preparing to unpack .../014-libnghttp2-14_1.43.0-1ubuntu0.2_amd64.deb ...
+#11 13.45 Unpacking libnghttp2-14:amd64 (1.43.0-1ubuntu0.2) ...
+#11 13.48 Selecting previously unselected package libpng16-16:amd64.
+#11 13.48 Preparing to unpack .../015-libpng16-16_1.6.37-3build5_amd64.deb ...
+#11 13.49 Unpacking libpng16-16:amd64 (1.6.37-3build5) ...
+#11 13.52 Selecting previously unselected package libpsl5:amd64.
+#11 13.53 Preparing to unpack .../016-libpsl5_0.21.0-1.2build2_amd64.deb ...
+#11 13.53 Unpacking libpsl5:amd64 (0.21.0-1.2build2) ...
+#11 13.56 Selecting previously unselected package libuv1:amd64.
+#11 13.57 Preparing to unpack .../017-libuv1_1.43.0-1ubuntu0.1_amd64.deb ...
+#11 13.57 Unpacking libuv1:amd64 (1.43.0-1ubuntu0.1) ...
+#11 13.60 Selecting previously unselected package libxau6:amd64.
+#11 13.60 Preparing to unpack .../018-libxau6_1%3a1.0.9-1build5_amd64.deb ...
+#11 13.61 Unpacking libxau6:amd64 (1:1.0.9-1build5) ...
+#11 13.64 Selecting previously unselected package libxdmcp6:amd64.
+#11 13.64 Preparing to unpack .../019-libxdmcp6_1%3a1.1.3-0ubuntu5_amd64.deb ...
+#11 13.65 Unpacking libxdmcp6:amd64 (1:1.1.3-0ubuntu5) ...
+#11 13.68 Selecting previously unselected package libxcb1:amd64.
+#11 13.68 Preparing to unpack .../020-libxcb1_1.14-3ubuntu3_amd64.deb ...
+#11 13.69 Unpacking libxcb1:amd64 (1.14-3ubuntu3) ...
+#11 13.72 Selecting previously unselected package libx11-data.
+#11 13.72 Preparing to unpack .../021-libx11-data_2%3a1.7.5-1ubuntu0.3_all.deb ...
+#11 13.72 Unpacking libx11-data (2:1.7.5-1ubuntu0.3) ...
+#11 13.79 Selecting previously unselected package libx11-6:amd64.
+#11 13.79 Preparing to unpack .../022-libx11-6_2%3a1.7.5-1ubuntu0.3_amd64.deb ...
+#11 13.79 Unpacking libx11-6:amd64 (2:1.7.5-1ubuntu0.3) ...
+#11 13.83 Selecting previously unselected package libxext6:amd64.
+#11 13.83 Preparing to unpack .../023-libxext6_2%3a1.3.4-1build1_amd64.deb ...
+#11 13.84 Unpacking libxext6:amd64 (2:1.3.4-1build1) ...
+#11 13.87 Selecting previously unselected package libxmuu1:amd64.
+#11 13.87 Preparing to unpack .../024-libxmuu1_2%3a1.1.3-3_amd64.deb ...
+#11 13.88 Unpacking libxmuu1:amd64 (2:1.1.3-3) ...
+#11 13.91 Selecting previously unselected package manpages.
+#11 13.91 Preparing to unpack .../025-manpages_5.10-1ubuntu1_all.deb ...
+#11 13.91 Unpacking manpages (5.10-1ubuntu1) ...
+#11 14.00 Selecting previously unselected package openssh-client.
+#11 14.00 Preparing to unpack .../026-openssh-client_1%3a8.9p1-3ubuntu0.13_amd64.deb ...
+#11 14.01 Unpacking openssh-client (1:8.9p1-3ubuntu0.13) ...
+#11 14.05 Selecting previously unselected package publicsuffix.
+#11 14.05 Preparing to unpack .../027-publicsuffix_20211207.1025-1_all.deb ...
+#11 14.06 Unpacking publicsuffix (20211207.1025-1) ...
+#11 14.09 Selecting previously unselected package xauth.
+#11 14.09 Preparing to unpack .../028-xauth_1%3a1.1-1build2_amd64.deb ...
+#11 14.10 Unpacking xauth (1:1.1-1build2) ...
+#11 14.13 Selecting previously unselected package xz-utils.
+#11 14.13 Preparing to unpack .../029-xz-utils_5.2.5-2ubuntu1_amd64.deb ...
+#11 14.14 Unpacking xz-utils (5.2.5-2ubuntu1) ...
+#11 14.17 Selecting previously unselected package binutils-common:amd64.
+#11 14.17 Preparing to unpack .../030-binutils-common_2.38-4ubuntu2.10_amd64.deb ...
+#11 14.17 Unpacking binutils-common:amd64 (2.38-4ubuntu2.10) ...
+#11 14.21 Selecting previously unselected package libbinutils:amd64.
+#11 14.21 Preparing to unpack .../031-libbinutils_2.38-4ubuntu2.10_amd64.deb ...
+#11 14.22 Unpacking libbinutils:amd64 (2.38-4ubuntu2.10) ...
+#11 14.26 Selecting previously unselected package libctf-nobfd0:amd64.
+#11 14.26 Preparing to unpack .../032-libctf-nobfd0_2.38-4ubuntu2.10_amd64.deb ...
+#11 14.26 Unpacking libctf-nobfd0:amd64 (2.38-4ubuntu2.10) ...
+#11 14.30 Selecting previously unselected package libctf0:amd64.
+#11 14.30 Preparing to unpack .../033-libctf0_2.38-4ubuntu2.10_amd64.deb ...
+#11 14.30 Unpacking libctf0:amd64 (2.38-4ubuntu2.10) ...
+#11 14.33 Selecting previously unselected package binutils-x86-64-linux-gnu.
+#11 14.33 Preparing to unpack .../034-binutils-x86-64-linux-gnu_2.38-4ubuntu2.10_amd64.deb ...
+#11 14.34 Unpacking binutils-x86-64-linux-gnu (2.38-4ubuntu2.10) ...
+#11 14.41 Selecting previously unselected package binutils.
+#11 14.41 Preparing to unpack .../035-binutils_2.38-4ubuntu2.10_amd64.deb ...
+#11 14.42 Unpacking binutils (2.38-4ubuntu2.10) ...
+#11 14.45 Selecting previously unselected package libc-dev-bin.
+#11 14.45 Preparing to unpack .../036-libc-dev-bin_2.35-0ubuntu3.11_amd64.deb ...
+#11 14.45 Unpacking libc-dev-bin (2.35-0ubuntu3.11) ...
+#11 14.48 Selecting previously unselected package linux-libc-dev:amd64.
+#11 14.49 Preparing to unpack .../037-linux-libc-dev_5.15.0-161.171_amd64.deb ...
+#11 14.49 Unpacking linux-libc-dev:amd64 (5.15.0-161.171) ...
+#11 14.64 Selecting previously unselected package libcrypt-dev:amd64.
+#11 14.64 Preparing to unpack .../038-libcrypt-dev_1%3a4.4.27-1_amd64.deb ...
+#11 14.65 Unpacking libcrypt-dev:amd64 (1:4.4.27-1) ...
+#11 14.69 Selecting previously unselected package rpcsvc-proto.
+#11 14.69 Preparing to unpack .../039-rpcsvc-proto_1.4.2-0ubuntu6_amd64.deb ...
+#11 14.69 Unpacking rpcsvc-proto (1.4.2-0ubuntu6) ...
+#11 14.73 Selecting previously unselected package libtirpc-dev:amd64.
+#11 14.73 Preparing to unpack .../040-libtirpc-dev_1.3.2-2ubuntu0.1_amd64.deb ...
+#11 14.73 Unpacking libtirpc-dev:amd64 (1.3.2-2ubuntu0.1) ...
+#11 14.77 Selecting previously unselected package libnsl-dev:amd64.
+#11 14.77 Preparing to unpack .../041-libnsl-dev_1.3.0-2build2_amd64.deb ...
+#11 14.78 Unpacking libnsl-dev:amd64 (1.3.0-2build2) ...
+#11 14.81 Selecting previously unselected package libc6-dev:amd64.
+#11 14.81 Preparing to unpack .../042-libc6-dev_2.35-0ubuntu3.11_amd64.deb ...
+#11 14.82 Unpacking libc6-dev:amd64 (2.35-0ubuntu3.11) ...
+#11 14.93 Selecting previously unselected package gcc-11-base:amd64.
+#11 14.93 Preparing to unpack .../043-gcc-11-base_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 14.94 Unpacking gcc-11-base:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+#11 14.97 Selecting previously unselected package libisl23:amd64.
+#11 14.98 Preparing to unpack .../044-libisl23_0.24-2build1_amd64.deb ...
+#11 14.98 Unpacking libisl23:amd64 (0.24-2build1) ...
+#11 15.02 Selecting previously unselected package libmpfr6:amd64.
+#11 15.02 Preparing to unpack .../045-libmpfr6_4.1.0-3build3_amd64.deb ...
+#11 15.03 Unpacking libmpfr6:amd64 (4.1.0-3build3) ...
+#11 15.07 Selecting previously unselected package libmpc3:amd64.
+#11 15.07 Preparing to unpack .../046-libmpc3_1.2.1-2build1_amd64.deb ...
+#11 15.08 Unpacking libmpc3:amd64 (1.2.1-2build1) ...
+#11 15.11 Selecting previously unselected package cpp-11.
+#11 15.11 Preparing to unpack .../047-cpp-11_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.11 Unpacking cpp-11 (11.4.0-1ubuntu1~22.04.2) ...
+#11 15.21 Selecting previously unselected package cpp.
+#11 15.22 Preparing to unpack .../048-cpp_4%3a11.2.0-1ubuntu1_amd64.deb ...
+#11 15.22 Unpacking cpp (4:11.2.0-1ubuntu1) ...
+#11 15.26 Selecting previously unselected package libcc1-0:amd64.
+#11 15.26 Preparing to unpack .../049-libcc1-0_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.26 Unpacking libcc1-0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 15.30 Selecting previously unselected package libgomp1:amd64.
+#11 15.30 Preparing to unpack .../050-libgomp1_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.31 Unpacking libgomp1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 15.34 Selecting previously unselected package libitm1:amd64.
+#11 15.34 Preparing to unpack .../051-libitm1_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.35 Unpacking libitm1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 15.38 Selecting previously unselected package libatomic1:amd64.
+#11 15.38 Preparing to unpack .../052-libatomic1_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.39 Unpacking libatomic1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 15.42 Selecting previously unselected package libasan6:amd64.
+#11 15.43 Preparing to unpack .../053-libasan6_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.43 Unpacking libasan6:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+#11 15.48 Selecting previously unselected package liblsan0:amd64.
+#11 15.49 Preparing to unpack .../054-liblsan0_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.49 Unpacking liblsan0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 15.53 Selecting previously unselected package libtsan0:amd64.
+#11 15.54 Preparing to unpack .../055-libtsan0_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.54 Unpacking libtsan0:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+#11 15.59 Selecting previously unselected package libubsan1:amd64.
+#11 15.60 Preparing to unpack .../056-libubsan1_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.60 Unpacking libubsan1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 15.64 Selecting previously unselected package libquadmath0:amd64.
+#11 15.65 Preparing to unpack .../057-libquadmath0_12.3.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.65 Unpacking libquadmath0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 15.68 Selecting previously unselected package libgcc-11-dev:amd64.
+#11 15.68 Preparing to unpack .../058-libgcc-11-dev_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.69 Unpacking libgcc-11-dev:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+#11 15.76 Selecting previously unselected package gcc-11.
+#11 15.77 Preparing to unpack .../059-gcc-11_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.77 Unpacking gcc-11 (11.4.0-1ubuntu1~22.04.2) ...
+#11 15.94 Selecting previously unselected package gcc.
+#11 15.95 Preparing to unpack .../060-gcc_4%3a11.2.0-1ubuntu1_amd64.deb ...
+#11 15.95 Unpacking gcc (4:11.2.0-1ubuntu1) ...
+#11 15.98 Selecting previously unselected package libstdc++-11-dev:amd64.
+#11 15.98 Preparing to unpack .../061-libstdc++-11-dev_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 15.99 Unpacking libstdc++-11-dev:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+#11 16.15 Selecting previously unselected package g++-11.
+#11 16.15 Preparing to unpack .../062-g++-11_11.4.0-1ubuntu1~22.04.2_amd64.deb ...
+#11 16.15 Unpacking g++-11 (11.4.0-1ubuntu1~22.04.2) ...
+#11 16.26 Selecting previously unselected package g++.
+#11 16.27 Preparing to unpack .../063-g++_4%3a11.2.0-1ubuntu1_amd64.deb ...
+#11 16.27 Unpacking g++ (4:11.2.0-1ubuntu1) ...
+#11 16.30 Selecting previously unselected package make.
+#11 16.30 Preparing to unpack .../064-make_4.3-4.1build1_amd64.deb ...
+#11 16.31 Unpacking make (4.3-4.1build1) ...
+#11 16.34 Selecting previously unselected package libdpkg-perl.
+#11 16.34 Preparing to unpack .../065-libdpkg-perl_1.21.1ubuntu2.6_all.deb ...
+#11 16.35 Unpacking libdpkg-perl (1.21.1ubuntu2.6) ...
+#11 16.39 Selecting previously unselected package bzip2.
+#11 16.39 Preparing to unpack .../066-bzip2_1.0.8-5build1_amd64.deb ...
+#11 16.39 Unpacking bzip2 (1.0.8-5build1) ...
+#11 16.42 Selecting previously unselected package patch.
+#11 16.43 Preparing to unpack .../067-patch_2.7.6-7build2_amd64.deb ...
+#11 16.43 Unpacking patch (2.7.6-7build2) ...
+#11 16.46 Selecting previously unselected package lto-disabled-list.
+#11 16.46 Preparing to unpack .../068-lto-disabled-list_24_all.deb ...
+#11 16.47 Unpacking lto-disabled-list (24) ...
+#11 16.50 Selecting previously unselected package dpkg-dev.
+#11 16.50 Preparing to unpack .../069-dpkg-dev_1.21.1ubuntu2.6_all.deb ...
+#11 16.51 Unpacking dpkg-dev (1.21.1ubuntu2.6) ...
+#11 16.55 Selecting previously unselected package build-essential.
+#11 16.55 Preparing to unpack .../070-build-essential_12.9ubuntu3_amd64.deb ...
+#11 16.55 Unpacking build-essential (12.9ubuntu3) ...
+#11 16.59 Selecting previously unselected package libarchive13:amd64.
+#11 16.59 Preparing to unpack .../071-libarchive13_3.6.0-1ubuntu1.5_amd64.deb ...
+#11 16.60 Unpacking libarchive13:amd64 (3.6.0-1ubuntu1.5) ...
+#11 16.65 Selecting previously unselected package libbrotli1:amd64.
+#11 16.65 Preparing to unpack .../072-libbrotli1_1.0.9-2build6_amd64.deb ...
+#11 16.66 Unpacking libbrotli1:amd64 (1.0.9-2build6) ...
+#11 16.69 Selecting previously unselected package libsasl2-modules-db:amd64.
+#11 16.69 Preparing to unpack .../073-libsasl2-modules-db_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+#11 16.69 Unpacking libsasl2-modules-db:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#11 16.73 Selecting previously unselected package libsasl2-2:amd64.
+#11 16.73 Preparing to unpack .../074-libsasl2-2_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+#11 16.74 Unpacking libsasl2-2:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#11 16.77 Selecting previously unselected package libldap-2.5-0:amd64.
+#11 16.78 Preparing to unpack .../075-libldap-2.5-0_2.5.19+dfsg-0ubuntu0.22.04.1_amd64.deb ...
+#11 16.78 Unpacking libldap-2.5-0:amd64 (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+#11 16.82 Selecting previously unselected package librtmp1:amd64.
+#11 16.82 Preparing to unpack .../076-librtmp1_2.4+20151223.gitfa8646d.1-2build4_amd64.deb ...
+#11 16.82 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build4) ...
+#11 16.86 Selecting previously unselected package libssh-4:amd64.
+#11 16.86 Preparing to unpack .../077-libssh-4_0.9.6-2ubuntu0.22.04.5_amd64.deb ...
+#11 16.87 Unpacking libssh-4:amd64 (0.9.6-2ubuntu0.22.04.5) ...
+#11 16.90 Selecting previously unselected package libcurl4:amd64.
+#11 16.91 Preparing to unpack .../078-libcurl4_7.81.0-1ubuntu1.21_amd64.deb ...
+#11 16.91 Unpacking libcurl4:amd64 (7.81.0-1ubuntu1.21) ...
+#11 16.95 Selecting previously unselected package libjsoncpp25:amd64.
+#11 16.95 Preparing to unpack .../079-libjsoncpp25_1.9.5-3_amd64.deb ...
+#11 16.95 Unpacking libjsoncpp25:amd64 (1.9.5-3) ...
+#11 16.99 Selecting previously unselected package librhash0:amd64.
+#11 16.99 Preparing to unpack .../080-librhash0_1.4.2-1ubuntu1_amd64.deb ...
+#11 17.00 Unpacking librhash0:amd64 (1.4.2-1ubuntu1) ...
+#11 17.03 Selecting previously unselected package dh-elpa-helper.
+#11 17.03 Preparing to unpack .../081-dh-elpa-helper_2.0.9ubuntu1_all.deb ...
+#11 17.04 Unpacking dh-elpa-helper (2.0.9ubuntu1) ...
+#11 17.07 Selecting previously unselected package emacsen-common.
+#11 17.08 Preparing to unpack .../082-emacsen-common_3.0.4_all.deb ...
+#11 17.09 Unpacking emacsen-common (3.0.4) ...
+#11 17.13 Selecting previously unselected package cmake-data.
+#11 17.13 Preparing to unpack .../083-cmake-data_3.22.1-1ubuntu1.22.04.2_all.deb ...
+#11 17.14 Unpacking cmake-data (3.22.1-1ubuntu1.22.04.2) ...
+#11 17.54 Selecting previously unselected package cmake.
+#11 17.54 Preparing to unpack .../084-cmake_3.22.1-1ubuntu1.22.04.2_amd64.deb ...
+#11 17.54 Unpacking cmake (3.22.1-1ubuntu1.22.04.2) ...
+#11 17.62 Selecting previously unselected package curl.
+#11 17.62 Preparing to unpack .../085-curl_7.81.0-1ubuntu1.21_amd64.deb ...
+#11 17.63 Unpacking curl (7.81.0-1ubuntu1.21) ...
+#11 17.66 Selecting previously unselected package libassuan0:amd64.
+#11 17.67 Preparing to unpack .../086-libassuan0_2.5.5-1build1_amd64.deb ...
+#11 17.67 Unpacking libassuan0:amd64 (2.5.5-1build1) ...
+#11 17.70 Selecting previously unselected package gpgconf.
+#11 17.70 Preparing to unpack .../087-gpgconf_2.2.27-3ubuntu2.4_amd64.deb ...
+#11 17.71 Unpacking gpgconf (2.2.27-3ubuntu2.4) ...
+#11 17.74 Selecting previously unselected package libksba8:amd64.
+#11 17.75 Preparing to unpack .../088-libksba8_1.6.0-2ubuntu0.2_amd64.deb ...
+#11 17.75 Unpacking libksba8:amd64 (1.6.0-2ubuntu0.2) ...
+#11 17.79 Selecting previously unselected package libnpth0:amd64.
+#11 17.79 Preparing to unpack .../089-libnpth0_1.6-3build2_amd64.deb ...
+#11 17.79 Unpacking libnpth0:amd64 (1.6-3build2) ...
+#11 17.83 Selecting previously unselected package dirmngr.
+#11 17.83 Preparing to unpack .../090-dirmngr_2.2.27-3ubuntu2.4_amd64.deb ...
+#11 17.85 Unpacking dirmngr (2.2.27-3ubuntu2.4) ...
+#11 17.89 Selecting previously unselected package libfakeroot:amd64.
+#11 17.89 Preparing to unpack .../091-libfakeroot_1.28-1ubuntu1_amd64.deb ...
+#11 17.89 Unpacking libfakeroot:amd64 (1.28-1ubuntu1) ...
+#11 17.93 Selecting previously unselected package fakeroot.
+#11 17.93 Preparing to unpack .../092-fakeroot_1.28-1ubuntu1_amd64.deb ...
+#11 17.93 Unpacking fakeroot (1.28-1ubuntu1) ...
+#11 17.97 Selecting previously unselected package fonts-dejavu-core.
+#11 17.97 Preparing to unpack .../093-fonts-dejavu-core_2.37-2build1_all.deb ...
+#11 17.98 Unpacking fonts-dejavu-core (2.37-2build1) ...
+#11 18.06 Selecting previously unselected package fontconfig-config.
+#11 18.06 Preparing to unpack .../094-fontconfig-config_2.13.1-4.2ubuntu5_all.deb ...
+#11 18.07 Unpacking fontconfig-config (2.13.1-4.2ubuntu5) ...
+#11 18.11 Selecting previously unselected package libcurl3-gnutls:amd64.
+#11 18.11 Preparing to unpack .../095-libcurl3-gnutls_7.81.0-1ubuntu1.21_amd64.deb ...
+#11 18.12 Unpacking libcurl3-gnutls:amd64 (7.81.0-1ubuntu1.21) ...
+#11 18.15 Selecting previously unselected package liberror-perl.
+#11 18.15 Preparing to unpack .../096-liberror-perl_0.17029-1_all.deb ...
+#11 18.16 Unpacking liberror-perl (0.17029-1) ...
+#11 18.19 Selecting previously unselected package git-man.
+#11 18.19 Preparing to unpack .../097-git-man_1%3a2.34.1-1ubuntu1.15_all.deb ...
+#11 18.19 Unpacking git-man (1:2.34.1-1ubuntu1.15) ...
+#11 18.24 Selecting previously unselected package git.
+#11 18.24 Preparing to unpack .../098-git_1%3a2.34.1-1ubuntu1.15_amd64.deb ...
+#11 18.25 Unpacking git (1:2.34.1-1ubuntu1.15) ...
+#11 18.35 Selecting previously unselected package gnupg-l10n.
+#11 18.36 Preparing to unpack .../099-gnupg-l10n_2.2.27-3ubuntu2.4_all.deb ...
+#11 18.36 Unpacking gnupg-l10n (2.2.27-3ubuntu2.4) ...
+#11 18.40 Selecting previously unselected package gnupg-utils.
+#11 18.40 Preparing to unpack .../100-gnupg-utils_2.2.27-3ubuntu2.4_amd64.deb ...
+#11 18.40 Unpacking gnupg-utils (2.2.27-3ubuntu2.4) ...
+#11 18.44 Selecting previously unselected package gpg.
+#11 18.44 Preparing to unpack .../101-gpg_2.2.27-3ubuntu2.4_amd64.deb ...
+#11 18.44 Unpacking gpg (2.2.27-3ubuntu2.4) ...
+#11 18.48 Selecting previously unselected package pinentry-curses.
+#11 18.48 Preparing to unpack .../102-pinentry-curses_1.1.1-1build2_amd64.deb ...
+#11 18.49 Unpacking pinentry-curses (1.1.1-1build2) ...
+#11 18.52 Selecting previously unselected package gpg-agent.
+#11 18.53 Preparing to unpack .../103-gpg-agent_2.2.27-3ubuntu2.4_amd64.deb ...
+#11 18.53 Unpacking gpg-agent (2.2.27-3ubuntu2.4) ...
+#11 18.58 Selecting previously unselected package gpg-wks-client.
+#11 18.58 Preparing to unpack .../104-gpg-wks-client_2.2.27-3ubuntu2.4_amd64.deb ...
+#11 18.58 Unpacking gpg-wks-client (2.2.27-3ubuntu2.4) ...
+#11 18.61 Selecting previously unselected package gpg-wks-server.
+#11 18.62 Preparing to unpack .../105-gpg-wks-server_2.2.27-3ubuntu2.4_amd64.deb ...
+#11 18.62 Unpacking gpg-wks-server (2.2.27-3ubuntu2.4) ...
+#11 18.65 Selecting previously unselected package gpgsm.
+#11 18.65 Preparing to unpack .../106-gpgsm_2.2.27-3ubuntu2.4_amd64.deb ...
+#11 18.66 Unpacking gpgsm (2.2.27-3ubuntu2.4) ...
+#11 18.69 Selecting previously unselected package gnupg.
+#11 18.69 Preparing to unpack .../107-gnupg_2.2.27-3ubuntu2.4_all.deb ...
+#11 18.70 Unpacking gnupg (2.2.27-3ubuntu2.4) ...
+#11 18.73 Selecting previously unselected package libalgorithm-diff-perl.
+#11 18.73 Preparing to unpack .../108-libalgorithm-diff-perl_1.201-1_all.deb ...
+#11 18.74 Unpacking libalgorithm-diff-perl (1.201-1) ...
+#11 18.77 Selecting previously unselected package libalgorithm-diff-xs-perl.
+#11 18.77 Preparing to unpack .../109-libalgorithm-diff-xs-perl_0.04-6build3_amd64.deb ...
+#11 18.77 Unpacking libalgorithm-diff-xs-perl (0.04-6build3) ...
+#11 18.80 Selecting previously unselected package libalgorithm-merge-perl.
+#11 18.81 Preparing to unpack .../110-libalgorithm-merge-perl_0.08-3_all.deb ...
+#11 18.81 Unpacking libalgorithm-merge-perl (0.08-3) ...
+#11 18.85 Selecting previously unselected package libfreetype6:amd64.
+#11 18.85 Preparing to unpack .../111-libfreetype6_2.11.1+dfsg-1ubuntu0.3_amd64.deb ...
+#11 18.85 Unpacking libfreetype6:amd64 (2.11.1+dfsg-1ubuntu0.3) ...
+#11 18.89 Selecting previously unselected package libfontconfig1:amd64.
+#11 18.90 Preparing to unpack .../112-libfontconfig1_2.13.1-4.2ubuntu5_amd64.deb ...
+#11 18.90 Unpacking libfontconfig1:amd64 (2.13.1-4.2ubuntu5) ...
+#11 18.94 Selecting previously unselected package libjpeg-turbo8:amd64.
+#11 18.94 Preparing to unpack .../113-libjpeg-turbo8_2.1.2-0ubuntu1_amd64.deb ...
+#11 18.94 Unpacking libjpeg-turbo8:amd64 (2.1.2-0ubuntu1) ...
+#11 18.97 Selecting previously unselected package libjpeg8:amd64.
+#11 18.98 Preparing to unpack .../114-libjpeg8_8c-2ubuntu10_amd64.deb ...
+#11 18.98 Unpacking libjpeg8:amd64 (8c-2ubuntu10) ...
+#11 19.02 Selecting previously unselected package libdeflate0:amd64.
+#11 19.02 Preparing to unpack .../115-libdeflate0_1.10-2_amd64.deb ...
+#11 19.02 Unpacking libdeflate0:amd64 (1.10-2) ...
+#11 19.06 Selecting previously unselected package libjbig0:amd64.
+#11 19.06 Preparing to unpack .../116-libjbig0_2.1-3.1ubuntu0.22.04.1_amd64.deb ...
+#11 19.07 Unpacking libjbig0:amd64 (2.1-3.1ubuntu0.22.04.1) ...
+#11 19.10 Selecting previously unselected package libwebp7:amd64.
+#11 19.10 Preparing to unpack .../117-libwebp7_1.2.2-2ubuntu0.22.04.2_amd64.deb ...
+#11 19.11 Unpacking libwebp7:amd64 (1.2.2-2ubuntu0.22.04.2) ...
+#11 19.15 Selecting previously unselected package libtiff5:amd64.
+#11 19.15 Preparing to unpack .../118-libtiff5_4.3.0-6ubuntu0.12_amd64.deb ...
+#11 19.16 Unpacking libtiff5:amd64 (4.3.0-6ubuntu0.12) ...
+#11 19.19 Selecting previously unselected package libxpm4:amd64.
+#11 19.19 Preparing to unpack .../119-libxpm4_1%3a3.5.12-1ubuntu0.22.04.2_amd64.deb ...
+#11 19.20 Unpacking libxpm4:amd64 (1:3.5.12-1ubuntu0.22.04.2) ...
+#11 19.23 Selecting previously unselected package libgd3:amd64.
+#11 19.24 Preparing to unpack .../120-libgd3_2.3.0-2ubuntu2.3_amd64.deb ...
+#11 19.24 Unpacking libgd3:amd64 (2.3.0-2ubuntu2.3) ...
+#11 19.27 Selecting previously unselected package libc-devtools.
+#11 19.28 Preparing to unpack .../121-libc-devtools_2.35-0ubuntu3.11_amd64.deb ...
+#11 19.28 Unpacking libc-devtools (2.35-0ubuntu3.11) ...
+#11 19.31 Selecting previously unselected package libfile-fcntllock-perl.
+#11 19.31 Preparing to unpack .../122-libfile-fcntllock-perl_0.22-3build7_amd64.deb ...
+#11 19.32 Unpacking libfile-fcntllock-perl (0.22-3build7) ...
+#11 19.35 Selecting previously unselected package libldap-common.
+#11 19.36 Preparing to unpack .../123-libldap-common_2.5.19+dfsg-0ubuntu0.22.04.1_all.deb ...
+#11 19.36 Unpacking libldap-common (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+#11 19.39 Selecting previously unselected package libsasl2-modules:amd64.
+#11 19.40 Preparing to unpack .../124-libsasl2-modules_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+#11 19.40 Unpacking libsasl2-modules:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#11 19.43 Selecting previously unselected package manpages-dev.
+#11 19.44 Preparing to unpack .../125-manpages-dev_5.10-1ubuntu1_all.deb ...
+#11 19.44 Unpacking manpages-dev (5.10-1ubuntu1) ...
+#11 19.62 Setting up libksba8:amd64 (1.6.0-2ubuntu0.2) ...
+#11 19.64 Setting up libexpat1:amd64 (2.4.7-1ubuntu0.6) ...
+#11 19.65 Setting up gcc-11-base:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+#11 19.66 Setting up libxau6:amd64 (1:1.0.9-1build5) ...
+#11 19.67 Setting up lto-disabled-list (24) ...
+#11 19.68 Setting up libpsl5:amd64 (0.21.0-1.2build2) ...
+#11 19.70 Setting up manpages (5.10-1ubuntu1) ...
+#11 19.71 Setting up libcbor0.8:amd64 (0.8.0-2ubuntu1) ...
+#11 19.72 Setting up libbrotli1:amd64 (1.0.9-2build6) ...
+#11 19.73 Setting up libsqlite3-0:amd64 (3.37.2-2ubuntu0.5) ...
+#11 19.75 Setting up libsasl2-modules:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#11 19.76 Setting up binutils-common:amd64 (2.38-4ubuntu2.10) ...
+#11 19.78 Setting up libnghttp2-14:amd64 (1.43.0-1ubuntu0.2) ...
+#11 19.79 Setting up libdeflate0:amd64 (1.10-2) ...
+#11 19.80 Setting up less (590-1ubuntu0.22.04.3) ...
+#11 19.82 Setting up linux-libc-dev:amd64 (5.15.0-161.171) ...
+#11 19.83 Setting up libctf-nobfd0:amd64 (2.38-4ubuntu2.10) ...
+#11 19.84 Setting up libnpth0:amd64 (1.6-3build2) ...
+#11 19.86 Setting up libassuan0:amd64 (2.5.5-1build1) ...
+#11 19.87 Setting up libgomp1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 19.88 Setting up perl-modules-5.34 (5.34.0-3ubuntu1.5) ...
+#11 19.89 Setting up bzip2 (1.0.8-5build1) ...
+#11 19.91 Setting up libldap-common (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+#11 19.92 Setting up libjbig0:amd64 (2.1-3.1ubuntu0.22.04.1) ...
+#11 19.94 Setting up libfakeroot:amd64 (1.28-1ubuntu1) ...
+#11 19.96 Setting up libasan6:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+#11 19.98 Setting up libsasl2-modules-db:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#11 19.99 Setting up fakeroot (1.28-1ubuntu1) ...
+#11 20.00 update-alternatives: using /usr/bin/fakeroot-sysv to provide /usr/bin/fakeroot (fakeroot) in auto mode
+#11 20.00 update-alternatives: warning: skip creation of /usr/share/man/man1/fakeroot.1.gz because associated file /usr/share/man/man1/fakeroot-sysv.1.gz (of link group fakeroot) doesn't exist
+#11 20.00 update-alternatives: warning: skip creation of /usr/share/man/man1/faked.1.gz because associated file /usr/share/man/man1/faked-sysv.1.gz (of link group fakeroot) doesn't exist
+#11 20.00 update-alternatives: warning: skip creation of /usr/share/man/es/man1/fakeroot.1.gz because associated file /usr/share/man/es/man1/fakeroot-sysv.1.gz (of link group fakeroot) doesn't exist
+#11 20.00 update-alternatives: warning: skip creation of /usr/share/man/es/man1/faked.1.gz because associated file /usr/share/man/es/man1/faked-sysv.1.gz (of link group fakeroot) doesn't exist
+#11 20.00 update-alternatives: warning: skip creation of /usr/share/man/fr/man1/fakeroot.1.gz because associated file /usr/share/man/fr/man1/fakeroot-sysv.1.gz (of link group fakeroot) doesn't exist
+#11 20.00 update-alternatives: warning: skip creation of /usr/share/man/fr/man1/faked.1.gz because associated file /usr/share/man/fr/man1/faked-sysv.1.gz (of link group fakeroot) doesn't exist
+#11 20.00 update-alternatives: warning: skip creation of /usr/share/man/sv/man1/fakeroot.1.gz because associated file /usr/share/man/sv/man1/fakeroot-sysv.1.gz (of link group fakeroot) doesn't exist
+#11 20.00 update-alternatives: warning: skip creation of /usr/share/man/sv/man1/faked.1.gz because associated file /usr/share/man/sv/man1/faked-sysv.1.gz (of link group fakeroot) doesn't exist
+#11 20.01 Setting up libtirpc-dev:amd64 (1.3.2-2ubuntu0.1) ...
+#11 20.02 Setting up libuv1:amd64 (1.43.0-1ubuntu0.1) ...
+#11 20.04 Setting up rpcsvc-proto (1.4.2-0ubuntu6) ...
+#11 20.05 Setting up emacsen-common (3.0.4) ...
+#11 20.08 Setting up libx11-data (2:1.7.5-1ubuntu0.3) ...
+#11 20.10 Setting up make (4.3-4.1build1) ...
+#11 20.11 Setting up libmpfr6:amd64 (4.1.0-3build3) ...
+#11 20.12 Setting up gnupg-l10n (2.2.27-3ubuntu2.4) ...
+#11 20.13 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build4) ...
+#11 20.15 Setting up dh-elpa-helper (2.0.9ubuntu1) ...
+#11 20.16 Setting up xz-utils (5.2.5-2ubuntu1) ...
+#11 20.17 update-alternatives: using /usr/bin/xz to provide /usr/bin/lzma (lzma) in auto mode
+#11 20.17 update-alternatives: warning: skip creation of /usr/share/man/man1/lzma.1.gz because associated file /usr/share/man/man1/xz.1.gz (of link group lzma) doesn't exist
+#11 20.17 update-alternatives: warning: skip creation of /usr/share/man/man1/unlzma.1.gz because associated file /usr/share/man/man1/unxz.1.gz (of link group lzma) doesn't exist
+#11 20.17 update-alternatives: warning: skip creation of /usr/share/man/man1/lzcat.1.gz because associated file /usr/share/man/man1/xzcat.1.gz (of link group lzma) doesn't exist
+#11 20.17 update-alternatives: warning: skip creation of /usr/share/man/man1/lzmore.1.gz because associated file /usr/share/man/man1/xzmore.1.gz (of link group lzma) doesn't exist
+#11 20.17 update-alternatives: warning: skip creation of /usr/share/man/man1/lzless.1.gz because associated file /usr/share/man/man1/xzless.1.gz (of link group lzma) doesn't exist
+#11 20.17 update-alternatives: warning: skip creation of /usr/share/man/man1/lzdiff.1.gz because associated file /usr/share/man/man1/xzdiff.1.gz (of link group lzma) doesn't exist
+#11 20.17 update-alternatives: warning: skip creation of /usr/share/man/man1/lzcmp.1.gz because associated file /usr/share/man/man1/xzcmp.1.gz (of link group lzma) doesn't exist
+#11 20.17 update-alternatives: warning: skip creation of /usr/share/man/man1/lzgrep.1.gz because associated file /usr/share/man/man1/xzgrep.1.gz (of link group lzma) doesn't exist
+#11 20.17 update-alternatives: warning: skip creation of /usr/share/man/man1/lzegrep.1.gz because associated file /usr/share/man/man1/xzegrep.1.gz (of link group lzma) doesn't exist
+#11 20.17 update-alternatives: warning: skip creation of /usr/share/man/man1/lzfgrep.1.gz because associated file /usr/share/man/man1/xzfgrep.1.gz (of link group lzma) doesn't exist
+#11 20.18 Setting up libquadmath0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 20.19 Setting up libpng16-16:amd64 (1.6.37-3build5) ...
+#11 20.20 Setting up libmpc3:amd64 (1.2.1-2build1) ...
+#11 20.22 Setting up libatomic1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 20.23 Setting up patch (2.7.6-7build2) ...
+#11 20.24 Setting up libjsoncpp25:amd64 (1.9.5-3) ...
+#11 20.26 Setting up fonts-dejavu-core (2.37-2build1) ...
+#11 20.32 Setting up ucf (3.0043) ...
+#11 20.39 debconf: unable to initialize frontend: Dialog
+#11 20.39 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#11 20.39 debconf: falling back to frontend: Readline
+#11 20.42 Setting up libjpeg-turbo8:amd64 (2.1.2-0ubuntu1) ...
+#11 20.43 Setting up libsasl2-2:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+#11 20.44 Setting up libssh-4:amd64 (0.9.6-2ubuntu0.22.04.5) ...
+#11 20.46 Setting up libwebp7:amd64 (1.2.2-2ubuntu0.22.04.2) ...
+#11 20.47 Setting up libubsan1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 20.48 Setting up libmd0:amd64 (1.0.4-1build1) ...
+#11 20.50 Setting up libnsl-dev:amd64 (1.3.0-2build2) ...
+#11 20.51 Setting up librhash0:amd64 (1.4.2-1ubuntu1) ...
+#11 20.52 Setting up libcrypt-dev:amd64 (1:4.4.27-1) ...
+#11 20.54 Setting up git-man (1:2.34.1-1ubuntu1.15) ...
+#11 20.55 Setting up netbase (6.3) ...
+#11 20.58 Setting up cmake-data (3.22.1-1ubuntu1.22.04.2) ...
+#11 20.62 Setting up libbinutils:amd64 (2.38-4ubuntu2.10) ...
+#11 20.63 Setting up libfido2-1:amd64 (1.10.0-1) ...
+#11 20.65 Setting up libisl23:amd64 (0.24-2build1) ...
+#11 20.66 Setting up libc-dev-bin (2.35-0ubuntu3.11) ...
+#11 20.67 Setting up libbsd0:amd64 (0.11.5-1) ...
+#11 20.69 Setting up readline-common (8.1.2-1) ...
+#11 20.70 Setting up publicsuffix (20211207.1025-1) ...
+#11 20.71 Setting up libcc1-0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 20.73 Setting up liblocale-gettext-perl (1.07-4build3) ...
+#11 20.74 Setting up liblsan0:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 20.75 Setting up libitm1:amd64 (12.3.0-1ubuntu1~22.04.2) ...
+#11 20.77 Setting up libgdbm6:amd64 (1.23-1) ...
+#11 20.78 Setting up libicu70:amd64 (70.1-2) ...
+#11 20.79 Setting up libtsan0:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+#11 20.80 Setting up libctf0:amd64 (2.38-4ubuntu2.10) ...
+#11 20.82 Setting up libjpeg8:amd64 (8c-2ubuntu10) ...
+#11 20.83 Setting up pinentry-curses (1.1.1-1build2) ...
+#11 20.85 Setting up cpp-11 (11.4.0-1ubuntu1~22.04.2) ...
+#11 20.88 Setting up manpages-dev (5.10-1ubuntu1) ...
+#11 20.89 Setting up libxdmcp6:amd64 (1:1.1.3-0ubuntu5) ...
+#11 20.90 Setting up libxcb1:amd64 (1.14-3ubuntu3) ...
+#11 20.91 Setting up fontconfig-config (2.13.1-4.2ubuntu5) ...
+#11 21.11 Setting up libedit2:amd64 (3.1-20210910-1build1) ...
+#11 21.12 Setting up libreadline8:amd64 (8.1.2-1) ...
+#11 21.13 Setting up libldap-2.5-0:amd64 (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+#11 21.15 Setting up libfreetype6:amd64 (2.11.1+dfsg-1ubuntu0.3) ...
+#11 21.16 Setting up libgdbm-compat4:amd64 (1.23-1) ...
+#11 21.17 Setting up libgcc-11-dev:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+#11 21.19 Setting up cpp (4:11.2.0-1ubuntu1) ...
+#11 21.20 Setting up gpgconf (2.2.27-3ubuntu2.4) ...
+#11 21.22 Setting up libcurl4:amd64 (7.81.0-1ubuntu1.21) ...
+#11 21.23 Setting up libc6-dev:amd64 (2.35-0ubuntu3.11) ...
+#11 21.24 Setting up libx11-6:amd64 (2:1.7.5-1ubuntu0.3) ...
+#11 21.25 Setting up libtiff5:amd64 (4.3.0-6ubuntu0.12) ...
+#11 21.27 Setting up curl (7.81.0-1ubuntu1.21) ...
+#11 21.28 Setting up libfontconfig1:amd64 (2.13.1-4.2ubuntu5) ...
+#11 21.29 Setting up libxml2:amd64 (2.9.13+dfsg-1ubuntu0.10) ...
+#11 21.30 Setting up libxmuu1:amd64 (2:1.1.3-3) ...
+#11 21.32 Setting up gpg (2.2.27-3ubuntu2.4) ...
+#11 21.33 Setting up gnupg-utils (2.2.27-3ubuntu2.4) ...
+#11 21.34 Setting up binutils-x86-64-linux-gnu (2.38-4ubuntu2.10) ...
+#11 21.35 Setting up libperl5.34:amd64 (5.34.0-3ubuntu1.5) ...
+#11 21.37 Setting up gpg-agent (2.2.27-3ubuntu2.4) ...
+#11 21.70 Setting up libxpm4:amd64 (1:3.5.12-1ubuntu0.22.04.2) ...
+#11 21.71 Setting up libarchive13:amd64 (3.6.0-1ubuntu1.5) ...
+#11 21.73 Setting up openssh-client (1:8.9p1-3ubuntu0.13) ...
+#11 21.78 update-alternatives: using /usr/bin/ssh to provide /usr/bin/rsh (rsh) in auto mode
+#11 21.78 update-alternatives: warning: skip creation of /usr/share/man/man1/rsh.1.gz because associated file /usr/share/man/man1/ssh.1.gz (of link group rsh) doesn't exist
+#11 21.78 update-alternatives: using /usr/bin/slogin to provide /usr/bin/rlogin (rlogin) in auto mode
+#11 21.78 update-alternatives: warning: skip creation of /usr/share/man/man1/rlogin.1.gz because associated file /usr/share/man/man1/slogin.1.gz (of link group rlogin) doesn't exist
+#11 21.79 update-alternatives: using /usr/bin/scp to provide /usr/bin/rcp (rcp) in auto mode
+#11 21.79 update-alternatives: warning: skip creation of /usr/share/man/man1/rcp.1.gz because associated file /usr/share/man/man1/scp.1.gz (of link group rcp) doesn't exist
+#11 21.80 Setting up gpgsm (2.2.27-3ubuntu2.4) ...
+#11 21.81 Setting up libxext6:amd64 (2:1.3.4-1build1) ...
+#11 21.82 Setting up libcurl3-gnutls:amd64 (7.81.0-1ubuntu1.21) ...
+#11 21.84 Setting up binutils (2.38-4ubuntu2.10) ...
+#11 21.85 Setting up dirmngr (2.2.27-3ubuntu2.4) ...
+#11 21.95 Setting up perl (5.34.0-3ubuntu1.5) ...
+#11 21.97 Setting up libgd3:amd64 (2.3.0-2ubuntu2.3) ...
+#11 21.99 Setting up libdpkg-perl (1.21.1ubuntu2.6) ...
+#11 22.00 Setting up libstdc++-11-dev:amd64 (11.4.0-1ubuntu1~22.04.2) ...
+#11 22.01 Setting up gpg-wks-server (2.2.27-3ubuntu2.4) ...
+#11 22.02 Setting up gcc-11 (11.4.0-1ubuntu1~22.04.2) ...
+#11 22.04 Setting up xauth (1:1.1-1build2) ...
+#11 22.05 Setting up cmake (3.22.1-1ubuntu1.22.04.2) ...
+#11 22.06 Setting up libc-devtools (2.35-0ubuntu3.11) ...
+#11 22.08 Setting up gpg-wks-client (2.2.27-3ubuntu2.4) ...
+#11 22.09 Setting up g++-11 (11.4.0-1ubuntu1~22.04.2) ...
+#11 22.10 Setting up libfile-fcntllock-perl (0.22-3build7) ...
+#11 22.12 Setting up libalgorithm-diff-perl (1.201-1) ...
+#11 22.13 Setting up gcc (4:11.2.0-1ubuntu1) ...
+#11 22.15 Setting up dpkg-dev (1.21.1ubuntu2.6) ...
+#11 22.18 Setting up liberror-perl (0.17029-1) ...
+#11 22.19 Setting up git (1:2.34.1-1ubuntu1.15) ...
+#11 22.21 Setting up g++ (4:11.2.0-1ubuntu1) ...
+#11 22.24 update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+#11 22.24 update-alternatives: warning: skip creation of /usr/share/man/man1/c++.1.gz because associated file /usr/share/man/man1/g++.1.gz (of link group c++) doesn't exist
+#11 22.24 Setting up gnupg (2.2.27-3ubuntu2.4) ...
+#11 22.26 Setting up build-essential (12.9ubuntu3) ...
+#11 22.27 Setting up libalgorithm-diff-xs-perl (0.04-6build3) ...
+#11 22.28 Setting up libalgorithm-merge-perl (0.08-3) ...
+#11 22.30 Processing triggers for libc-bin (2.35-0ubuntu3.8) ...
+#11 DONE 23.5s
+
+#16 [dev-bootstrap builder  3/17] RUN mix local.hex --force &&     mix local.rebar --force
+#16 1.304 * creating root/.mix/archives/hex-2.3.1
+#16 1.900 * creating root/.mix/elixir/1-17/rebar3
+#16 DONE 2.0s
+
+#17 [dev-bootstrap builder  4/17] WORKDIR /app
+#17 DONE 0.2s
+
+#18 [dev-peer1 builder  5/17] COPY --from=macula . /macula
+#18 DONE 0.3s
+
+#19 [dev-peer1 builder  6/17] COPY mix.exs mix.lock ./
+#19 DONE 0.1s
+
+#20 [dev-bootstrap builder  7/17] COPY config config
+#20 DONE 0.1s
+
+#21 [dev-bootstrap builder  8/17] COPY apps/macula_arcade/mix.exs apps/macula_arcade/
+#21 DONE 0.1s
+
+#22 [dev-bot1 builder  9/17] COPY apps/macula_arcade_web/mix.exs apps/macula_arcade_web/
+#22 DONE 0.1s
+
+#23 [dev-bootstrap builder 10/17] COPY apps apps
+#23 DONE 0.2s
+
+#24 [dev-bootstrap builder 11/17] RUN cd apps/macula_arcade &&     sed -i 's/{:macula, "~> 0.10.0"}/{:macula, path: "\/macula", override: true}/' mix.exs
+#24 DONE 0.3s
+
+#25 [dev-bootstrap builder 12/17] RUN mix deps.get --only prod
+#25 0.584 * Getting heroicons (https://github.com/tailwindlabs/heroicons.git - v2.2.0)
+#25 1.080 remote: Enumerating objects: 9314, done.        
+#25 1.080 remote: Counting objects:   0% (1/9314)        remote: Counting objects:   1% (94/9314)        remote: Counting objects:   2% (187/9314)        remote: Counting objects:   3% (280/9314)        remote: Counting objects:   4% (373/9314)        remote: Counting objects:   5% (466/9314)        remote: Counting objects:   6% (559/9314)        remote: Counting objects:   7% (652/9314)        remote: Counting objects:   8% (746/9314)        remote: Counting objects:   9% (839/9314)        remote: Counting objects:  10% (932/9314)        remote: Counting objects:  11% (1025/9314)        remote: Counting objects:  12% (1118/9314)        remote: Counting objects:  13% (1211/9314)        remote: Counting objects:  14% (1304/9314)        remote: Counting objects:  15% (1398/9314)        remote: Counting objects:  16% (1491/9314)        remote: Counting objects:  17% (1584/9314)        remote: Counting objects:  18% (1677/9314)        remote: Counting objects:  19% (1770/9314)        remote: Counting objects:  20% (1863/9314)        remote: Counting objects:  21% (1956/9314)        remote: Counting objects:  22% (2050/9314)        remote: Counting objects:  23% (2143/9314)        remote: Counting objects:  24% (2236/9314)        remote: Counting objects:  25% (2329/9314)        remote: Counting objects:  26% (2422/9314)        remote: Counting objects:  27% (2515/9314)        remote: Counting objects:  28% (2608/9314)        remote: Counting objects:  29% (2702/9314)        remote: Counting objects:  30% (2795/9314)        remote: Counting objects:  31% (2888/9314)        remote: Counting objects:  32% (2981/9314)        remote: Counting objects:  33% (3074/9314)        remote: Counting objects:  34% (3167/9314)        remote: Counting objects:  35% (3260/9314)        remote: Counting objects:  36% (3354/9314)        remote: Counting objects:  37% (3447/9314)        remote: Counting objects:  38% (3540/9314)        remote: Counting objects:  39% (3633/9314)        remote: Counting objects:  40% (3726/9314)        remote: Counting objects:  41% (3819/9314)        remote: Counting objects:  42% (3912/9314)        remote: Counting objects:  43% (4006/9314)        remote: Counting objects:  44% (4099/9314)        remote: Counting objects:  45% (4192/9314)        remote: Counting objects:  46% (4285/9314)        remote: Counting objects:  47% (4378/9314)        remote: Counting objects:  48% (4471/9314)        remote: Counting objects:  49% (4564/9314)        remote: Counting objects:  50% (4657/9314)        remote: Counting objects:  51% (4751/9314)        remote: Counting objects:  52% (4844/9314)        remote: Counting objects:  53% (4937/9314)        remote: Counting objects:  54% (5030/9314)        remote: Counting objects:  55% (5123/9314)        remote: Counting objects:  56% (5216/9314)        remote: Counting objects:  57% (5309/9314)        remote: Counting objects:  58% (5403/9314)        remote: Counting objects:  59% (5496/9314)        remote: Counting objects:  60% (5589/9314)        remote: Counting objects:  61% (5682/9314)        remote: Counting objects:  62% (5775/9314)        remote: Counting objects:  63% (5868/9314)        remote: Counting objects:  64% (5961/9314)        remote: Counting objects:  65% (6055/9314)        remote: Counting objects:  66% (6148/9314)        remote: Counting objects:  67% (6241/9314)        remote: Counting objects:  68% (6334/9314)        remote: Counting objects:  69% (6427/9314)        remote: Counting objects:  70% (6520/9314)        remote: Counting objects:  71% (6613/9314)        remote: Counting objects:  72% (6707/9314)        remote: Counting objects:  73% (6800/9314)        remote: Counting objects:  74% (6893/9314)        remote: Counting objects:  75% (6986/9314)        remote: Counting objects:  76% (7079/9314)        remote: Counting objects:  77% (7172/9314)        remote: Counting objects:  78% (7265/9314)        remote: Counting objects:  79% (7359/9314)        remote: Counting objects:  80% (7452/9314)        remote: Counting objects:  81% (7545/9314)        remote: Counting objects:  82% (7638/9314)        remote: Counting objects:  83% (7731/9314)        remote: Counting objects:  84% (7824/9314)        remote: Counting objects:  85% (7917/9314)        remote: Counting objects:  86% (8011/9314)        remote: Counting objects:  87% (8104/9314)        remote: Counting objects:  88% (8197/9314)        remote: Counting objects:  89% (8290/9314)        remote: Counting objects:  90% (8383/9314)        remote: Counting objects:  91% (8476/9314)        remote: Counting objects:  92% (8569/9314)        remote: Counting objects:  93% (8663/9314)        remote: Counting objects:  94% (8756/9314)        remote: Counting objects:  95% (8849/9314)        remote: Counting objects:  96% (8942/9314)        remote: Counting objects:  97% (9035/9314)        remote: Counting objects:  98% (9128/9314)        remote: Counting objects:  99% (9221/9314)        remote: Counting objects: 100% (9314/9314)        remote: Counting objects: 100% (9314/9314), done.        
+#25 1.123 remote: Compressing objects:   0% (1/5470)        remote: Compressing objects:   1% (55/5470)        remote: Compressing objects:   2% (110/5470)        remote: Compressing objects:   3% (165/5470)        remote: Compressing objects:   4% (219/5470)        remote: Compressing objects:   5% (274/5470)        remote: Compressing objects:   6% (329/5470)        remote: Compressing objects:   7% (383/5470)        remote: Compressing objects:   8% (438/5470)        remote: Compressing objects:   9% (493/5470)        remote: Compressing objects:  10% (547/5470)        remote: Compressing objects:  11% (602/5470)        remote: Compressing objects:  12% (657/5470)        remote: Compressing objects:  13% (712/5470)        remote: Compressing objects:  14% (766/5470)        remote: Compressing objects:  15% (821/5470)        remote: Compressing objects:  16% (876/5470)        remote: Compressing objects:  17% (930/5470)        remote: Compressing objects:  18% (985/5470)        remote: Compressing objects:  19% (1040/5470)        remote: Compressing objects:  20% (1094/5470)        remote: Compressing objects:  21% (1149/5470)        remote: Compressing objects:  22% (1204/5470)        remote: Compressing objects:  23% (1259/5470)        remote: Compressing objects:  24% (1313/5470)        remote: Compressing objects:  25% (1368/5470)        remote: Compressing objects:  26% (1423/5470)        remote: Compressing objects:  27% (1477/5470)        remote: Compressing objects:  28% (1532/5470)        remote: Compressing objects:  29% (1587/5470)        remote: Compressing objects:  30% (1641/5470)        remote: Compressing objects:  31% (1696/5470)        remote: Compressing objects:  32% (1751/5470)        remote: Compressing objects:  33% (1806/5470)        remote: Compressing objects:  34% (1860/5470)        remote: Compressing objects:  35% (1915/5470)        remote: Compressing objects:  36% (1970/5470)        remote: Compressing objects:  37% (2024/5470)        remote: Compressing objects:  38% (2079/5470)        remote: Compressing objects:  39% (2134/5470)        remote: Compressing objects:  40% (2188/5470)        remote: Compressing objects:  41% (2243/5470)        remote: Compressing objects:  42% (2298/5470)        remote: Compressing objects:  43% (2353/5470)        remote: Compressing objects:  44% (2407/5470)        remote: Compressing objects:  45% (2462/5470)        remote: Compressing objects:  46% (2517/5470)        remote: Compressing objects:  47% (2571/5470)        remote: Compressing objects:  48% (2626/5470)        remote: Compressing objects:  49% (2681/5470)        remote: Compressing objects:  50% (2735/5470)        remote: Compressing objects:  51% (2790/5470)        remote: Compressing objects:  52% (2845/5470)        remote: Compressing objects:  53% (2900/5470)        remote: Compressing objects:  54% (2954/5470)        remote: Compressing objects:  55% (3009/5470)        remote: Compressing objects:  56% (3064/5470)        remote: Compressing objects:  57% (3118/5470)        remote: Compressing objects:  58% (3173/5470)        remote: Compressing objects:  59% (3228/5470)        remote: Compressing objects:  60% (3282/5470)        remote: Compressing objects:  61% (3337/5470)        remote: Compressing objects:  62% (3392/5470)        remote: Compressing objects:  63% (3447/5470)        remote: Compressing objects:  64% (3501/5470)        remote: Compressing objects:  65% (3556/5470)        remote: Compressing objects:  66% (3611/5470)        remote: Compressing objects:  67% (3665/5470)        remote: Compressing objects:  68% (3720/5470)        remote: Compressing objects:  69% (3775/5470)        remote: Compressing objects:  70% (3829/5470)        remote: Compressing objects:  71% (3884/5470)        remote: Compressing objects:  72% (3939/5470)        remote: Compressing objects:  73% (3994/5470)        remote: Compressing objects:  74% (4048/5470)        remote: Compressing objects:  75% (4103/5470)        remote: Compressing objects:  76% (4158/5470)        remote: Compressing objects:  77% (4212/5470)        remote: Compressing objects:  78% (4267/5470)        remote: Compressing objects:  79% (4322/5470)        remote: Compressing objects:  80% (4376/5470)        remote: Compressing objects:  81% (4431/5470)        remote: Compressing objects:  82% (4486/5470)        remote: Compressing objects:  83% (4541/5470)        remote: Compressing objects:  84% (4595/5470)        remote: Compressing objects:  85% (4650/5470)        remote: Compressing objects:  86% (4705/5470)        remote: Compressing objects:  87% (4759/5470)        remote: Compressing objects:  88% (4814/5470)        remote: Compressing objects:  89% (4869/5470)        remote: Compressing objects:  90% (4923/5470)        remote: Compressing objects:  91% (4978/5470)        remote: Compressing objects:  92% (5033/5470)        remote: Compressing objects:  93% (5088/5470)        remote: Compressing objects:  94% (5142/5470)        remote: Compressing objects:  95% (5197/5470)        remote: Compressing objects:  96% (5252/5470)        remote: Compressing objects:  97% (5306/5470)        remote: Compressing objects:  98% (5361/5470)        remote: Compressing objects:  99% (5416/5470)        remote: Compressing objects: 100% (5470/5470)        remote: Compressing objects: 100% (5470/5470), done.        
+#25 1.407 remote: Total 9314 (delta 4618), reused 7995 (delta 3782), pack-reused 0 (from 0)        
+#25 2.009 Resolving Hex dependencies...
+#25 2.195 Resolution completed in 0.184s
+#25 2.225 Unchanged:
+#25 2.225   aten 0.6.0
+#25 2.225   bandit 1.8.0
+#25 2.225   cc_precompiler 0.1.11
+#25 2.225   db_connection 2.8.1
+#25 2.225   decimal 2.3.0
+#25 2.225   dns_cluster 0.2.0
+#25 2.225   ecto 3.13.5
+#25 2.225   ecto_sql 3.13.2
+#25 2.225   ecto_sqlite3 0.22.0
+#25 2.225   elixir_make 0.9.0
+#25 2.225   esbuild 0.10.0
+#25 2.225   expo 1.1.1
+#25 2.225   exqlite 0.33.1
+#25 2.225   finch 0.20.0
+#25 2.225   gen_batch_server 0.8.9
+#25 2.225   gettext 0.26.2
+#25 2.225   gproc 0.9.1
+#25 2.225   hpax 1.0.3
+#25 2.225   idna 6.1.1
+#25 2.225   jason 1.4.4
+#25 2.225   mime 2.0.7
+#25 2.225   mint 1.7.1
+#25 2.225   msgpack 0.8.1
+#25 2.225   nimble_options 1.1.1
+#25 2.225   nimble_pool 1.1.0
+#25 2.225   phoenix 1.8.1
+#25 2.225   phoenix_ecto 4.7.0
+#25 2.225   phoenix_html 4.3.0
+#25 2.225   phoenix_live_dashboard 0.8.7
+#25 2.225   phoenix_live_view 1.1.17
+#25 2.225   phoenix_pubsub 2.2.0
+#25 2.225   phoenix_template 1.0.4
+#25 2.225   plug 1.18.1
+#25 2.225   plug_crypto 2.1.1
+#25 2.225   quicer 0.2.15
+#25 2.225   ra 2.17.1
+#25 2.226   req 0.5.16
+#25 2.226   seshat 1.0.0
+#25 2.226   snabbkaffe 1.0.10
+#25 2.226   swoosh 1.19.8
+#25 2.226   tailwind 0.4.1
+#25 2.226   telemetry 1.3.0
+#25 2.226   telemetry_metrics 1.1.0
+#25 2.226   telemetry_poller 1.3.0
+#25 2.226   thousand_island 1.4.2
+#25 2.226   unicode_util_compat 0.7.1
+#25 2.226   websock 0.5.3
+#25 2.226   websock_adapter 0.5.9
+#25 2.233 * Getting phoenix_live_view (Hex package)
+#25 2.326 * Getting phoenix (Hex package)
+#25 2.370 * Getting phoenix_ecto (Hex package)
+#25 2.374 * Getting phoenix_html (Hex package)
+#25 2.379 * Getting phoenix_live_dashboard (Hex package)
+#25 2.396 * Getting esbuild (Hex package)
+#25 2.399 * Getting tailwind (Hex package)
+#25 2.402 * Getting telemetry_metrics (Hex package)
+#25 2.405 * Getting telemetry_poller (Hex package)
+#25 2.409 * Getting gettext (Hex package)
+#25 2.415 * Getting jason (Hex package)
+#25 2.419 * Getting bandit (Hex package)
+#25 2.429 * Getting hpax (Hex package)
+#25 2.432 * Getting plug (Hex package)
+#25 2.441 * Getting telemetry (Hex package)
+#25 2.444 * Getting thousand_island (Hex package)
+#25 2.448 * Getting websock (Hex package)
+#25 2.450 * Getting mime (Hex package)
+#25 2.451 * Getting plug_crypto (Hex package)
+#25 2.453 * Getting expo (Hex package)
+#25 2.459 * Getting ecto (Hex package)
+#25 2.479 * Getting decimal (Hex package)
+#25 2.481 * Getting phoenix_pubsub (Hex package)
+#25 2.484 * Getting phoenix_template (Hex package)
+#25 2.487 * Getting websock_adapter (Hex package)
+#25 2.489 * Getting dns_cluster (Hex package)
+#25 2.491 * Getting ecto_sql (Hex package)
+#25 2.502 * Getting ecto_sqlite3 (Hex package)
+#25 2.506 * Getting swoosh (Hex package)
+#25 2.519 * Getting req (Hex package)
+#25 2.525 * Getting finch (Hex package)
+#25 2.529 * Getting mint (Hex package)
+#25 2.598 * Getting nimble_options (Hex package)
+#25 2.600 * Getting nimble_pool (Hex package)
+#25 2.603 * Getting idna (Hex package)
+#25 2.614 * Getting unicode_util_compat (Hex package)
+#25 2.619 * Getting exqlite (Hex package)
+#25 2.676 * Getting cc_precompiler (Hex package)
+#25 2.679 * Getting db_connection (Hex package)
+#25 2.684 * Getting elixir_make (Hex package)
+#25 2.687 * Getting quicer (Hex package)
+#25 2.698 * Getting msgpack (Hex package)
+#25 2.701 * Getting gproc (Hex package)
+#25 2.707 * Getting ra (Hex package)
+#25 2.720 * Getting aten (Hex package)
+#25 2.723 * Getting gen_batch_server (Hex package)
+#25 2.725 * Getting seshat (Hex package)
+#25 2.728 * Getting snabbkaffe (Hex package)
+#25 DONE 3.0s
+
+#26 [dev-peer1 builder 13/17] COPY priv priv
+#26 DONE 0.1s
+
+#27 [dev-peer1 builder 14/17] RUN mix compile
+#27 0.643 ==> decimal
+#27 0.643 Compiling 4 files (.ex)
+#27 0.994 Generated decimal app
+#27 1.005 ==> mime
+#27 1.005 Compiling 1 file (.ex)
+#27 1.076 Generated mime app
+#27 1.092 ==> nimble_options
+#27 1.092 Compiling 3 files (.ex)
+#27 1.307 Generated nimble_options app
+#27 1.569 ===> Analyzing applications...
+#27 1.600 ===> Compiling gproc
+#27 2.381 ===> Analyzing applications...
+#27 2.448 ===> Compiling unicode_util_compat
+#27 2.869 ===> Analyzing applications...
+#27 3.051 ===> Compiling idna
+#27 6.481 ===> Analyzing applications...
+#27 6.503 ===> Compiling telemetry
+#27 6.626 ==> telemetry_metrics
+#27 6.626 Compiling 7 files (.ex)
+#27 6.700 Generated telemetry_metrics app
+#27 6.977 ===> Analyzing applications...
+#27 6.997 ===> Compiling telemetry_poller
+#27 7.116 ==> thousand_island
+#27 7.116 Compiling 16 files (.ex)
+#27 7.220 Generated thousand_island app
+#27 7.244 ==> jason
+#27 7.244 Compiling 10 files (.ex)
+#27 8.100 Generated jason app
+#27 8.131 ==> esbuild
+#27 8.131 Compiling 4 files (.ex)
+#27 8.191 Generated esbuild app
+#27 8.454 ===> Analyzing applications...
+#27 8.468 ===> Compiling gen_batch_server
+#27 8.622 src/gen_batch_server.erl:269: Warning: INFO: receive matches any message, this is always fast
+#27 8.622 src/gen_batch_server.erl:323: Warning: INFO: receive matches any message, this is always fast
+#27 8.622 
+#27 8.656 ==> phoenix_html
+#27 8.656 Compiling 6 files (.ex)
+#27 8.806 Generated phoenix_html app
+#27 8.823 ==> phoenix_template
+#27 8.823 Compiling 4 files (.ex)
+#27 8.884 Generated phoenix_template app
+#27 8.902 ==> db_connection
+#27 8.902 Compiling 18 files (.ex)
+#27 9.311 Generated db_connection app
+#27 9.358 ==> expo
+#27 9.358 Compiling 2 files (.erl)
+#27 9.632 Compiling 22 files (.ex)
+#27 9.774 Generated expo app
+#27 9.802 ==> phoenix_pubsub
+#27 9.802 Compiling 12 files (.ex)
+#27 9.993 Generated phoenix_pubsub app
+#27 10.01 ==> plug_crypto
+#27 10.01 Compiling 5 files (.ex)
+#27 10.09 Generated plug_crypto app
+#27 10.37 ===> Analyzing applications...
+#27 10.39 ===> Compiling seshat
+#27 10.53 ==> hpax
+#27 10.53 Compiling 4 files (.ex)
+#27 10.81 Generated hpax app
+#27 10.82 ==> mint
+#27 10.82 Compiling 1 file (.erl)
+#27 10.87 Compiling 20 files (.ex)
+#27 11.42 Generated mint app
+#27 11.44 ==> dns_cluster
+#27 11.44 Compiling 1 file (.ex)
+#27 11.49 Generated dns_cluster app
+#27 11.51 ==> gettext
+#27 11.51 Compiling 18 files (.ex)
+#27 11.67 Generated gettext app
+#27 11.70 ==> ecto
+#27 11.70 Compiling 56 files (.ex)
+#27 13.17 Generated ecto app
+#27 13.50 ===> Analyzing applications...
+#27 13.53 ===> Compiling snabbkaffe
+#27 13.73 ==> plug
+#27 13.73 Compiling 1 file (.erl)
+#27 13.82 Compiling 40 files (.ex)
+#27 14.90 Generated plug app
+#27 15.21 ===> Analyzing applications...
+#27 15.23 ===> Compiling aten
+#27 15.63 ===> Analyzing applications...
+#27 15.69 ===> Compiling ra
+#27 17.13 ./build.sh 'v2.3.8'
+#27 18.28 Cloning into 'msquic'...
+#27 19.68 Note: switching to 'e453ade8d9b35f53290fdbd111738f86150253a1'.
+#27 19.68 
+#27 19.68 You are in 'detached HEAD' state. You can look around, make experimental
+#27 19.68 changes and commit them, and you can discard any commits you make in this
+#27 19.68 state without impacting any branches by switching back to a branch.
+#27 19.68 
+#27 19.68 If you want to create a new branch to retain commits you create, you may
+#27 19.68 do so (now or later) by using -c with the switch command. Example:
+#27 19.68 
+#27 19.68   git switch -c <new-branch-name>
+#27 19.68 
+#27 19.68 Or undo this operation with:
+#27 19.68 
+#27 19.68   git switch -
+#27 19.68 
+#27 19.68 Turn off this advice by setting config variable advice.detachedHead to false
+#27 19.68 
+#27 19.81 Submodule 'submodules/clog' (https://github.com/microsoft/CLOG.git) registered for path 'submodules/clog'
+#27 19.81 Submodule 'submodules/googletest' (https://github.com/google/googletest) registered for path 'submodules/googletest'
+#27 19.81 Submodule 'submodules/openssl' (https://github.com/quictls/openssl.git) registered for path 'submodules/openssl'
+#27 19.82 Submodule 'submodules/openssl3' (https://github.com/quictls/openssl.git) registered for path 'submodules/openssl3'
+#27 19.82 Submodule 'submodules/xdp-for-windows' (https://github.com/microsoft/xdp-for-windows.git) registered for path 'submodules/xdp-for-windows'
+#27 19.82 Cloning into '/app/deps/quicer/msquic/submodules/clog'...
+#27 20.33 Cloning into '/app/deps/quicer/msquic/submodules/googletest'...
+#27 20.93 Cloning into '/app/deps/quicer/msquic/submodules/openssl'...
+#27 24.37 Cloning into '/app/deps/quicer/msquic/submodules/openssl3'...
+#27 27.82 Cloning into '/app/deps/quicer/msquic/submodules/xdp-for-windows'...
+#27 29.48 From https://github.com/microsoft/CLOG
+#27 29.48  * branch            ca6e640fbf7f53ec9de915f1f4d852c10d874d13 -> FETCH_HEAD
+#27 29.49 Submodule path 'submodules/clog': checked out 'ca6e640fbf7f53ec9de915f1f4d852c10d874d13'
+#27 30.74 From https://github.com/google/googletest
+#27 30.74  * branch            563ebf1769af08d448765c31064260e1a16fcced -> FETCH_HEAD
+#27 30.77 Submodule path 'submodules/googletest': checked out '563ebf1769af08d448765c31064260e1a16fcced'
+#27 33.81 From https://github.com/quictls/openssl
+#27 33.81  * branch              612d8e44d687e4b71c4724319d7aa27a733bcbca -> FETCH_HEAD
+#27 34.75 Submodule path 'submodules/openssl': checked out '612d8e44d687e4b71c4724319d7aa27a733bcbca'
+#27 34.75 Submodule 'boringssl' (https://boringssl.googlesource.com/boringssl) registered for path 'submodules/openssl/boringssl'
+#27 34.75 Submodule 'krb5' (https://github.com/krb5/krb5) registered for path 'submodules/openssl/krb5'
+#27 34.76 Submodule 'pyca.cryptography' (https://github.com/pyca/cryptography.git) registered for path 'submodules/openssl/pyca-cryptography'
+#27 34.76 Submodule 'wycheproof' (https://github.com/google/wycheproof) registered for path 'submodules/openssl/wycheproof'
+#27 34.76 Cloning into '/app/deps/quicer/msquic/submodules/openssl/boringssl'...
+#27 37.28 Cloning into '/app/deps/quicer/msquic/submodules/openssl/krb5'...
+#27 38.02 Cloning into '/app/deps/quicer/msquic/submodules/openssl/pyca-cryptography'...
+#27 39.51 Cloning into '/app/deps/quicer/msquic/submodules/openssl/wycheproof'...
+#27 42.20 From https://boringssl.googlesource.com/boringssl
+#27 42.20  * branch            2070f8ad9151dc8f3a73bffaa146b5e6937a583f -> FETCH_HEAD
+#27 42.44 Submodule path 'submodules/openssl/boringssl': checked out '2070f8ad9151dc8f3a73bffaa146b5e6937a583f'
+#27 44.33 From https://github.com/krb5/krb5
+#27 44.33  * branch            890ca2f401924cdcb88f493950b04700bbe52db3 -> FETCH_HEAD
+#27 44.55 Submodule path 'submodules/openssl/krb5': checked out '890ca2f401924cdcb88f493950b04700bbe52db3'
+#27 45.92 From https://github.com/pyca/cryptography
+#27 45.92  * branch            fa84d185c0fefa7d612759e02a26def2f948fe34 -> FETCH_HEAD
+#27 46.33 Submodule path 'submodules/openssl/pyca-cryptography': checked out 'fa84d185c0fefa7d612759e02a26def2f948fe34'
+#27 47.67 From https://github.com/google/wycheproof
+#27 47.67  * branch            2196000605e45d91097147c9c71f26b72af58003 -> FETCH_HEAD
+#27 47.79 Submodule path 'submodules/openssl/wycheproof': checked out '2196000605e45d91097147c9c71f26b72af58003'
+#27 49.35 From https://github.com/quictls/openssl
+#27 49.35  * branch              330feef3dcb69d95cd752d54cb9254b366bdc7cf -> FETCH_HEAD
+#27 50.56 Submodule path 'submodules/openssl3': checked out '330feef3dcb69d95cd752d54cb9254b366bdc7cf'
+#27 50.56 Submodule 'gost-engine' (https://github.com/gost-engine/engine) registered for path 'submodules/openssl3/gost-engine'
+#27 50.56 Submodule 'krb5' (https://github.com/krb5/krb5) registered for path 'submodules/openssl3/krb5'
+#27 50.56 Submodule 'oqs-provider' (https://github.com/open-quantum-safe/oqs-provider.git) registered for path 'submodules/openssl3/oqs-provider'
+#27 50.57 Submodule 'pyca.cryptography' (https://github.com/pyca/cryptography.git) registered for path 'submodules/openssl3/pyca-cryptography'
+#27 50.57 Submodule 'python-ecdsa' (https://github.com/tlsfuzzer/python-ecdsa) registered for path 'submodules/openssl3/python-ecdsa'
+#27 50.57 Submodule 'tlsfuzzer' (https://github.com/tlsfuzzer/tlsfuzzer) registered for path 'submodules/openssl3/tlsfuzzer'
+#27 50.57 Submodule 'tlslite-ng' (https://github.com/tlsfuzzer/tlslite-ng) registered for path 'submodules/openssl3/tlslite-ng'
+#27 50.57 Submodule 'wycheproof' (https://github.com/google/wycheproof) registered for path 'submodules/openssl3/wycheproof'
+#27 50.57 Cloning into '/app/deps/quicer/msquic/submodules/openssl3/gost-engine'...
+#27 51.46 Cloning into '/app/deps/quicer/msquic/submodules/openssl3/krb5'...
+#27 52.17 Cloning into '/app/deps/quicer/msquic/submodules/openssl3/oqs-provider'...
+#27 52.69 Cloning into '/app/deps/quicer/msquic/submodules/openssl3/pyca-cryptography'...
+#27 54.51 Cloning into '/app/deps/quicer/msquic/submodules/openssl3/python-ecdsa'...
+#27 55.05 Cloning into '/app/deps/quicer/msquic/submodules/openssl3/tlsfuzzer'...
+#27 55.79 Cloning into '/app/deps/quicer/msquic/submodules/openssl3/tlslite-ng'...
+#27 56.39 Cloning into '/app/deps/quicer/msquic/submodules/openssl3/wycheproof'...
+#27 58.46 From https://github.com/gost-engine/engine
+#27 58.46  * branch            2a8a5e0ecaa3e3d6f4ec722a49aa72476755c2b7 -> FETCH_HEAD
+#27 58.50 Submodule path 'submodules/openssl3/gost-engine': checked out '2a8a5e0ecaa3e3d6f4ec722a49aa72476755c2b7'
+#27 58.51 Submodule 'libprov' (https://github.com/provider-corner/libprov.git) registered for path 'submodules/openssl3/gost-engine/libprov'
+#27 58.51 Cloning into '/app/deps/quicer/msquic/submodules/openssl3/gost-engine/libprov'...
+#27 60.05 From https://github.com/provider-corner/libprov
+#27 60.05  * branch            8a126e09547630ef900177625626b6156052f0ee -> FETCH_HEAD
+#27 60.06 Submodule path 'submodules/openssl3/gost-engine/libprov': checked out '8a126e09547630ef900177625626b6156052f0ee'
+#27 61.76 From https://github.com/krb5/krb5
+#27 61.76  * branch            aa9b4a2a64046afd2fab7cb49c346295874a5fb6 -> FETCH_HEAD
+#27 61.97 Submodule path 'submodules/openssl3/krb5': checked out 'aa9b4a2a64046afd2fab7cb49c346295874a5fb6'
+#27 63.07 From https://github.com/open-quantum-safe/oqs-provider
+#27 63.07  * branch            3f3d8a8cf331c73a26fe93a598273997cb54eb4f -> FETCH_HEAD
+#27 63.08 Submodule path 'submodules/openssl3/oqs-provider': checked out '3f3d8a8cf331c73a26fe93a598273997cb54eb4f'
+#27 64.48 From https://github.com/pyca/cryptography
+#27 64.48  * branch            c18d0567386414efa3caef7ed586c4ca75bf3a8b -> FETCH_HEAD
+#27 64.90 Submodule path 'submodules/openssl3/pyca-cryptography': checked out 'c18d0567386414efa3caef7ed586c4ca75bf3a8b'
+#27 65.98 From https://github.com/tlsfuzzer/python-ecdsa
+#27 65.98  * branch            4de8d5bf89089d1140eb99aa5d7eb2dc8e6337b6 -> FETCH_HEAD
+#27 65.99 Submodule path 'submodules/openssl3/python-ecdsa': checked out '4de8d5bf89089d1140eb99aa5d7eb2dc8e6337b6'
+#27 67.12 From https://github.com/tlsfuzzer/tlsfuzzer
+#27 67.12  * branch            dbd56c149072e656ca8d6a43a59588f3e7513da2 -> FETCH_HEAD
+#27 67.18 Submodule path 'submodules/openssl3/tlsfuzzer': checked out 'dbd56c149072e656ca8d6a43a59588f3e7513da2'
+#27 68.30 From https://github.com/tlsfuzzer/tlslite-ng
+#27 68.30  * branch            771e9f59d639dbb0e2fa8e646c8e588405d3903e -> FETCH_HEAD
+#27 68.33 Submodule path 'submodules/openssl3/tlslite-ng': checked out '771e9f59d639dbb0e2fa8e646c8e588405d3903e'
+#27 69.93 From https://github.com/google/wycheproof
+#27 69.93  * branch            2196000605e45d91097147c9c71f26b72af58003 -> FETCH_HEAD
+#27 70.05 Submodule path 'submodules/openssl3/wycheproof': checked out '2196000605e45d91097147c9c71f26b72af58003'
+#27 71.20 From https://github.com/microsoft/xdp-for-windows
+#27 71.20  * branch            51bba848b1a7c571c7eb7226977a6f24c0abffd3 -> FETCH_HEAD
+#27 71.23 Submodule path 'submodules/xdp-for-windows': checked out '51bba848b1a7c571c7eb7226977a6f24c0abffd3'
+#27 71.23 Submodule 'submodules/ndis-driver-library' (https://github.com/microsoft/ndis-driver-library) registered for path 'submodules/xdp-for-windows/submodules/ndis-driver-library'
+#27 71.23 Submodule 'submodules/net-offloads' (https://github.com/microsoft/net-offloads.git) registered for path 'submodules/xdp-for-windows/submodules/net-offloads'
+#27 71.23 Submodule 'submodules/wil' (https://github.com/microsoft/wil) registered for path 'submodules/xdp-for-windows/submodules/wil'
+#27 71.24 Cloning into '/app/deps/quicer/msquic/submodules/xdp-for-windows/submodules/ndis-driver-library'...
+#27 71.74 Cloning into '/app/deps/quicer/msquic/submodules/xdp-for-windows/submodules/net-offloads'...
+#27 72.22 Cloning into '/app/deps/quicer/msquic/submodules/xdp-for-windows/submodules/wil'...
+#27 73.85 From https://github.com/microsoft/ndis-driver-library
+#27 73.85  * branch            6bf878da1a54bf471d4d934cef6e26355860d386 -> FETCH_HEAD
+#27 73.85 Submodule path 'submodules/xdp-for-windows/submodules/ndis-driver-library': checked out '6bf878da1a54bf471d4d934cef6e26355860d386'
+#27 74.89 From https://github.com/microsoft/net-offloads
+#27 74.89  * branch            02dbf4e58e3b7f752ba3d97d17c36d4cd5fdc490 -> FETCH_HEAD
+#27 74.89 Submodule path 'submodules/xdp-for-windows/submodules/net-offloads': checked out '02dbf4e58e3b7f752ba3d97d17c36d4cd5fdc490'
+#27 76.08 From https://github.com/microsoft/wil
+#27 76.08  * branch            ae986e12b2fa722ba70e9761ae6897565293cbea -> FETCH_HEAD
+#27 76.10 Submodule path 'submodules/xdp-for-windows/submodules/wil': checked out 'ae986e12b2fa722ba70e9761ae6897565293cbea'
+#27 76.11 Patching Msquic 2.3.8
+#27 76.12 Patch patches/12edf3725475d4a99e5598df3289bace47b8f56e.patch already exists, skipping download
+#27 76.12 patching file src/inc/msquic_posix.h
+#27 76.12 Patch patches/e0201eb4e007e7524aef007be67f2281f949f102.patch already exists, skipping download
+#27 76.12 patching file src/core/binding.c
+#27 76.12 Patch patches/b16a14a72e8c74407ee4a079a1f57efe0246f739.patch already exists, skipping download
+#27 76.12 patching file src/generated/stdout/quic_trace.c
+#27 76.13 Patch patches/9261dacc1dd9a67f6fa8d5fbe663082508b4c605.patch already exists, skipping download
+#27 76.13 patching file src/platform/datapath_epoll.c
+#27 76.17 -- The C compiler identification is GNU 11.4.0
+#27 76.22 -- The CXX compiler identification is GNU 11.4.0
+#27 76.22 -- Detecting C compiler ABI info
+#27 76.28 -- Detecting C compiler ABI info - done
+#27 76.28 -- Check for working C compiler: /usr/bin/cc - skipped
+#27 76.28 -- Detecting C compile features
+#27 76.29 -- Detecting C compile features - done
+#27 76.29 -- Detecting CXX compiler ABI info
+#27 76.35 -- Detecting CXX compiler ABI info - done
+#27 76.36 -- Check for working CXX compiler: /usr/bin/c++ - skipped
+#27 76.36 -- Detecting CXX compile features
+#27 76.36 -- Detecting CXX compile features - done
+#27 76.50 -- CMAKE Version: 3.22.1
+#27 76.50 -- Source Dir: /app/deps/quicer/msquic
+#27 76.50 -- Host System name: Linux
+#27 76.50 -- Setting policy 0091
+#27 76.50 -- System name: Linux
+#27 76.50 -- System version: 6.17.7-arch1-1
+#27 76.50 -- Platform version: 
+#27 76.50 -- Build type: RelWithDebInfo
+#27 76.50 -- QUIC Platform: linux
+#27 76.50 -- Version Build ID: 0
+#27 76.50 -- Version Suffix: -private
+#27 76.50 -- Looking for _SC_PHYS_PAGES
+#27 76.56 -- Looking for _SC_PHYS_PAGES - found
+#27 76.56 -- Looking for sysconf
+#27 76.61 -- Looking for sysconf - found
+#27 76.62 -- Looking for UDP_SEGMENT
+#27 76.67 -- Looking for UDP_SEGMENT - found
+#27 76.67 -- Looking for SO_ATTACH_REUSEPORT_CBPF
+#27 76.73 -- Looking for SO_ATTACH_REUSEPORT_CBPF - found
+#27 76.73 -- Looking for sendmmsg
+#27 76.78 -- Looking for sendmmsg - found
+#27 76.78 -- Enabling OpenSsl configuration tests
+#27 76.78 -- Enabling CA file tests
+#27 76.78 -- QUIC_ENABLE_LOGGING is false. Disabling logging
+#27 76.78 -- Found libatomic: /usr/lib/x86_64-linux-gnu/libatomic.so.1
+#27 76.78 -- libnuma not found. If build fails, install libnuma
+#27 76.78 -- Enabling shared ephemeral port work around
+#27 77.05 -- Configuring for OpenSSL 1.1
+#27 77.05 -- Setting openssldir to /usr/lib/ssl
+#27 77.05 -- Configuring OpenSSL: /app/deps/quicer/msquic/submodules/openssl/config;CC=/usr/bin/cc;CXX=/usr/bin/c++ enable-tls1_3;no-makedepend;no-dgram;no-ssl3;no-psk;no-srp;no-zlib;no-egd;no-idea;no-rc5;no-rc4;no-afalgeng;no-comp;no-cms;no-ct;no-srp;no-srtp;no-ts;no-gost;no-dso;no-ec2m;no-tls1;no-tls1_1;no-tls1_2;no-dtls;no-dtls1;no-dtls1_2;no-ssl;no-ssl3-method;no-tls1-method;no-tls1_1-method;no-tls1_2-method;no-dtls1-method;no-dtls1_2-method;no-siphash;no-whirlpool;no-aria;no-bf;no-blake2;no-sm2;no-sm3;no-sm4;no-camellia;no-cast;no-md4;no-mdc2;no-ocb;no-rc2;no-rmd160;no-scrypt;no-seed;no-weak-ssl-ciphers;no-shared;no-tests;--openssldir="/usr/lib/ssl";--prefix=/app/deps/quicer/c_build/_deps/opensslquic-build/openssl
+#27 77.05 -- Looking for pthread.h
+#27 77.11 -- Looking for pthread.h - found
+#27 77.11 -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+#27 77.17 -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+#27 77.17 -- Found Threads: TRUE  
+#27 77.17 -- Configuring for OpenSSL
+#27 77.17 -- Configuring done
+#27 77.19 -- Generating done
+#27 77.19 -- Build files have been written to: /app/deps/quicer/c_build
+#27 77.20 make[1]: Entering directory '/app/deps/quicer/c_build'
+#27 77.22 make[2]: Entering directory '/app/deps/quicer/c_build'
+#27 77.22 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 77.22 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 77.22 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 77.22 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 77.22 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 77.23 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 77.23 [  1%] OpenSSL configure
+#27 77.23 [  2%] Building C object msquic/src/core/CMakeFiles/core.dir/ack_tracker.c.o
+#27 77.23 [  3%] Building C object msquic/src/core/CMakeFiles/core.dir/congestion_control.c.o
+#27 77.23 [  6%] Building C object msquic/src/core/CMakeFiles/core.dir/api.c.o
+#27 77.23 [  6%] Building C object msquic/src/core/CMakeFiles/core.dir/binding.c.o
+#27 77.23 [  7%] Building C object msquic/src/core/CMakeFiles/core.dir/crypto.c.o
+#27 77.23 [  8%] Building C object msquic/src/core/CMakeFiles/core.dir/connection.c.o
+#27 77.23 [ 10%] Building C object msquic/src/core/CMakeFiles/core.dir/cubic.c.o
+#27 77.23 [ 11%] Building C object msquic/src/core/CMakeFiles/core.dir/bbr.c.o
+#27 77.23 [ 13%] Building C object msquic/src/core/CMakeFiles/core.dir/frame.c.o
+#27 77.23 [  5%] Building C object msquic/src/core/CMakeFiles/core.dir/configuration.c.o
+#27 77.23 [ 14%] Building C object msquic/src/core/CMakeFiles/core.dir/datagram.c.o
+#27 77.23 [ 12%] Building C object msquic/src/core/CMakeFiles/core.dir/crypto_tls.c.o
+#27 77.23 [ 15%] Building C object msquic/src/core/CMakeFiles/core.dir/lookup.c.o
+#27 77.24 [ 16%] Building C object msquic/src/core/CMakeFiles/core.dir/listener.c.o
+#27 77.24 [ 17%] Building C object msquic/src/core/CMakeFiles/core.dir/library.c.o
+#27 77.24 [ 20%] Building C object msquic/src/core/CMakeFiles/core.dir/loss_detection.c.o
+#27 77.24 [ 23%] Building C object msquic/src/core/CMakeFiles/core.dir/packet_space.c.o
+#27 77.24 [ 22%] Building C object msquic/src/core/CMakeFiles/core.dir/mtu_discovery.c.o
+#27 77.24 [ 19%] Building C object msquic/src/core/CMakeFiles/core.dir/packet.c.o
+#27 77.24 [ 24%] Building C object msquic/src/core/CMakeFiles/core.dir/range.c.o
+#27 77.24 [ 25%] Building C object msquic/src/core/CMakeFiles/core.dir/path.c.o
+#27 77.24 [ 25%] Building C object msquic/src/core/CMakeFiles/core.dir/operation.c.o
+#27 77.24 [ 26%] Building C object msquic/src/core/CMakeFiles/core.dir/recv_buffer.c.o
+#27 77.24 [ 28%] Building C object msquic/src/core/CMakeFiles/core.dir/registration.c.o
+#27 77.24 [ 29%] Building C object msquic/src/core/CMakeFiles/core.dir/packet_builder.c.o
+#27 77.24 [ 31%] Building C object msquic/src/core/CMakeFiles/core.dir/send.c.o
+#27 77.24 [ 31%] Building C object msquic/src/core/CMakeFiles/core.dir/send_buffer.c.o
+#27 77.24 [ 32%] Building C object msquic/src/core/CMakeFiles/core.dir/sent_packet_metadata.c.o
+#27 77.24 [ 33%] Building C object msquic/src/core/CMakeFiles/core.dir/settings.c.o
+#27 77.24 [ 34%] Building C object msquic/src/core/CMakeFiles/core.dir/stream.c.o
+#27 77.25 [ 35%] Building C object msquic/src/core/CMakeFiles/core.dir/stream_recv.c.o
+#27 77.40 [ 37%] Building C object msquic/src/core/CMakeFiles/core.dir/stream_send.c.o
+#27 77.41 [ 38%] Building C object msquic/src/core/CMakeFiles/core.dir/stream_set.c.o
+#27 77.42 [ 39%] Building C object msquic/src/core/CMakeFiles/core.dir/timer_wheel.c.o
+#27 77.42 [ 40%] Building C object msquic/src/core/CMakeFiles/core.dir/worker.c.o
+#27 77.43 [ 41%] Building C object msquic/src/core/CMakeFiles/core.dir/version_neg.c.o
+#27 77.45 [ 42%] Building C object msquic/src/core/CMakeFiles/core.dir/inline.c.o
+#27 77.45 [ 43%] Building C object msquic/src/core/CMakeFiles/core.dir/sliding_window_extremum.c.o
+#27 77.51 Operating system: x86_64-whatever-linux2
+#27 77.73 Configuring OpenSSL version 1.1.1w+quic (0x1010117fL) for linux-x86_64
+#27 77.73 Using os-specific seed configuration
+#27 78.21 [ 44%] Linking C static library ../../obj/Release/libcore.a
+#27 78.41 Creating configdata.pm
+#27 78.41 Creating Makefile
+#27 78.43 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 78.44 [ 44%] Built target core
+#27 78.48 
+#27 78.48 **********************************************************************
+#27 78.48 ***                                                                ***
+#27 78.48 ***   OpenSSL has been successfully configured                     ***
+#27 78.48 ***                                                                ***
+#27 78.48 ***   If you encounter a problem while building, please open an    ***
+#27 78.48 ***   issue on GitHub <https://github.com/openssl/openssl/issues>  ***
+#27 78.48 ***   and include the output from the following command:           ***
+#27 78.48 ***                                                                ***
+#27 78.48 ***       perl configdata.pm --dump                                ***
+#27 78.48 ***                                                                ***
+#27 78.48 ***   (If you are new to OpenSSL, you might want to consult the    ***
+#27 78.48 ***   'Troubleshooting' section in the INSTALL file first)         ***
+#27 78.48 ***                                                                ***
+#27 78.48 **********************************************************************
+#27 78.49 [ 46%] OpenSSL build
+#27 78.49 make[4]: Entering directory '/app/deps/quicer/c_build/_deps/opensslquic-build/submodules/openssl'
+#27 78.49 make[4]: warning: -j32 forced in submake: resetting jobserver mode.
+#27 78.55 make[5]: Entering directory '/app/deps/quicer/c_build/_deps/opensslquic-build/submodules/openssl'
+#27 78.55 make[5]: Leaving directory '/app/deps/quicer/c_build/_deps/opensslquic-build/submodules/openssl'
+#27 78.56 make[5]: Entering directory '/app/deps/quicer/c_build/_deps/opensslquic-build/submodules/openssl'
+#27 81.20 ar: creating apps/libapps.a
+#27 81.32 ar: creating libcrypto.a
+#27 81.70 ar: creating libssl.a
+#27 81.73 make[5]: Leaving directory '/app/deps/quicer/c_build/_deps/opensslquic-build/submodules/openssl'
+#27 81.73 created directory `/app/deps/quicer/c_build/_deps/opensslquic-build/openssl/lib'
+#27 81.73 *** Installing runtime libraries
+#27 81.74 *** Installing development files
+#27 81.74 created directory `/app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl'
+#27 81.74 install ../../../../../msquic/submodules/openssl/include/openssl/aes.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/aes.h
+#27 81.74 install ../../../../../msquic/submodules/openssl/include/openssl/asn1.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/asn1.h
+#27 81.74 install ../../../../../msquic/submodules/openssl/include/openssl/asn1_mac.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/asn1_mac.h
+#27 81.75 install ../../../../../msquic/submodules/openssl/include/openssl/asn1err.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/asn1err.h
+#27 81.75 install ../../../../../msquic/submodules/openssl/include/openssl/asn1t.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/asn1t.h
+#27 81.75 install ../../../../../msquic/submodules/openssl/include/openssl/async.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/async.h
+#27 81.75 install ../../../../../msquic/submodules/openssl/include/openssl/asyncerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/asyncerr.h
+#27 81.75 install ../../../../../msquic/submodules/openssl/include/openssl/bio.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/bio.h
+#27 81.75 install ../../../../../msquic/submodules/openssl/include/openssl/bioerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/bioerr.h
+#27 81.76 install ../../../../../msquic/submodules/openssl/include/openssl/blowfish.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/blowfish.h
+#27 81.76 install ../../../../../msquic/submodules/openssl/include/openssl/bn.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/bn.h
+#27 81.76 install ../../../../../msquic/submodules/openssl/include/openssl/bnerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/bnerr.h
+#27 81.76 install ../../../../../msquic/submodules/openssl/include/openssl/buffer.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/buffer.h
+#27 81.76 install ../../../../../msquic/submodules/openssl/include/openssl/buffererr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/buffererr.h
+#27 81.77 install ../../../../../msquic/submodules/openssl/include/openssl/camellia.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/camellia.h
+#27 81.77 install ../../../../../msquic/submodules/openssl/include/openssl/cast.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/cast.h
+#27 81.77 install ../../../../../msquic/submodules/openssl/include/openssl/cmac.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/cmac.h
+#27 81.77 install ../../../../../msquic/submodules/openssl/include/openssl/cms.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/cms.h
+#27 81.77 install ../../../../../msquic/submodules/openssl/include/openssl/cmserr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/cmserr.h
+#27 81.77 install ../../../../../msquic/submodules/openssl/include/openssl/comp.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/comp.h
+#27 81.78 install ../../../../../msquic/submodules/openssl/include/openssl/comperr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/comperr.h
+#27 81.78 install ../../../../../msquic/submodules/openssl/include/openssl/conf.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/conf.h
+#27 81.78 install ../../../../../msquic/submodules/openssl/include/openssl/conf_api.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/conf_api.h
+#27 81.78 install ../../../../../msquic/submodules/openssl/include/openssl/conferr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/conferr.h
+#27 81.78 install ../../../../../msquic/submodules/openssl/include/openssl/crypto.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/crypto.h
+#27 81.79 install ../../../../../msquic/submodules/openssl/include/openssl/cryptoerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/cryptoerr.h
+#27 81.79 install ../../../../../msquic/submodules/openssl/include/openssl/ct.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ct.h
+#27 81.79 install ../../../../../msquic/submodules/openssl/include/openssl/cterr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/cterr.h
+#27 81.79 install ../../../../../msquic/submodules/openssl/include/openssl/des.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/des.h
+#27 81.79 install ../../../../../msquic/submodules/openssl/include/openssl/dh.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/dh.h
+#27 81.79 install ../../../../../msquic/submodules/openssl/include/openssl/dherr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/dherr.h
+#27 81.80 install ../../../../../msquic/submodules/openssl/include/openssl/dsa.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/dsa.h
+#27 81.80 install ../../../../../msquic/submodules/openssl/include/openssl/dsaerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/dsaerr.h
+#27 81.80 install ../../../../../msquic/submodules/openssl/include/openssl/dtls1.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/dtls1.h
+#27 81.80 install ../../../../../msquic/submodules/openssl/include/openssl/e_os2.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/e_os2.h
+#27 81.80 install ../../../../../msquic/submodules/openssl/include/openssl/ebcdic.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ebcdic.h
+#27 81.81 install ../../../../../msquic/submodules/openssl/include/openssl/ec.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ec.h
+#27 81.81 install ../../../../../msquic/submodules/openssl/include/openssl/ecdh.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ecdh.h
+#27 81.81 install ../../../../../msquic/submodules/openssl/include/openssl/ecdsa.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ecdsa.h
+#27 81.81 install ../../../../../msquic/submodules/openssl/include/openssl/ecerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ecerr.h
+#27 81.81 install ../../../../../msquic/submodules/openssl/include/openssl/engine.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/engine.h
+#27 81.82 install ../../../../../msquic/submodules/openssl/include/openssl/engineerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/engineerr.h
+#27 81.82 install ../../../../../msquic/submodules/openssl/include/openssl/err.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/err.h
+#27 81.82 install ../../../../../msquic/submodules/openssl/include/openssl/evp.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/evp.h
+#27 81.82 install ../../../../../msquic/submodules/openssl/include/openssl/evperr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/evperr.h
+#27 81.82 install ../../../../../msquic/submodules/openssl/include/openssl/hmac.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/hmac.h
+#27 81.82 install ../../../../../msquic/submodules/openssl/include/openssl/idea.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/idea.h
+#27 81.83 install ../../../../../msquic/submodules/openssl/include/openssl/kdf.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/kdf.h
+#27 81.83 install ../../../../../msquic/submodules/openssl/include/openssl/kdferr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/kdferr.h
+#27 81.83 install ../../../../../msquic/submodules/openssl/include/openssl/lhash.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/lhash.h
+#27 81.83 install ../../../../../msquic/submodules/openssl/include/openssl/md2.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/md2.h
+#27 81.83 install ../../../../../msquic/submodules/openssl/include/openssl/md4.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/md4.h
+#27 81.84 install ../../../../../msquic/submodules/openssl/include/openssl/md5.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/md5.h
+#27 81.84 install ../../../../../msquic/submodules/openssl/include/openssl/mdc2.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/mdc2.h
+#27 81.84 install ../../../../../msquic/submodules/openssl/include/openssl/modes.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/modes.h
+#27 81.84 install ../../../../../msquic/submodules/openssl/include/openssl/obj_mac.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/obj_mac.h
+#27 81.84 install ../../../../../msquic/submodules/openssl/include/openssl/objects.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/objects.h
+#27 81.84 install ../../../../../msquic/submodules/openssl/include/openssl/objectserr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/objectserr.h
+#27 81.85 install ../../../../../msquic/submodules/openssl/include/openssl/ocsp.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ocsp.h
+#27 81.85 install ../../../../../msquic/submodules/openssl/include/openssl/ocsperr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ocsperr.h
+#27 81.85 install ../../../../../msquic/submodules/openssl/include/openssl/opensslv.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/opensslv.h
+#27 81.85 install ../../../../../msquic/submodules/openssl/include/openssl/ossl_typ.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ossl_typ.h
+#27 81.85 install ../../../../../msquic/submodules/openssl/include/openssl/pem.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/pem.h
+#27 81.86 install ../../../../../msquic/submodules/openssl/include/openssl/pem2.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/pem2.h
+#27 81.86 install ../../../../../msquic/submodules/openssl/include/openssl/pemerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/pemerr.h
+#27 81.86 install ../../../../../msquic/submodules/openssl/include/openssl/pkcs12.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/pkcs12.h
+#27 81.86 install ../../../../../msquic/submodules/openssl/include/openssl/pkcs12err.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/pkcs12err.h
+#27 81.86 install ../../../../../msquic/submodules/openssl/include/openssl/pkcs7.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/pkcs7.h
+#27 81.86 install ../../../../../msquic/submodules/openssl/include/openssl/pkcs7err.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/pkcs7err.h
+#27 81.87 install ../../../../../msquic/submodules/openssl/include/openssl/rand.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/rand.h
+#27 81.87 install ../../../../../msquic/submodules/openssl/include/openssl/rand_drbg.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/rand_drbg.h
+#27 81.87 install ../../../../../msquic/submodules/openssl/include/openssl/randerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/randerr.h
+#27 81.87 install ../../../../../msquic/submodules/openssl/include/openssl/rc2.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/rc2.h
+#27 81.87 install ../../../../../msquic/submodules/openssl/include/openssl/rc4.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/rc4.h
+#27 81.88 install ../../../../../msquic/submodules/openssl/include/openssl/rc5.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/rc5.h
+#27 81.88 install ../../../../../msquic/submodules/openssl/include/openssl/ripemd.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ripemd.h
+#27 81.88 install ../../../../../msquic/submodules/openssl/include/openssl/rsa.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/rsa.h
+#27 81.88 install ../../../../../msquic/submodules/openssl/include/openssl/rsaerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/rsaerr.h
+#27 81.88 install ../../../../../msquic/submodules/openssl/include/openssl/safestack.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/safestack.h
+#27 81.88 install ../../../../../msquic/submodules/openssl/include/openssl/seed.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/seed.h
+#27 81.89 install ../../../../../msquic/submodules/openssl/include/openssl/sha.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/sha.h
+#27 81.89 install ../../../../../msquic/submodules/openssl/include/openssl/srp.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/srp.h
+#27 81.89 install ../../../../../msquic/submodules/openssl/include/openssl/srtp.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/srtp.h
+#27 81.89 install ../../../../../msquic/submodules/openssl/include/openssl/ssl.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ssl.h
+#27 81.89 install ../../../../../msquic/submodules/openssl/include/openssl/ssl2.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ssl2.h
+#27 81.90 install ../../../../../msquic/submodules/openssl/include/openssl/ssl3.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ssl3.h
+#27 81.90 install ../../../../../msquic/submodules/openssl/include/openssl/sslerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/sslerr.h
+#27 81.90 install ../../../../../msquic/submodules/openssl/include/openssl/stack.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/stack.h
+#27 81.90 install ../../../../../msquic/submodules/openssl/include/openssl/store.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/store.h
+#27 81.90 install ../../../../../msquic/submodules/openssl/include/openssl/storeerr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/storeerr.h
+#27 81.91 install ../../../../../msquic/submodules/openssl/include/openssl/symhacks.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/symhacks.h
+#27 81.91 install ../../../../../msquic/submodules/openssl/include/openssl/tls1.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/tls1.h
+#27 81.91 install ../../../../../msquic/submodules/openssl/include/openssl/ts.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ts.h
+#27 81.91 install ../../../../../msquic/submodules/openssl/include/openssl/tserr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/tserr.h
+#27 81.91 install ../../../../../msquic/submodules/openssl/include/openssl/txt_db.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/txt_db.h
+#27 81.92 install ../../../../../msquic/submodules/openssl/include/openssl/ui.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/ui.h
+#27 81.92 install ../../../../../msquic/submodules/openssl/include/openssl/uierr.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/uierr.h
+#27 81.92 install ../../../../../msquic/submodules/openssl/include/openssl/whrlpool.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/whrlpool.h
+#27 81.92 install ../../../../../msquic/submodules/openssl/include/openssl/x509.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/x509.h
+#27 81.92 install ../../../../../msquic/submodules/openssl/include/openssl/x509_vfy.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/x509_vfy.h
+#27 81.92 install ../../../../../msquic/submodules/openssl/include/openssl/x509err.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/x509err.h
+#27 81.93 install ../../../../../msquic/submodules/openssl/include/openssl/x509v3.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/x509v3.h
+#27 81.93 install ../../../../../msquic/submodules/openssl/include/openssl/x509v3err.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/x509v3err.h
+#27 81.93 install ./include/openssl/opensslconf.h -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/include/openssl/opensslconf.h
+#27 81.93 install libcrypto.a -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/lib/libcrypto.a
+#27 82.03 install libssl.a -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/lib/libssl.a
+#27 82.05 created directory `/app/deps/quicer/c_build/_deps/opensslquic-build/openssl/lib/pkgconfig'
+#27 82.05 install libcrypto.pc -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/lib/pkgconfig/libcrypto.pc
+#27 82.05 install libssl.pc -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/lib/pkgconfig/libssl.pc
+#27 82.05 install openssl.pc -> /app/deps/quicer/c_build/_deps/opensslquic-build/openssl/lib/pkgconfig/openssl.pc
+#27 82.06 make[4]: Leaving directory '/app/deps/quicer/c_build/_deps/opensslquic-build/submodules/openssl'
+#27 82.06 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 82.07 [ 46%] Built target OpenSSL_Target
+#27 82.07 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 82.08 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 82.08 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 82.09 [ 49%] Building C object msquic/src/platform/CMakeFiles/platform.dir/inline.c.o
+#27 82.09 [ 48%] Building C object msquic/src/platform/CMakeFiles/platform.dir/pcp.c.o
+#27 82.09 [ 50%] Building C object msquic/src/platform/CMakeFiles/platform.dir/hashtable.c.o
+#27 82.09 [ 50%] Building C object msquic/src/platform/CMakeFiles/platform.dir/crypt.c.o
+#27 82.09 [ 51%] Building C object msquic/src/platform/CMakeFiles/platform.dir/toeplitz.c.o
+#27 82.09 [ 55%] Building C object msquic/src/platform/CMakeFiles/platform.dir/datapath_raw_socket_linux.c.o
+#27 82.09 [ 53%] Building C object msquic/src/platform/CMakeFiles/platform.dir/cgroup.c.o
+#27 82.09 [ 57%] Building C object msquic/src/platform/CMakeFiles/platform.dir/platform_worker.c.o
+#27 82.09 [ 60%] Building C object msquic/src/platform/CMakeFiles/platform.dir/datapath_raw_linux.c.o
+#27 82.09 [ 59%] Building C object msquic/src/platform/CMakeFiles/platform.dir/datapath_raw_socket.c.o
+#27 82.09 [ 60%] Building C object msquic/src/platform/CMakeFiles/platform.dir/datapath_epoll.c.o
+#27 82.09 [ 57%] Building C object msquic/src/platform/CMakeFiles/platform.dir/platform_posix.c.o
+#27 82.09 [ 56%] Building C object msquic/src/platform/CMakeFiles/platform.dir/storage_posix.c.o
+#27 82.09 [ 61%] Building C object msquic/src/platform/CMakeFiles/platform.dir/tls_openssl.c.o
+#27 82.09 [ 62%] Building C object msquic/src/platform/CMakeFiles/platform.dir/datapath_raw_xdp_linux.c.o
+#27 82.09 [ 66%] Building C object msquic/src/platform/CMakeFiles/platform.dir/datapath_linux.c.o
+#27 82.09 [ 65%] Building C object msquic/src/platform/CMakeFiles/platform.dir/crypt_openssl.c.o
+#27 82.09 [ 66%] Building C object msquic/src/platform/CMakeFiles/platform.dir/selfsign_openssl.c.o
+#27 82.09 [ 67%] Building C object msquic/src/platform/CMakeFiles/platform.dir/certificates_posix.c.o
+#27 82.47 [ 68%] Linking C static library ../../obj/Release/libplatform.a
+#27 82.58 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 82.59 [ 68%] Built target platform
+#27 82.59 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 82.60 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 82.60 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 82.60 [ 69%] Building C object msquic/src/bin/CMakeFiles/msquic.dir/linux/init.c.o
+#27 82.66 [ 70%] Linking C shared library ../../bin/Release/libmsquic.so
+#27 82.91 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 82.91 [ 70%] Built target msquic
+#27 82.91 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 82.92 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 82.92 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 82.93 [ 74%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_config.c.o
+#27 82.93 [ 74%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_nif.c.o
+#27 82.93 [ 76%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_ctx.c.o
+#27 82.93 [ 76%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_owner_queue.c.o
+#27 82.93 [ 73%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_queue.c.o
+#27 82.93 [ 78%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_tls.c.o
+#27 82.93 [ 78%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_reg.c.o
+#27 82.93 [ 79%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_connection.c.o
+#27 82.93 [ 80%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_stream.c.o
+#27 82.93 [ 83%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_dgram.c.o
+#27 82.93 [ 83%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_listener.c.o
+#27 82.93 [ 84%] Building C object CMakeFiles/quicer_static.dir/c_src/quicer_tp.c.o
+#27 83.31 [ 85%] Linking C static library libquicer_static.a
+#27 83.42 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 83.43 [ 85%] Built target quicer_static
+#27 83.43 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 83.44 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 83.44 make[3]: Entering directory '/app/deps/quicer/c_build'
+#27 83.45 [ 86%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_nif.c.o
+#27 83.45 [ 91%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_config.c.o
+#27 83.45 [ 91%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_owner_queue.c.o
+#27 83.45 [ 89%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_reg.c.o
+#27 83.45 [ 88%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_queue.c.o
+#27 83.45 [ 92%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_ctx.c.o
+#27 83.45 [ 94%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_listener.c.o
+#27 83.45 [ 95%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_connection.c.o
+#27 83.45 [ 95%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_tls.c.o
+#27 83.45 [ 96%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_stream.c.o
+#27 83.45 [ 97%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_dgram.c.o
+#27 83.45 [ 98%] Building C object CMakeFiles/quicer_nif.dir/c_src/quicer_tp.c.o
+#27 83.48 /app/deps/quicer/c_src/quicer_queue.c: In function ‘AcceptorQueueDestroy’:
+#27 83.48 /app/deps/quicer/c_src/quicer_queue.c:51:66: warning: multi-character character constant [-Wmultichar]
+#27 83.48    51 |       CXPLAT_FREE(CxPlatListRemoveHead(&q->List), QUICER_ACCEPTOR);
+#27 83.48       |                                                                  ^
+#27 83.48 /app/deps/quicer/c_src/quicer_queue.c:55:33: warning: multi-character character constant [-Wmultichar]
+#27 83.48    55 |   CXPLAT_FREE(q, QUICER_ACCEPTOR);
+#27 83.48       |                                 ^
+#27 83.48 /app/deps/quicer/c_src/quicer_queue.c: In function ‘AcceptorQueueAlloc’:
+#27 83.48 /app/deps/quicer/c_src/quicer_queue.c:92:53: warning: multi-character character constant [-Wmultichar]
+#27 83.48    92 |       sizeof(QUICER_ACCEPTOR_QUEUE), QUICER_ACCEPTOR);
+#27 83.48       |                                                     ^
+#27 83.48 /app/deps/quicer/c_src/quicer_queue.c: In function ‘AcceptorAlloc’:
+#27 83.48 /app/deps/quicer/c_src/quicer_queue.c:98:74: warning: multi-character character constant [-Wmultichar]
+#27 83.48    98 |   ACCEPTOR *acc = CXPLAT_ALLOC_NONPAGED(sizeof(ACCEPTOR), QUICER_ACCEPTOR);
+#27 83.48       |                                                                          ^
+#27 83.48 /app/deps/quicer/c_src/quicer_queue.c: In function ‘AcceptorDestroy’:
+#27 83.48 /app/deps/quicer/c_src/quicer_queue.c:108:42: warning: multi-character character constant [-Wmultichar]
+#27 83.48   108 |   return CXPLAT_FREE(acc, QUICER_ACCEPTOR);
+#27 83.48       |                                          ^
+#27 83.48 /app/deps/quicer/c_src/quicer_owner_queue.c: In function ‘OwnerSignalQueueNew’:
+#27 83.48 /app/deps/quicer/c_src/quicer_owner_queue.c:22:49: warning: multi-character character constant [-Wmultichar]
+#27 83.48    22 |       = CxPlatAlloc(sizeof(OWNER_SIGNAL_QUEUE), QUICER_OWNER_SIGNAL);
+#27 83.48       |                                                 ^~~~~~~~~~~~~~~~~~~
+#27 83.48 /app/deps/quicer/c_src/quicer_owner_queue.c: In function ‘OwnerSignalQueueDestroy’:
+#27 83.48 /app/deps/quicer/c_src/quicer_owner_queue.c:38:21: warning: multi-character character constant [-Wmultichar]
+#27 83.48    38 |   CxPlatFree(queue, QUICER_OWNER_SIGNAL);
+#27 83.48       |                     ^~~~~~~~~~~~~~~~~~~
+#27 83.48 /app/deps/quicer/c_src/quicer_owner_queue.c: In function ‘OwnerSignalAlloc’:
+#27 83.48 /app/deps/quicer/c_src/quicer_owner_queue.c:44:57: warning: multi-character character constant [-Wmultichar]
+#27 83.48    44 |   OWNER_SIGNAL *sig = CxPlatAlloc(sizeof(OWNER_SIGNAL), QUICER_OWNER_SIGNAL);
+#27 83.48       |                                                         ^~~~~~~~~~~~~~~~~~~
+#27 83.48 /app/deps/quicer/c_src/quicer_owner_queue.c: In function ‘OwnerSignalFree’:
+#27 83.48 /app/deps/quicer/c_src/quicer_owner_queue.c:51:39: warning: multi-character character constant [-Wmultichar]
+#27 83.48    51 |   CXPLAT_FREE(sig, QUICER_OWNER_SIGNAL);
+#27 83.48       |                                       ^
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c: In function ‘parse_cert_options_in_memory’:
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c:56:65: warning: multi-character character constant [-Wmultichar]
+#27 83.51    56 |       sizeof(QUIC_CERTIFICATE_PKCS12), QUICER_CERTIFICATE_PKCS12);
+#27 83.51       |                                                                 ^
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c:63:68: warning: multi-character character constant [-Wmultichar]
+#27 83.51    63 |       = (char *)CXPLAT_ALLOC_NONPAGED(asn1_bin.size, QUIC_POOL_TEST);
+#27 83.51       |                                                                    ^
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c:79:51: warning: multi-character character constant [-Wmultichar]
+#27 83.51    79 |   CXPLAT_FREE(CertInMem, QUICER_CERTIFICATE_PKCS12);
+#27 83.51       |                                                   ^
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c: In function ‘parse_cert_options_file’:
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c:125:38: warning: multi-character character constant [-Wmultichar]
+#27 83.51   125 |               QUICER_CERTIFICATE_FILE);
+#27 83.51       |                                      ^
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c:141:69: warning: multi-character character constant [-Wmultichar]
+#27 83.51   141 |               sizeof(QUIC_CERTIFICATE_FILE), QUICER_CERTIFICATE_FILE);
+#27 83.51       |                                                                     ^
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c: In function ‘free_certificate’:
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c:363:39: warning: multi-character character constant [-Wmultichar]
+#27 83.51   363 |       CxPlatFree(cc->CertificateFile, QUICER_CERTIFICATE_FILE);
+#27 83.51       |                                       ^~~~~~~~~~~~~~~~~~~~~~~
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c:372:18: warning: multi-character character constant [-Wmultichar]
+#27 83.51   372 |                  QUICER_CERTIFICATE_FILE_PROTECTED);
+#27 83.51       |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c:380:41: warning: multi-character character constant [-Wmultichar]
+#27 83.51   380 |       CxPlatFree(cc->CertificatePkcs12, QUICER_CERTIFICATE_PKCS12);
+#27 83.51       |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c: In function ‘set_conn_sslkeylogfile’:
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c:426:75: warning: multi-character character constant [-Wmultichar]
+#27 83.51   426 |       = CXPLAT_ALLOC_NONPAGED(sizeof(QUIC_TLS_SECRETS), QUICER_TLS_SECRETS);
+#27 83.51       |                                                                           ^
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c:442:43: warning: multi-character character constant [-Wmultichar]
+#27 83.51   442 |       CXPLAT_FREE(keylogfile, QUICER_TRACE);
+#27 83.51       |                                           ^
+#27 83.51 /app/deps/quicer/c_src/quicer_tls.c:444:49: warning: multi-character character constant [-Wmultichar]
+#27 83.51   444 |       CXPLAT_FREE(TlsSecrets, QUICER_TLS_SECRETS);
+#27 83.51       |                                                 ^
+#27 83.51 /app/deps/quicer/c_src/quicer_config.c: In function ‘get_connection_opt’:
+#27 83.51 /app/deps/quicer/c_src/quicer_config.c:1671:67: warning: multi-character character constant [-Wmultichar]
+#27 83.51  1671 |       Buffer = CXPLAT_ALLOC_NONPAGED(BufferLength, QUICER_OPT_BUFF);
+#27 83.51       |                                                                   ^
+#27 83.51 /app/deps/quicer/c_src/quicer_config.c:1694:42: warning: multi-character character constant [-Wmultichar]
+#27 83.51  1694 |       CXPLAT_FREE(Buffer, QUICER_OPT_BUFF);
+#27 83.51       |                                          ^
+#27 83.51 /app/deps/quicer/c_src/quicer_config.c: In function ‘set_connection_opt’:
+#27 83.51 /app/deps/quicer/c_src/quicer_config.c:2014:67: warning: multi-character character constant [-Wmultichar]
+#27 83.51  2014 |       Buffer = CXPLAT_ALLOC_NONPAGED(BufferLength, QUICER_OPT_BUFF);
+#27 83.51       |                                                                   ^
+#27 83.51 /app/deps/quicer/c_src/quicer_config.c:2036:42: warning: multi-character character constant [-Wmultichar]
+#27 83.51  2036 |       CXPLAT_FREE(Buffer, QUICER_OPT_BUFF);
+#27 83.51       |                                          ^
+#27 83.51 /app/deps/quicer/c_src/quicer_config.c: In function ‘get_listener_opt’:
+#27 83.51 /app/deps/quicer/c_src/quicer_config.c:2111:67: warning: multi-character character constant [-Wmultichar]
+#27 83.51  2111 |       Buffer = CXPLAT_ALLOC_NONPAGED(BufferLength, QUICER_OPT_BUFF);
+#27 83.51       |                                                                   ^
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c: In function ‘deinit_l_ctx’:
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c:94:50: warning: multi-character character constant [-Wmultichar]
+#27 83.51    94 |   CXPLAT_FREE(l_ctx->ssl_keylogfile, QUICER_TRACE);
+#27 83.51       |                                                  ^
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c: In function ‘init_send_ctx’:
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c:263:75: warning: multi-character character constant [-Wmultichar]
+#27 83.51   263 |       = CXPLAT_ALLOC_NONPAGED(sizeof(QuicerStreamSendCTX), QUICER_SEND_CTX);
+#27 83.51       |                                                                           ^
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c: In function ‘destroy_send_ctx’:
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c:277:40: warning: multi-character character constant [-Wmultichar]
+#27 83.51   277 |   CXPLAT_FREE(send_ctx, QUICER_SEND_CTX);
+#27 83.51       |                                        ^
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c: In function ‘init_dgram_send_ctx’:
+#27 83.51 /app/deps/quicer/c_src/quicer_connection.c: In function ‘safe_dump_conn_tls_secrets’:
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c:284:56: warning: multi-character character constant [-Wmultichar]
+#27 83.51   284 |       sizeof(QuicerDgramSendCTX), QUICER_DGRAM_SEND_CTX);
+#27 83.51       |                                                        ^
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c: In function ‘destroy_dgram_send_ctx’:
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c:297:52: warning: multi-character character constant [-Wmultichar]
+#27 83.51   297 |   CXPLAT_FREE(dgram_send_ctx, QUICER_DGRAM_SEND_CTX);
+#27 83.51       |                                                    ^
+#27 83.51 /app/deps/quicer/c_src/quicer_connection.c:267:54: warning: multi-character character constant [-Wmultichar]
+#27 83.51   267 |       CXPLAT_FREE(c_ctx->ssl_keylogfile, QUICER_TRACE);
+#27 83.51       |                                                      ^
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c: In function ‘cleanup_owner_signals’:
+#27 83.51 /app/deps/quicer/c_src/quicer_ctx.c:480:23: warning: multi-character character constant [-Wmultichar]
+#27 83.51   480 |       CxPlatFree(sig, QUICER_OWNER_SIGNAL);
+#27 83.51       |                       ^~~~~~~~~~~~~~~~~~~
+#27 83.51 /app/deps/quicer/c_src/quicer_connection.c: In function ‘handle_connection_event_resumption_ticket_received’:
+#27 83.51 /app/deps/quicer/c_src/quicer_connection.c:1598:68: warning: multi-character character constant [-Wmultichar]
+#27 83.51  1598 |           CXPLAT_FREE(c_ctx->ResumptionTicket, QUICER_RESUME_TICKET);
+#27 83.51       |                                                                    ^
+#27 83.51 /app/deps/quicer/c_src/quicer_connection.c:1603:31: warning: multi-character character constant [-Wmultichar]
+#27 83.51  1603 |           QUICER_RESUME_TICKET);
+#27 83.51       |                               ^
+#27 83.52 /app/deps/quicer/c_src/quicer_listener.c: In function ‘ServerListenerCallback’:
+#27 83.52 /app/deps/quicer/c_src/quicer_listener.c:224:78: warning: multi-character character constant [-Wmultichar]
+#27 83.52   224 |               = CXPLAT_ALLOC_NONPAGED(l_ctx->ssl_keylogfile_len, QUICER_TRACE);
+#27 83.52       |                                                                              ^
+#27 83.52 /app/deps/quicer/c_src/quicer_stream.c: In function ‘async_accept_stream2’:
+#27 83.52 /app/deps/quicer/c_src/quicer_stream.c:418:44: warning: multi-character character constant [-Wmultichar]
+#27 83.52   418 |       CXPLAT_FREE(acceptor, QUICER_ACCEPTOR);
+#27 83.52       |                                            ^
+#27 83.52 /app/deps/quicer/c_src/quicer_stream.c:425:44: warning: multi-character character constant [-Wmultichar]
+#27 83.52   425 |       CXPLAT_FREE(acceptor, QUICER_ACCEPTOR);
+#27 83.52       |                                            ^
+#27 83.52 /app/deps/quicer/c_src/quicer_stream.c:431:44: warning: multi-character character constant [-Wmultichar]
+#27 83.52   431 |       CXPLAT_FREE(acceptor, QUICER_ACCEPTOR);
+#27 83.52       |                                            ^
+#27 83.52 /app/deps/quicer/c_src/quicer_nif.c: In function ‘resource_conn_dealloc_callback’:
+#27 83.52 /app/deps/quicer/c_src/quicer_nif.c:976:52: warning: multi-character character constant [-Wmultichar]
+#27 83.52   976 |   CXPLAT_FREE(c_ctx->TlsSecrets, QUICER_TLS_SECRETS);
+#27 83.52       |                                                    ^
+#27 83.52 /app/deps/quicer/c_src/quicer_nif.c:977:60: warning: multi-character character constant [-Wmultichar]
+#27 83.52   977 |   CXPLAT_FREE(c_ctx->ResumptionTicket, QUICER_RESUME_TICKET);
+#27 83.52       |                                                            ^
+#27 83.52 /app/deps/quicer/c_src/quicer_nif.c:978:50: warning: multi-character character constant [-Wmultichar]
+#27 83.52   978 |   CXPLAT_FREE(c_ctx->ssl_keylogfile, QUICER_TRACE);
+#27 83.52       |                                                  ^
+#27 83.86 [100%] Linking C shared library priv/libquicer_nif.so
+#27 84.15 make[3]: Leaving directory '/app/deps/quicer/c_build'
+#27 84.15 [100%] Built target quicer_nif
+#27 84.15 make[2]: Leaving directory '/app/deps/quicer/c_build'
+#27 84.16 make[1]: Leaving directory '/app/deps/quicer/c_build'
+#27 84.18 ===> Analyzing applications...
+#27 84.21 ===> Compiling quicer
+#27 84.50 ==> ecto_sql
+#27 84.50 Compiling 25 files (.ex)
+#27 84.81 Generated ecto_sql app
+#27 84.84 ==> nimble_pool
+#27 84.84 Compiling 2 files (.ex)
+#27 84.99 Generated nimble_pool app
+#27 85.00 ==> finch
+#27 85.00 Compiling 14 files (.ex)
+#27 85.25 Generated finch app
+#27 85.27 ==> req
+#27 85.27 Compiling 19 files (.ex)
+#27 85.82 Generated req app
+#27 85.84 ==> tailwind
+#27 85.84 Compiling 3 files (.ex)
+#27 85.91 Generated tailwind app
+#27 85.92 ==> elixir_make
+#27 85.92 Compiling 8 files (.ex)
+#27 85.99 Generated elixir_make app
+#27 86.01 ==> cc_precompiler
+#27 86.01 Compiling 3 files (.ex)
+#27 86.09 Generated cc_precompiler app
+#27 86.11 ==> exqlite
+#27 86.11 Downloading precompiled NIF to /root/.cache/elixir_make/exqlite-nif-2.17-x86_64-linux-gnu-0.33.1.tar.gz
+#27 86.61 Compiling 12 files (.ex)
+#27 86.76 Generated exqlite app
+#27 86.79 ==> ecto_sqlite3
+#27 86.79 Compiling 5 files (.ex)
+#27 87.13 Generated ecto_sqlite3 app
+#27 87.14 ==> websock
+#27 87.14 Compiling 1 file (.ex)
+#27 87.15 Generated websock app
+#27 87.17 ==> bandit
+#27 87.17 Compiling 54 files (.ex)
+#27 87.68 Generated bandit app
+#27 87.74 ==> swoosh
+#27 87.74 Compiling 54 files (.ex)
+#27 88.13 Generated swoosh app
+#27 88.19 ==> websock_adapter
+#27 88.19 Compiling 4 files (.ex)
+#27 88.24 Generated websock_adapter app
+#27 88.27 ==> phoenix
+#27 88.27 Compiling 74 files (.ex)
+#27 88.94 Generated phoenix app
+#27 88.99 ==> phoenix_live_view
+#27 88.99 Compiling 49 files (.ex)
+#27 90.19 Generated phoenix_live_view app
+#27 90.24 ==> phoenix_live_dashboard
+#27 90.24 Compiling 36 files (.ex)
+#27 90.85 Generated phoenix_live_dashboard app
+#27 91.14 ===> Analyzing applications...
+#27 91.16 ===> Compiling msgpack
+#27 91.68 ===> Analyzing applications...
+#27 91.74 ===> Compiling macula
+#27 92.05 ==> phoenix_ecto
+#27 92.05 Compiling 7 files (.ex)
+#27 92.18 Generated phoenix_ecto app
+#27 92.22 ==> macula_arcade
+#27 92.22 Compiling 8 files (.ex)
+#27 92.24      warning: variable "opts" is unused (if the variable is not meant to be used, prefix it with an underscore)
+#27 92.24      │
+#27 92.24  148 │   def read_crdt(key, opts \\ %{}) do
+#27 92.24      │                      ~~~~
+#27 92.24      │
+#27 92.24      └─ lib/macula_arcade/mesh.ex:148:22: MaculaArcade.Mesh.read_crdt/2
+#27 92.24 
+#27 92.26      warning: do not use "length(opponents) > 0" to check if a list is not empty since length always traverses the whole list. Prefer to pattern match on a non-empty list, such as [_ | _], or use "opponents != []" as a guard
+#27 92.26      │
+#27 92.26  580 │       {:ok, opponents} when length(opponents) > 0 ->
+#27 92.26      │                                               ~
+#27 92.26      │
+#27 92.26      └─ lib/macula_arcade/games/coordinator.ex:580:47
+#27 92.26 
+#27 92.27      warning: clauses with the same name and arity (number of arguments) should be grouped together, "def handle_call/3" was previously defined (lib/macula_arcade/games/coordinator.ex:190)
+#27 92.27      │
+#27 92.27  960 │   def handle_call({:get_player_info, player_id}, _from, state) do
+#27 92.27      │       ~
+#27 92.27      │
+#27 92.27      └─ lib/macula_arcade/games/coordinator.ex:960:7
+#27 92.27 
+#27 92.27      warning: function try_local_matchmaking/1 is unused
+#27 92.27      │
+#27 92.27  610 │   defp try_local_matchmaking(state) do
+#27 92.27      │        ~
+#27 92.27      │
+#27 92.27      └─ lib/macula_arcade/games/coordinator.ex:610:8: MaculaArcade.Games.Coordinator (module)
+#27 92.27 
+#27 92.40     warning: module attribute @initial_snake_length was set but never used
+#27 92.40     │
+#27 92.40  21 │   @initial_snake_length 3
+#27 92.40     │   ~~~~~~~~~~~~~~~~~~~~~~~
+#27 92.40     │
+#27 92.40     └─ lib/macula_arcade/games/snake/game_server.ex:21: MaculaArcade.Games.Snake.GameServer (module)
+#27 92.40 
+#27 92.42     warning: module attribute @queue_dht_key was set but never used
+#27 92.42     │
+#27 92.42  34 │   @queue_dht_key "arcade.snake.queue"
+#27 92.42     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#27 92.42     │
+#27 92.42     └─ lib/macula_arcade/games/coordinator.ex:34: MaculaArcade.Games.Coordinator (module)
+#27 92.42 
+#27 92.42     warning: module attribute @unregister_player_proc was set but never used
+#27 92.42     │
+#27 92.42  29 │   @unregister_player_proc "arcade.snake.unregister_player"
+#27 92.42     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#27 92.42     │
+#27 92.42     └─ lib/macula_arcade/games/coordinator.ex:29: MaculaArcade.Games.Coordinator (module)
+#27 92.42 
+#27 92.43     warning: module attribute @state_updated_topic was set but never used
+#27 92.43     │
+#27 92.43  24 │   @state_updated_topic "arcade.snake.state_updated"
+#27 92.43     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#27 92.43     │
+#27 92.43     └─ lib/macula_arcade/games/coordinator.ex:24: MaculaArcade.Games.Coordinator (module)
+#27 92.43 
+#27 92.45 Generated macula_arcade app
+#27 92.46 ==> macula_arcade_web
+#27 92.46 Compiling 14 files (.ex)
+#27 92.74     warning: variable "live_view_pid" is unused (if the variable is not meant to be used, prefix it with an underscore)
+#27 92.74     │
+#27 92.74  20 │     live_view_pid = self()
+#27 92.74     │     ~~~~~~~~~~~~~
+#27 92.74     │
+#27 92.74     └─ lib/macula_arcade_web/live/snake_live.ex:20:5: MaculaArcadeWeb.SnakeLive.mount/3
+#27 92.74 
+#27 92.75      warning: Logger.warn/1 is deprecated. Use Logger.warning/2 instead
+#27 92.75      │
+#27 92.75  108 │         {:error, :not_connected} -> Logger.warn("Cannot subscribe to game state via mesh - not connected")
+#27 92.75      │                                            ~
+#27 92.75      │
+#27 92.75      └─ lib/macula_arcade_web/live/snake_live.ex:108:44: MaculaArcadeWeb.SnakeLive.handle_info/2
+#27 92.75 
+#27 92.75      warning: Logger.warn/1 is deprecated. Use Logger.warning/2 instead
+#27 92.75      │
+#27 92.75  121 │         {:error, :not_connected} -> Logger.warn("Cannot subscribe to player input via mesh - not connected")
+#27 92.75      │                                            ~
+#27 92.75      │
+#27 92.75      └─ lib/macula_arcade_web/live/snake_live.ex:121:44: MaculaArcadeWeb.SnakeLive.handle_info/2
+#27 92.75 
+#27 92.90 Generated macula_arcade_web app
+#27 DONE 94.4s
+
+#28 [dev-bootstrap builder 15/17] RUN mix assets.setup
+#28 0.943 ===> Analyzing applications...
+#28 0.972 ===> Compiling macula
+#28 1.054 ==> macula_arcade
+#28 1.057      warning: do not use "length(opponents) > 0" to check if a list is not empty since length always traverses the whole list. Prefer to pattern match on a non-empty list, such as [_ | _], or use "opponents != []" as a guard
+#28 1.057      │
+#28 1.057  580 │       {:ok, opponents} when length(opponents) > 0 ->
+#28 1.057      │                                               ~
+#28 1.057      │
+#28 1.057      └─ lib/macula_arcade/games/coordinator.ex:580:47
+#28 1.057 
+#28 1.058      warning: clauses with the same name and arity (number of arguments) should be grouped together, "def handle_call/3" was previously defined (lib/macula_arcade/games/coordinator.ex:190)
+#28 1.058      │
+#28 1.058  960 │   def handle_call({:get_player_info, player_id}, _from, state) do
+#28 1.058      │       ~
+#28 1.058      │
+#28 1.058      └─ lib/macula_arcade/games/coordinator.ex:960:7
+#28 1.058 
+#28 1.064      warning: function try_local_matchmaking/1 is unused
+#28 1.064      │
+#28 1.064  610 │   defp try_local_matchmaking(state) do
+#28 1.064      │        ~
+#28 1.064      │
+#28 1.064      └─ lib/macula_arcade/games/coordinator.ex:610:8: MaculaArcade.Games.Coordinator (module)
+#28 1.064 
+#28 1.064     warning: module attribute @queue_dht_key was set but never used
+#28 1.064     │
+#28 1.064  34 │   @queue_dht_key "arcade.snake.queue"
+#28 1.064     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#28 1.064     │
+#28 1.064     └─ lib/macula_arcade/games/coordinator.ex:34: MaculaArcade.Games.Coordinator (module)
+#28 1.064 
+#28 1.065     warning: module attribute @unregister_player_proc was set but never used
+#28 1.065     │
+#28 1.065  29 │   @unregister_player_proc "arcade.snake.unregister_player"
+#28 1.065     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#28 1.065     │
+#28 1.065     └─ lib/macula_arcade/games/coordinator.ex:29: MaculaArcade.Games.Coordinator (module)
+#28 1.065 
+#28 1.065     warning: module attribute @state_updated_topic was set but never used
+#28 1.065     │
+#28 1.065  24 │   @state_updated_topic "arcade.snake.state_updated"
+#28 1.065     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#28 1.065     │
+#28 1.065     └─ lib/macula_arcade/games/coordinator.ex:24: MaculaArcade.Games.Coordinator (module)
+#28 1.065 
+#28 1.065     warning: module attribute @initial_snake_length was set but never used
+#28 1.065     │
+#28 1.065  21 │   @initial_snake_length 3
+#28 1.065     │   ~~~~~~~~~~~~~~~~~~~~~~~
+#28 1.065     │
+#28 1.065     └─ lib/macula_arcade/games/snake/game_server.ex:21: MaculaArcade.Games.Snake.GameServer (module)
+#28 1.065 
+#28 1.065      warning: variable "opts" is unused (if the variable is not meant to be used, prefix it with an underscore)
+#28 1.065      │
+#28 1.065  148 │   def read_crdt(key, opts \\ %{}) do
+#28 1.065      │                      ~~~~
+#28 1.065      │
+#28 1.065      └─ (macula_arcade 0.1.0) lib/macula_arcade/mesh.ex:148:22: MaculaArcade.Mesh.read_crdt/2
+#28 1.065 
+#28 1.076 ==> macula_arcade_web
+#28 1.076     warning: variable "live_view_pid" is unused (if the variable is not meant to be used, prefix it with an underscore)
+#28 1.076     │
+#28 1.076  20 │     live_view_pid = self()
+#28 1.076     │     ~~~~~~~~~~~~~
+#28 1.076     │
+#28 1.076     └─ (macula_arcade_web 0.1.0) lib/macula_arcade_web/live/snake_live.ex:20:5: MaculaArcadeWeb.SnakeLive.mount/3
+#28 1.076 
+#28 1.077      warning: Logger.warn/1 is deprecated. Use Logger.warning/2 instead
+#28 1.077      │
+#28 1.077  108 │         {:error, :not_connected} -> Logger.warn("Cannot subscribe to game state via mesh - not connected")
+#28 1.077      │                                            ~
+#28 1.077      │
+#28 1.077      └─ (macula_arcade_web 0.1.0) lib/macula_arcade_web/live/snake_live.ex:108:44: MaculaArcadeWeb.SnakeLive.handle_info/2
+#28 1.077 
+#28 1.077      warning: Logger.warn/1 is deprecated. Use Logger.warning/2 instead
+#28 1.077      │
+#28 1.077  121 │         {:error, :not_connected} -> Logger.warn("Cannot subscribe to player input via mesh - not connected")
+#28 1.077      │                                            ~
+#28 1.077      │
+#28 1.077      └─ (macula_arcade_web 0.1.0) lib/macula_arcade_web/live/snake_live.ex:121:44: MaculaArcadeWeb.SnakeLive.handle_info/2
+#28 1.077 
+#28 1.094 
+#28 1.094 00:21:51.270 [debug] Downloading tailwind from https://github.com/tailwindlabs/tailwindcss/releases/download/v4.1.7/tailwindcss-linux-x64
+#28 3.042 
+#28 3.042 00:21:53.219 [debug] Downloading esbuild from https://registry.npmjs.org/@esbuild/linux-x64/0.25.4
+#28 DONE 3.9s
+
+#29 [dev-peer1 builder 16/17] RUN mix assets.deploy
+#29 0.883 ===> Analyzing applications...
+#29 0.911 ===> Compiling macula
+#29 0.987 ==> macula_arcade
+#29 0.990      warning: do not use "length(opponents) > 0" to check if a list is not empty since length always traverses the whole list. Prefer to pattern match on a non-empty list, such as [_ | _], or use "opponents != []" as a guard
+#29 0.990      │
+#29 0.990  580 │       {:ok, opponents} when length(opponents) > 0 ->
+#29 0.990      │                                               ~
+#29 0.990      │
+#29 0.990      └─ lib/macula_arcade/games/coordinator.ex:580:47
+#29 0.990 
+#29 0.991      warning: clauses with the same name and arity (number of arguments) should be grouped together, "def handle_call/3" was previously defined (lib/macula_arcade/games/coordinator.ex:190)
+#29 0.991      │
+#29 0.991  960 │   def handle_call({:get_player_info, player_id}, _from, state) do
+#29 0.991      │       ~
+#29 0.991      │
+#29 0.991      └─ lib/macula_arcade/games/coordinator.ex:960:7
+#29 0.991 
+#29 0.998      warning: function try_local_matchmaking/1 is unused
+#29 0.998      │
+#29 0.998  610 │   defp try_local_matchmaking(state) do
+#29 0.998      │        ~
+#29 0.998      │
+#29 0.998      └─ lib/macula_arcade/games/coordinator.ex:610:8: MaculaArcade.Games.Coordinator (module)
+#29 0.998 
+#29 0.998     warning: module attribute @queue_dht_key was set but never used
+#29 0.998     │
+#29 0.998  34 │   @queue_dht_key "arcade.snake.queue"
+#29 0.998     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#29 0.998     │
+#29 0.998     └─ lib/macula_arcade/games/coordinator.ex:34: MaculaArcade.Games.Coordinator (module)
+#29 0.998 
+#29 0.998     warning: module attribute @unregister_player_proc was set but never used
+#29 0.998     │
+#29 0.998  29 │   @unregister_player_proc "arcade.snake.unregister_player"
+#29 0.998     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#29 0.998     │
+#29 0.998     └─ lib/macula_arcade/games/coordinator.ex:29: MaculaArcade.Games.Coordinator (module)
+#29 0.998 
+#29 0.998     warning: module attribute @state_updated_topic was set but never used
+#29 0.998     │
+#29 0.998  24 │   @state_updated_topic "arcade.snake.state_updated"
+#29 0.998     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#29 0.998     │
+#29 0.998     └─ lib/macula_arcade/games/coordinator.ex:24: MaculaArcade.Games.Coordinator (module)
+#29 0.998 
+#29 0.999     warning: module attribute @initial_snake_length was set but never used
+#29 0.999     │
+#29 0.999  21 │   @initial_snake_length 3
+#29 0.999     │   ~~~~~~~~~~~~~~~~~~~~~~~
+#29 0.999     │
+#29 0.999     └─ lib/macula_arcade/games/snake/game_server.ex:21: MaculaArcade.Games.Snake.GameServer (module)
+#29 0.999 
+#29 0.999      warning: variable "opts" is unused (if the variable is not meant to be used, prefix it with an underscore)
+#29 0.999      │
+#29 0.999  148 │   def read_crdt(key, opts \\ %{}) do
+#29 0.999      │                      ~~~~
+#29 0.999      │
+#29 0.999      └─ (macula_arcade 0.1.0) lib/macula_arcade/mesh.ex:148:22: MaculaArcade.Mesh.read_crdt/2
+#29 0.999 
+#29 1.009 ==> macula_arcade_web
+#29 1.009     warning: variable "live_view_pid" is unused (if the variable is not meant to be used, prefix it with an underscore)
+#29 1.009     │
+#29 1.009  20 │     live_view_pid = self()
+#29 1.009     │     ~~~~~~~~~~~~~
+#29 1.009     │
+#29 1.009     └─ (macula_arcade_web 0.1.0) lib/macula_arcade_web/live/snake_live.ex:20:5: MaculaArcadeWeb.SnakeLive.mount/3
+#29 1.009 
+#29 1.010      warning: Logger.warn/1 is deprecated. Use Logger.warning/2 instead
+#29 1.010      │
+#29 1.010  108 │         {:error, :not_connected} -> Logger.warn("Cannot subscribe to game state via mesh - not connected")
+#29 1.010      │                                            ~
+#29 1.010      │
+#29 1.010      └─ (macula_arcade_web 0.1.0) lib/macula_arcade_web/live/snake_live.ex:108:44: MaculaArcadeWeb.SnakeLive.handle_info/2
+#29 1.010 
+#29 1.010      warning: Logger.warn/1 is deprecated. Use Logger.warning/2 instead
+#29 1.010      │
+#29 1.010  121 │         {:error, :not_connected} -> Logger.warn("Cannot subscribe to player input via mesh - not connected")
+#29 1.010      │                                            ~
+#29 1.010      │
+#29 1.010      └─ (macula_arcade_web 0.1.0) lib/macula_arcade_web/live/snake_live.ex:121:44: MaculaArcadeWeb.SnakeLive.handle_info/2
+#29 1.010 
+#29 1.325 ≈ tailwindcss v4.1.7
+#29 1.325 
+#29 1.383 /*! 🌼 daisyUI 5.0.35 */
+#29 1.448 Done in 122ms
+#29 1.487 
+#29 1.487   ../priv/static/assets/js/app.js  134.6kb
+#29 1.487 
+#29 1.487 ⚡ Done in 16ms
+#29 1.562 ==> macula_arcade_web
+#29 1.562 Check your digested files at "priv/static"
+#29 DONE 1.7s
+
+#30 [dev-peer1 builder 17/17] RUN mix release
+#30 0.912 ===> Analyzing applications...
+#30 0.940 ===> Compiling macula
+#30 1.020 ==> macula_arcade
+#30 1.023      warning: do not use "length(opponents) > 0" to check if a list is not empty since length always traverses the whole list. Prefer to pattern match on a non-empty list, such as [_ | _], or use "opponents != []" as a guard
+#30 1.023      │
+#30 1.023  580 │       {:ok, opponents} when length(opponents) > 0 ->
+#30 1.023      │                                               ~
+#30 1.023      │
+#30 1.023      └─ lib/macula_arcade/games/coordinator.ex:580:47
+#30 1.023 
+#30 1.025      warning: clauses with the same name and arity (number of arguments) should be grouped together, "def handle_call/3" was previously defined (lib/macula_arcade/games/coordinator.ex:190)
+#30 1.025      │
+#30 1.025  960 │   def handle_call({:get_player_info, player_id}, _from, state) do
+#30 1.025      │       ~
+#30 1.025      │
+#30 1.025      └─ lib/macula_arcade/games/coordinator.ex:960:7
+#30 1.025 
+#30 1.032      warning: function try_local_matchmaking/1 is unused
+#30 1.032      │
+#30 1.032  610 │   defp try_local_matchmaking(state) do
+#30 1.032      │        ~
+#30 1.032      │
+#30 1.032      └─ lib/macula_arcade/games/coordinator.ex:610:8: MaculaArcade.Games.Coordinator (module)
+#30 1.032 
+#30 1.032     warning: module attribute @queue_dht_key was set but never used
+#30 1.032     │
+#30 1.032  34 │   @queue_dht_key "arcade.snake.queue"
+#30 1.032     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#30 1.032     │
+#30 1.032     └─ lib/macula_arcade/games/coordinator.ex:34: MaculaArcade.Games.Coordinator (module)
+#30 1.032 
+#30 1.032     warning: module attribute @unregister_player_proc was set but never used
+#30 1.032     │
+#30 1.032  29 │   @unregister_player_proc "arcade.snake.unregister_player"
+#30 1.032     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#30 1.032     │
+#30 1.032     └─ lib/macula_arcade/games/coordinator.ex:29: MaculaArcade.Games.Coordinator (module)
+#30 1.032 
+#30 1.033     warning: module attribute @state_updated_topic was set but never used
+#30 1.033     │
+#30 1.033  24 │   @state_updated_topic "arcade.snake.state_updated"
+#30 1.033     │   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#30 1.033     │
+#30 1.033     └─ lib/macula_arcade/games/coordinator.ex:24: MaculaArcade.Games.Coordinator (module)
+#30 1.033 
+#30 1.033     warning: module attribute @initial_snake_length was set but never used
+#30 1.033     │
+#30 1.033  21 │   @initial_snake_length 3
+#30 1.033     │   ~~~~~~~~~~~~~~~~~~~~~~~
+#30 1.033     │
+#30 1.033     └─ lib/macula_arcade/games/snake/game_server.ex:21: MaculaArcade.Games.Snake.GameServer (module)
+#30 1.033 
+#30 1.033      warning: variable "opts" is unused (if the variable is not meant to be used, prefix it with an underscore)
+#30 1.033      │
+#30 1.033  148 │   def read_crdt(key, opts \\ %{}) do
+#30 1.033      │                      ~~~~
+#30 1.033      │
+#30 1.033      └─ (macula_arcade 0.1.0) lib/macula_arcade/mesh.ex:148:22: MaculaArcade.Mesh.read_crdt/2
+#30 1.033 
+#30 1.043 ==> macula_arcade_web
+#30 1.043     warning: variable "live_view_pid" is unused (if the variable is not meant to be used, prefix it with an underscore)
+#30 1.043     │
+#30 1.043  20 │     live_view_pid = self()
+#30 1.043     │     ~~~~~~~~~~~~~
+#30 1.043     │
+#30 1.043     └─ (macula_arcade_web 0.1.0) lib/macula_arcade_web/live/snake_live.ex:20:5: MaculaArcadeWeb.SnakeLive.mount/3
+#30 1.043 
+#30 1.044      warning: Logger.warn/1 is deprecated. Use Logger.warning/2 instead
+#30 1.044      │
+#30 1.044  108 │         {:error, :not_connected} -> Logger.warn("Cannot subscribe to game state via mesh - not connected")
+#30 1.044      │                                            ~
+#30 1.044      │
+#30 1.044      └─ (macula_arcade_web 0.1.0) lib/macula_arcade_web/live/snake_live.ex:108:44: MaculaArcadeWeb.SnakeLive.handle_info/2
+#30 1.044 
+#30 1.044      warning: Logger.warn/1 is deprecated. Use Logger.warning/2 instead
+#30 1.044      │
+#30 1.044  121 │         {:error, :not_connected} -> Logger.warn("Cannot subscribe to player input via mesh - not connected")
+#30 1.044      │                                            ~
+#30 1.044      │
+#30 1.044      └─ (macula_arcade_web 0.1.0) lib/macula_arcade_web/live/snake_live.ex:121:44: MaculaArcadeWeb.SnakeLive.handle_info/2
+#30 1.044 
+#30 1.065 * assembling macula_arcade-0.2.2 on MIX_ENV=prod
+#30 1.065 * using config/runtime.exs to configure the release at runtime
+#30 1.265 * skipping elixir.bat for windows (bin/elixir.bat not found in the Elixir installation)
+#30 1.267 * skipping iex.bat for windows (bin/iex.bat not found in the Elixir installation)
+#30 1.427 
+#30 1.427 Release created at _build/prod/rel/macula_arcade
+#30 1.427 
+#30 1.427     # To start your system
+#30 1.427     _build/prod/rel/macula_arcade/bin/macula_arcade start
+#30 1.427 
+#30 1.427 Once the release is running:
+#30 1.427 
+#30 1.427     # To connect to it remotely
+#30 1.427     _build/prod/rel/macula_arcade/bin/macula_arcade remote
+#30 1.427 
+#30 1.427     # To stop it gracefully (you may also send SIGINT/SIGTERM)
+#30 1.427     _build/prod/rel/macula_arcade/bin/macula_arcade stop
+#30 1.427 
+#30 1.427 To list all commands:
+#30 1.427 
+#30 1.427     _build/prod/rel/macula_arcade/bin/macula_arcade
+#30 1.427 
+#30 DONE 1.7s
+
+#31 [dev-bootstrap stage-1  6/10] COPY --from=builder --chown=app:app /app/_build/prod/rel/macula_arcade ./
+#31 DONE 0.4s
+
+#32 [dev-bootstrap stage-1  7/10] RUN mkdir -p /opt/macula/certs
+#32 DONE 0.3s
+
+#33 [dev-bot1 stage-1  8/10] COPY --from=builder --chown=app:app /app/priv/certs/server-cert.pem /opt/macula/certs/cert.pem
+#33 DONE 0.1s
+
+#34 [dev-bootstrap stage-1  9/10] COPY --from=builder --chown=app:app /app/priv/certs/server-key.pem /opt/macula/certs/key.pem
+#34 DONE 0.1s
+
+#35 [dev-bootstrap stage-1 10/10] RUN chmod 644 /opt/macula/certs/cert.pem && chmod 600 /opt/macula/certs/key.pem
+#35 DONE 0.2s
+
+#36 [dev-bot1] exporting to image
+#36 exporting layers
+#36 ...
+
+#37 [dev-peer1] exporting to image
+#37 exporting layers 0.7s done
+#37 writing image sha256:29901a48d3eb0bb3f31abdd08d4bd3b115cdffc61873e61c7edf75e4145ecc8f 0.0s done
+#37 naming to docker.io/library/macula-arcade:dev done
+#37 DONE 0.8s
+
+#36 [dev-bot1] exporting to image
+#36 exporting layers 0.7s done
+#36 writing image sha256:e600a78a2745c01c69f7663bffccc3d6459747b74e80d3b3b2a41a67ce988f7e 0.1s done
+#36 naming to docker.io/library/macula-arcade:dev done
+#36 DONE 0.8s
+
+#38 [dev-peer2] exporting to image
+#38 exporting layers 0.7s done
+#38 writing image sha256:0327faa4000ba106982d4da7a99ebc817389ad47c346e13bf0713959792ef2c2 0.2s done
+#38 naming to docker.io/library/macula-arcade:dev done
+#38 DONE 1.0s
+
+#39 [dev-bootstrap] exporting to image
+#39 exporting layers 0.7s done
+#39 writing image sha256:446802d7e9187f9d7906a927871d7a8c5516a7debaa905f1f8801f9119863398 0.1s done
+#39 naming to docker.io/library/macula-arcade:dev done
+#39 DONE 0.9s
+
+#40 [dev-peer1] resolving provenance for metadata file
+#40 ...
+
+#41 [dev-bootstrap] resolving provenance for metadata file
+#41 DONE 0.0s
+
+#42 [dev-bot1] resolving provenance for metadata file
+#42 DONE 0.1s
+
+#40 [dev-peer1] resolving provenance for metadata file
+#40 DONE 0.1s
+
+#43 [dev-peer2] resolving provenance for metadata file
+#43 DONE 0.0s
+ macula-arcade:dev  Built
+ macula-arcade:dev  Built
+ macula-arcade:dev  Built
+ macula-arcade:dev  Built
+✓ Images built
+
+Step 3/5: Starting dev containers...
+ Network dev_arcade-dev-mesh  Creating
+ Network dev_arcade-dev-mesh  Created
+ Container dev-bootstrap  Creating
+ Container dev-bootstrap  Created
+ Container dev-peer2  Creating
+ Container dev-bot1  Creating
+ Container dev-peer1  Creating
+ Container dev-peer2  Created
+ Container dev-bot1  Created
+ Container dev-peer1  Created
+ Container dev-bootstrap  Starting
+ Container dev-bootstrap  Started
+ Container dev-bootstrap  Waiting
+ Container dev-bootstrap  Waiting
+ Container dev-bootstrap  Waiting
+ Container dev-bootstrap  Healthy
+ Container dev-peer2  Starting
+ Container dev-bootstrap  Healthy
+ Container dev-peer1  Starting
+ Container dev-bootstrap  Healthy
+ Container dev-bot1  Starting
+ Container dev-peer2  Started
+ Container dev-peer1  Started
+ Container dev-bot1  Started
+✓ Containers started
+
+Step 4/5: Waiting for services to be healthy...
+...
+✓ All services healthy!
+
+Step 5/5: Deployment summary
+
+==================================================
+Development Environment Ready!
+==================================================
+
+Services running:
+NAME            STATUS                    PORTS
+dev-bootstrap   Up 12 seconds (healthy)   0.0.0.0:5433->5433/udp, [::]:5433->5433/udp, 0.0.0.0:9080->9080/tcp, [::]:9080->9080/tcp, 0.0.0.0:5000->4000/tcp, [::]:5000->4000/tcp
+dev-bot1        Up 6 seconds (healthy)    0.0.0.0:5436->5436/udp, [::]:5436->5436/udp, 0.0.0.0:9083->9083/tcp, [::]:9083->9083/tcp, 0.0.0.0:5003->4000/tcp, [::]:5003->4000/tcp
+dev-peer1       Up 6 seconds (healthy)    0.0.0.0:5434->5434/udp, [::]:5434->5434/udp, 0.0.0.0:9081->9081/tcp, [::]:9081->9081/tcp, 0.0.0.0:5001->4000/tcp, [::]:5001->4000/tcp
+dev-peer2       Up 6 seconds (healthy)    0.0.0.0:5435->5435/udp, [::]:5435->5435/udp, 0.0.0.0:9082->9082/tcp, [::]:9082->9082/tcp, 0.0.0.0:5002->4000/tcp, [::]:5002->4000/tcp
+
+Access points (DEV):
+  Gateway:   http://localhost:5000
+  Peer 1:    http://localhost:5001
+  Peer 2:    http://localhost:5002
+  Bot Node:  http://localhost:5003
+
+Health checks (DEV):
+  Gateway:   http://localhost:9080/health
+  Peer 1:    http://localhost:9081/health
+  Peer 2:    http://localhost:9082/health
+  Bot Node:  http://localhost:9083/health
+
+Demo environment (STABLE) still running:
+  Gateway:   http://localhost:4000
+  Peer 1:    http://localhost:4001
+  Peer 2:    http://localhost:4002
+  Bot Node:  http://localhost:4003
+
+Commands:
+  Logs:      docker compose -f docker-compose.yml logs -f
+  Stop:      docker compose -f docker-compose.yml down
+  Rebuild:   docker compose -f docker-compose.yml up --build -d
+  Restart:   docker compose -f docker-compose.yml restart
+
+Development workflow:
+  1. Make code changes in ./system/
+  2. Rebuild: docker compose -f docker-compose.yml up --build -d
+  3. Test at http://localhost:5000
+
+Version: dev (d6f5d34)
+==================================================

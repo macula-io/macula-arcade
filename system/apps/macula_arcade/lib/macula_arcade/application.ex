@@ -13,13 +13,12 @@ defmodule MaculaArcade.Application do
 
     children = [
       # No database needed - arcade uses pure in-memory game state
-      # MaculaArcade.Repo,
-      # {Ecto.Migrator,
-      #  repos: Application.fetch_env!(:macula_arcade, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:macula_arcade, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: MaculaArcade.PubSub},
-      {DynamicSupervisor, name: MaculaArcade.GameSupervisor, strategy: :one_for_one},
-      MaculaArcade.Games.Coordinator
+      # Matching System - handles player queue and match creation
+      MaculaArcade.Matching.Service,
+      # Gaming System - manages game lifecycles
+      MaculaArcade.Gaming.Supervisor
     ] ++ bot_children()
 
     Supervisor.start_link(children, strategy: :one_for_one, name: MaculaArcade.Supervisor)

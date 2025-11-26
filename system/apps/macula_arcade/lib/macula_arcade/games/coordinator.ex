@@ -212,22 +212,17 @@ defmodule MaculaArcade.Games.Coordinator do
         store_player_in_dht(player_info)
 
         # Publish player_registered event (with hex-encoded node_id for JSON)
-        publish_event(@player_registered_topic, %{
-          player_info |
-          node_id: encode_node_id(state.node_id)
-        })
+        event_payload = Map.put(player_info, :node_id, encode_node_id(state.node_id))
+        Task.start(fn -> publish_event(@player_registered_topic, event_payload) end)
 
         Logger.info("Player #{player_id} registered for matchmaking")
 
         new_state = %{state | waiting_players: new_waiting}
         queue_position = map_size(new_waiting)
 
-        # Try local matchmaking if we have 2+ players waiting
-        new_state = if map_size(new_waiting) >= 2 do
-          try_local_matchmaking(new_state)
-        else
-          new_state
-        end
+        # Don't do immediate local matchmaking here - let the event-driven system handle it
+        # When other nodes receive our player_registered event, they'll propose matches
+        # This prevents race conditions where both peers try to create separate games
 
         {:reply, {:ok, %{queue_position: queue_position}}, new_state}
     end
@@ -301,10 +296,18 @@ defmodule MaculaArcade.Games.Coordinator do
   end
 
   defp get_node_id do
-    client = Mesh.client()
-    case :macula.get_node_id(client) do
-      {:ok, id} -> {:ok, id}
-      id when is_binary(id) -> {:ok, id}
+    try do
+      client = Mesh.client()
+      try do
+        case :macula.get_node_id(client) do
+          {:ok, id} -> {:ok, id}
+          id when is_binary(id) -> {:ok, id}
+          _ -> {:error, :not_connected}
+        end
+      catch
+        :exit, _ -> {:error, :not_connected}
+      end
+    rescue
       _ -> {:error, :not_connected}
     end
   end
@@ -413,29 +416,47 @@ defmodule MaculaArcade.Games.Coordinator do
   ## Event Handlers
 
   defp handle_mesh_event(@player_registered_topic, event, state) do
-    # Another player registered - check if we can match
+    # Another player registered - add to remote players and attempt matching
+    # Note: 'event' IS the payload directly from the subscription callback
     Logger.info("Received player_registered event: #{inspect(event)}")
 
-    # Extract the actual payload from the event structure
-    # Event structure is: %{topic: ..., matched_pattern: ..., payload: %{"node_id" => ..., "player_id" => ...}}
-    player_data = event[:payload]
-
-    # Only process if from another node (compare hex-encoded strings)
+    # Extract player data directly from event (no payload wrapper)
+    player_id = event["player_id"]
+    their_node_id = event["node_id"]
     our_node_id_hex = encode_node_id(state.node_id)
 
-    if player_data["node_id"] != our_node_id_hex do
-      # Check if we have a waiting player to match with
-      case get_first_waiting_player(state) do
-        nil ->
-          Logger.debug("No local players waiting to match")
-          {:noreply, state}
+    Logger.info("Node ID comparison: ours=#{our_node_id_hex} theirs=#{their_node_id}")
 
-        {_player_id, player_info} ->
-          # Propose match directly with this opponent
-          Logger.info("Found local player #{player_info.player_id} to match with #{player_data["player_id"]}")
-          new_state = propose_match(player_info, player_data, state)
-          {:noreply, new_state}
-      end
+    # Add to remote_players map (even if it's our own node!)
+    # The Coordinator needs to collect ALL players from ALL nodes for matchmaking
+    new_remote_players = Map.put(state.remote_players, player_id, event)
+    new_state = %{state | remote_players: new_remote_players}
+
+    Logger.info("Added player #{player_id} from node #{their_node_id} (total remote: #{map_size(new_remote_players)})")
+
+    # Attempt to match with local waiting players
+    new_state = attempt_cross_peer_matchmaking(new_state)
+
+    {:noreply, new_state}
+  end
+
+  defp handle_mesh_event(@player_unregistered_topic, event, state) do
+    # Remote player unregistered - remove from remote_players
+    # Note: 'event' IS the payload directly from the subscription callback
+    Logger.info("Received player_unregistered event: #{inspect(event)}")
+
+    # Extract data directly from event (no payload wrapper)
+    player_id = event["player_id"]
+    their_node_id = event["node_id"]
+    our_node_id_hex = encode_node_id(state.node_id)
+
+    if their_node_id != our_node_id_hex do
+      # Remove from remote_players map
+      new_remote_players = Map.delete(state.remote_players, player_id)
+
+      Logger.info("Removed remote player #{player_id} from node #{their_node_id}")
+
+      {:noreply, %{state | remote_players: new_remote_players}}
     else
       {:noreply, state}
     end
@@ -523,7 +544,30 @@ defmodule MaculaArcade.Games.Coordinator do
   ## Matchmaking Logic
 
   defp attempt_matchmaking(state) do
-    # Find opponent from DHT
+    # First try cross-peer matching (faster than DHT query)
+    attempt_cross_peer_matchmaking(state)
+  end
+
+  defp attempt_cross_peer_matchmaking(state) do
+    # Match local waiting player with remote waiting player
+    case {get_first_waiting_player(state), get_first_remote_player(state)} do
+      {nil, _} ->
+        # No local players waiting
+        state
+
+      {_, nil} ->
+        # No remote players, try DHT fallback
+        attempt_dht_matchmaking(state)
+
+      {{_local_id, local_player}, {_remote_id, remote_player}} ->
+        # Match found! Propose it
+        Logger.info("Cross-peer match: #{local_player.player_id} (local) vs #{remote_player["player_id"]} (remote)")
+        propose_match(local_player, remote_player, state)
+    end
+  end
+
+  defp attempt_dht_matchmaking(state) do
+    # Fallback: Find opponent from DHT
     case find_opponents_from_dht(state) do
       {:ok, opponents} when length(opponents) > 0 ->
         # Select opponent with lowest timestamp (deterministic)
@@ -534,7 +578,7 @@ defmodule MaculaArcade.Games.Coordinator do
           nil ->
             state
 
-          {player_id, player_info} ->
+          {_player_id, player_info} ->
             propose_match(player_info, opponent, state)
         end
 
@@ -546,6 +590,12 @@ defmodule MaculaArcade.Games.Coordinator do
   defp get_first_waiting_player(state) do
     state.waiting_players
     |> Enum.sort_by(fn {_id, info} -> info.timestamp end)
+    |> List.first()
+  end
+
+  defp get_first_remote_player(state) do
+    state.remote_players
+    |> Enum.sort_by(fn {_id, info} -> info["timestamp"] end)
     |> List.first()
   end
 
@@ -650,6 +700,12 @@ defmodule MaculaArcade.Games.Coordinator do
     # Track pending match
     new_pending = Map.put(state.pending_matches, match_id, proposal)
 
+    # Remove local player from waiting queue
+    new_waiting = Map.delete(state.waiting_players, player_info.player_id)
+
+    # Remove opponent from remote_players (if they were remote)
+    new_remote = Map.delete(state.remote_players, opponent["player_id"])
+
     # Publish proposal (with hex-encoded node_ids for JSON)
     publish_event(@match_proposed_topic, %{
       proposal |
@@ -660,7 +716,11 @@ defmodule MaculaArcade.Games.Coordinator do
 
     Logger.info("Proposed match #{match_id}: #{player_info.player_id} vs #{opponent["player_id"]}")
 
-    %{state | pending_matches: new_pending}
+    %{state |
+      pending_matches: new_pending,
+      waiting_players: new_waiting,
+      remote_players: new_remote
+    }
   end
 
   defp handle_match_proposal(payload, state) do

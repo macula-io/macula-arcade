@@ -10,7 +10,7 @@ defmodule MaculaArcadeWeb.SnakeLive do
 
   use MaculaArcadeWeb, :live_view
   require Logger
-  alias MaculaArcade.Games.Coordinator
+  alias MaculaArcade.Matching.Service, as: MatchmakingService
   alias MaculaArcade.Mesh
 
   @impl true
@@ -22,21 +22,8 @@ defmodule MaculaArcadeWeb.SnakeLive do
     # Subscribe to game start events early (before user clicks Find Game)
     # This ensures we don't miss the event due to race conditions
 
-    # Subscribe via Phoenix PubSub (for single-container)
+    # Subscribe via Phoenix PubSub (handles both local and mesh-forwarded events)
     Phoenix.PubSub.subscribe(MaculaArcade.PubSub, "arcade.game.start")
-
-    # Subscribe via Macula mesh (for multi-container)
-    client = Mesh.client()
-    case :macula.subscribe(client, "arcade.game.start", fn event_data ->
-           # Convert mesh event to LiveView message
-           send(live_view_pid, {:game_started, event_data})
-           :ok
-         end) do
-      {:ok, _sub_ref} ->
-        Logger.info("SnakeLive subscribed to game start events via mesh")
-      {:error, reason} ->
-        Logger.warn("Cannot subscribe to game start via mesh - #{inspect(reason)}")
-    end
 
     socket =
       socket
@@ -63,8 +50,8 @@ defmodule MaculaArcadeWeb.SnakeLive do
       socket
     end
 
-    # Register for matchmaking (v0.2.0 protocol)
-    case Coordinator.register_player(socket.assigns.player_id) do
+    # Register for matchmaking
+    case MatchmakingService.register_player(socket.assigns.player_id) do
       {:ok, %{queue_position: pos}} ->
         Logger.info("Player registered at position #{pos}")
 
@@ -110,29 +97,39 @@ defmodule MaculaArcadeWeb.SnakeLive do
       Logger.info("Player #{player_id} matched in game #{game_id} - transitioning to :playing")
       # Capture LiveView pid for use in mesh callbacks
       live_view_pid = self()
+      client = Mesh.client()
 
       # Subscribe to game state updates via mesh (for multi-container)
-      client = Mesh.client()
+      Logger.info("Subscribing to game state - live_view_pid=#{inspect(live_view_pid)}, game_id=#{game_id}")
       case :macula.subscribe(client, "arcade.game.#{game_id}.state", fn state_data ->
+             Logger.info("Mesh callback invoked for game state! data=#{inspect(state_data, limit: 100)}")
+             Logger.info("Sending to LiveView pid=#{inspect(live_view_pid)}, alive=#{inspect(Process.alive?(live_view_pid))}")
              send(live_view_pid, {:game_state_update, state_data})
              :ok
            end) do
-        {:ok, _sub_ref} -> :ok
-        {:error, :not_connected} -> Logger.warn("Cannot subscribe to game state via mesh - not connected")
+        {:ok, _sub_ref} ->
+          Logger.info("Successfully subscribed to game state via mesh")
+          :ok
+        {:error, :not_connected} -> Logger.warning("Cannot subscribe to game state via mesh - not connected")
       end
 
       # Also subscribe via Phoenix PubSub (for single-container)
       Phoenix.PubSub.subscribe(MaculaArcade.PubSub, "arcade.game.#{game_id}.state")
 
       # Subscribe to player input via mesh (for multi-container)
-      client = Mesh.client()
       case :macula.subscribe(client, "arcade.game.#{game_id}.input", fn input_data ->
              send(live_view_pid, {:player_input, input_data})
              :ok
            end) do
         {:ok, _sub_ref} -> :ok
-        {:error, :not_connected} -> Logger.warn("Cannot subscribe to player input via mesh - not connected")
+        {:error, :not_connected} -> Logger.warning("Cannot subscribe to player input via mesh - not connected")
       end
+
+      # IMPORTANT: Signal that this player is ready after subscribing to topics
+      # This triggers the synchronized countdown once both players are ready
+      ready_topic = "arcade.game.#{game_id}.ready"
+      Logger.info("Player #{player_id} publishing ready signal to #{ready_topic}")
+      :macula.publish(client, ready_topic, %{player_id: player_id})
 
       socket =
         socket
@@ -148,12 +145,14 @@ defmodule MaculaArcadeWeb.SnakeLive do
           player1_score: 0,
           player2_score: 0,
           food_position: {0, 0},
-          game_status: :running,
+          game_status: :waiting_for_ready,
           winner: nil,
           player1_events: [],
           player2_events: [],
           player1_asshole_factor: 0,
-          player2_asshole_factor: 0
+          player2_asshole_factor: 0,
+          countdown: nil,
+          ready_players: []
         })
 
       {:noreply, socket}
@@ -175,17 +174,23 @@ defmodule MaculaArcadeWeb.SnakeLive do
     # Normalize to atom keys for template access
     game_state = normalize_game_state(payload)
 
-    # Log at info level every 60 updates (once per second at 60 FPS)
-    if rem(:erlang.unique_integer([:positive]), 60) == 0 do
-      Logger.info("SnakeLive received game_state_update for game #{inspect(game_state.game_id)}")
+    # Tick-based deduplication: only process if tick is newer than last seen
+    current_tick = game_state.tick || 0
+    last_tick = get_in(socket.assigns, [:game_state, :tick]) || -1
+
+    if current_tick > last_tick do
+      Logger.info("SnakeLive processing tick #{current_tick} (last=#{last_tick})")
+
+      socket =
+        socket
+        |> assign(:game_state, game_state)
+        |> push_event("game_state_update", %{game_state: serialize_game_state(game_state)})
+
+      {:noreply, socket}
+    else
+      # Skip duplicate/stale message
+      {:noreply, socket}
     end
-
-    socket =
-      socket
-      |> assign(:game_state, game_state)
-      |> push_event("game_state_update", %{game_state: serialize_game_state(game_state)})
-
-    {:noreply, socket}
   end
 
   @impl true
@@ -321,29 +326,55 @@ defmodule MaculaArcadeWeb.SnakeLive do
 
             <%# Game Commentary/Feedback/Result (Bottom) %>
             <div class="mt-4 text-center">
-              <%= if @game_state.game_status == :finished do %>
-                <div class="bg-gray-800 rounded-lg p-6">
-                  <h2 class="text-3xl font-bold mb-4">
-                    <%= cond do %>
-                      <% @game_state.winner == :draw -> %>
-                        🤝 Draw! 🤝
-                      <% @game_state.winner == @player_id -> %>
-                        🎉 You Win! 🎉
-                      <% true -> %>
-                        💀 Game Over 💀
-                    <% end %>
-                  </h2>
-                  <button
-                    phx-click="join_queue"
-                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg"
-                  >
-                    Play Again
-                  </button>
-                </div>
-              <% else %>
-                <div class="text-gray-400">
-                  AI-controlled snakes battling it out
-                </div>
+              <%= cond do %>
+                <% @game_state.game_status == :waiting_for_ready -> %>
+                  <div class="bg-gray-800 rounded-lg p-6">
+                    <h2 class="text-2xl font-bold mb-4 text-yellow-400">
+                      Waiting for players...
+                    </h2>
+                    <div class="flex justify-center gap-8 text-lg">
+                      <div class={"#{if @game_state.player1_id in (@game_state.ready_players || []), do: "text-green-400", else: "text-gray-500"}"}>
+                        Player 1: <%= if @game_state.player1_id in (@game_state.ready_players || []), do: "Ready!", else: "Connecting..." %>
+                      </div>
+                      <div class={"#{if @game_state.player2_id in (@game_state.ready_players || []), do: "text-green-400", else: "text-gray-500"}"}>
+                        Player 2: <%= if @game_state.player2_id in (@game_state.ready_players || []), do: "Ready!", else: "Connecting..." %>
+                      </div>
+                    </div>
+                  </div>
+                <% @game_state.game_status == :countdown -> %>
+                  <div class="bg-gray-800 rounded-lg p-6">
+                    <h2 class="text-6xl font-bold text-yellow-400 animate-pulse">
+                      <%= if @game_state.countdown && @game_state.countdown > 0 do %>
+                        <%= @game_state.countdown %>
+                      <% else %>
+                        GO!
+                      <% end %>
+                    </h2>
+                    <p class="text-gray-400 mt-2">Get ready!</p>
+                  </div>
+                <% @game_state.game_status == :finished -> %>
+                  <div class="bg-gray-800 rounded-lg p-6">
+                    <h2 class="text-3xl font-bold mb-4">
+                      <%= cond do %>
+                        <% @game_state.winner == :draw -> %>
+                          Draw!
+                        <% @game_state.winner == @player_id -> %>
+                          You Win!
+                        <% true -> %>
+                          Game Over
+                      <% end %>
+                    </h2>
+                    <button
+                      phx-click="join_queue"
+                      class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg"
+                    >
+                      Play Again
+                    </button>
+                  </div>
+                <% true -> %>
+                  <div class="text-gray-400">
+                    AI-controlled snakes battling it out
+                  </div>
               <% end %>
             </div>
           </div>
@@ -383,10 +414,12 @@ defmodule MaculaArcadeWeb.SnakeLive do
 
   # Normalize game state to use atom keys for template access
   defp normalize_game_state(state) when is_map(state) do
-    # Handle game_status conversion (string "running"/"finished" to atom)
+    # Handle game_status conversion (string to atom)
     game_status = case get_field(state, :game_status) do
       "running" -> :running
       "finished" -> :finished
+      "waiting_for_ready" -> :waiting_for_ready
+      "countdown" -> :countdown
       status when is_atom(status) -> status
       _ -> :running
     end
@@ -414,7 +447,10 @@ defmodule MaculaArcadeWeb.SnakeLive do
       player1_events: get_field(state, :player1_events) || [],
       player2_events: get_field(state, :player2_events) || [],
       player1_asshole_factor: get_field(state, :player1_asshole_factor) || 0,
-      player2_asshole_factor: get_field(state, :player2_asshole_factor) || 0
+      player2_asshole_factor: get_field(state, :player2_asshole_factor) || 0,
+      countdown: get_field(state, :countdown),
+      tick: get_field(state, :tick) || 0,
+      ready_players: get_field(state, :ready_players) || []
     }
   end
 

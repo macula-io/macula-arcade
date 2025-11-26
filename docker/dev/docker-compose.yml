@@ -4,10 +4,10 @@
 # so you can develop while keeping the stable demo running.
 #
 # Ports:
-#   Dev Gateway:  5000 (HTTP), 5433 (QUIC), 9080 (Health)
-#   Dev Peer 1:   5001 (HTTP), 5434 (QUIC), 9081 (Health)
-#   Dev Peer 2:   5002 (HTTP), 5435 (QUIC), 9082 (Health)
-#   Dev Bot:      5003 (HTTP), 5436 (QUIC), 9083 (Health)
+#   Dev Bootstrap:  5000 (HTTP), 5433 (QUIC), 9080 (Health)
+#   Dev Peer 1:     5001 (HTTP), 5434 (QUIC), 9081 (Health)
+#   Dev Peer 2:     5002 (HTTP), 5435 (QUIC), 9082 (Health)
+#   Dev Bot:        5003 (HTTP), 5436 (QUIC), 9083 (Health)
 #
 # Demo ports remain: 4000-4003, 8080-8083, 4433-4436
 #
@@ -17,8 +17,8 @@
 #   docker compose -f docker-compose.dev.yml down
 
 services:
-  # Development Gateway - Bootstrap node
-  dev-gateway:
+  # Development Bootstrap - DHT bootstrap node
+  dev-bootstrap:
     build:
       context: ../../system
       dockerfile: Dockerfile.dev
@@ -28,12 +28,12 @@ services:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
     image: macula-arcade:dev
-    container_name: dev-gateway
-    hostname: dev-gateway
+    container_name: dev-bootstrap
+    hostname: dev-bootstrap
     restart: unless-stopped
     environment:
       # Macula v0.8.20 - P2P Mesh with DHT-based peer discovery
-      MACULA_HOSTNAME: "dev-gateway"
+      MACULA_HOSTNAME: "dev-bootstrap"
       MACULA_QUIC_PORT: "5433"
       MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "9080"
@@ -41,7 +41,7 @@ services:
 
       # Phoenix config
       PORT: "4000"
-      PHX_HOST: "dev-gateway"
+      PHX_HOST: "dev-bootstrap"
       SECRET_KEY_BASE: "DEVWMw7VW0JQKZKbLLq6Y1hPrHvCvnqZvvnDEVWMw7VW0JQKZKbLLq6Y1hPrHvCv"
 
       # TLS
@@ -67,7 +67,7 @@ services:
       retries: 5
       start_period: 20s
     volumes:
-      - dev-gateway-certs:/opt/macula/certs
+      - dev-bootstrap-certs:/opt/macula/certs
 
   # Development Peer 1
   dev-peer1:
@@ -89,7 +89,7 @@ services:
       MACULA_QUIC_PORT: "5434"
       MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "9081"
-      MACULA_BOOTSTRAP_PEERS: "https://dev-gateway:5433"
+      MACULA_BOOTSTRAP_PEERS: "https://dev-bootstrap:5433"
 
       PORT: "4000"
       PHX_HOST: "dev-peer1"
@@ -108,7 +108,7 @@ services:
       arcade-dev-mesh:
         ipv4_address: 172.26.0.11
     depends_on:
-      dev-gateway:
+      dev-bootstrap:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9081/health"]
@@ -137,7 +137,7 @@ services:
       MACULA_QUIC_PORT: "5435"
       MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "9082"
-      MACULA_BOOTSTRAP_PEERS: "https://dev-gateway:5433"
+      MACULA_BOOTSTRAP_PEERS: "https://dev-bootstrap:5433"
 
       PORT: "4000"
       PHX_HOST: "dev-peer2"
@@ -156,7 +156,7 @@ services:
       arcade-dev-mesh:
         ipv4_address: 172.26.0.12
     depends_on:
-      dev-gateway:
+      dev-bootstrap:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9082/health"]
@@ -185,7 +185,7 @@ services:
       MACULA_QUIC_PORT: "5436"
       MACULA_REALM: "macula.arcade.dev"
       HEALTH_PORT: "9083"
-      MACULA_BOOTSTRAP_PEERS: "https://dev-gateway:5433"
+      MACULA_BOOTSTRAP_PEERS: "https://dev-bootstrap:5433"
 
       PORT: "4000"
       PHX_HOST: "dev-bot1"
@@ -208,7 +208,7 @@ services:
       arcade-dev-mesh:
         ipv4_address: 172.26.0.13
     depends_on:
-      dev-gateway:
+      dev-bootstrap:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9083/health"]
@@ -225,4 +225,4 @@ networks:
         - subnet: 172.26.0.0/24
 
 volumes:
-  dev-gateway-certs:
+  dev-bootstrap-certs:
