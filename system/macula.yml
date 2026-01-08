@@ -1,0 +1,23 @@
+# Macula Arcade - Interactive mesh demo application
+# This manifest enables publishing to the Macula marketplace
+
+artifact:
+  id: io.macula.arcade
+  name: Macula Arcade
+  type: service
+  version: 0.3.1
+  description: Interactive arcade demo showcasing Macula mesh capabilities through multiplayer games
+
+package:
+  # Build from source using Mix releases
+  source:
+    type: mix
+    release: macula_arcade
+
+runtime:
+  env:
+    PHX_SERVER: "true"
+    DATABASE_PATH: "${DATABASE_PATH:-/app/data/arcade.db}"
+    SECRET_KEY_BASE: "${SECRET_KEY_BASE}"
+  ports:
+    - "4000:4000"
