@@ -4,6 +4,7 @@
 
 [![Macula Version](https://img.shields.io/badge/macula-v0.10.0-blue)](https://hex.pm/packages/macula)
 [![Snake Protocol](https://img.shields.io/badge/protocol-v0.2.0-green)](docs/architecture/SNAKE_DUEL_ARCHITECTURE.md)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-yellow.svg)](https://buymeacoffee.com/beamologist)
 
 ---
 
