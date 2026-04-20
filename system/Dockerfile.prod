@@ -87,5 +87,5 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
 # Use entrypoint to generate certs if needed
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
-# Start command
-CMD ["bin/macula_arcade", "start"]
+# Start command (runs migrations via bin/start overlay script)
+CMD ["bin/start"]

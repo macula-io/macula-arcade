@@ -14,10 +14,20 @@ defmodule MaculaArcadeWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # Authentication routes (public)
+  scope "/", MaculaArcadeWeb do
+    pipe_through :browser
+
+    live "/login", AuthLive
+    get "/logout", AuthController, :logout
+  end
+
+  # Main app routes
   scope "/", MaculaArcadeWeb do
     pipe_through :browser
 
     live "/", HomeLive
+    live "/den", DenLive
     live "/snake", SnakeLive
   end
 

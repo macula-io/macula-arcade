@@ -24,18 +24,25 @@ WORKDIR /app
 # Copy local macula into the build (from build context)
 COPY --from=macula . /macula
 
+# Cache bust - MUST be before any application files to invalidate cache
+ARG CACHE_BUST=0
+RUN echo "Cache bust: $CACHE_BUST" && true
+
 # Copy mix files and create dev override
 COPY mix.exs mix.lock ./
 COPY config config
 COPY apps/macula_arcade/mix.exs apps/macula_arcade/
 COPY apps/macula_arcade_web/mix.exs apps/macula_arcade_web/
 
-# Copy application code first
+# Copy application code
 COPY apps apps
+
+# Copy release overlay scripts
+COPY rel rel
 
 # Override macula dependency to use local path (AFTER copying apps)
 RUN cd apps/macula_arcade && \
-    sed -i 's/{:macula, "~> 0.10.0"}/{:macula, path: "\/macula", override: true}/' mix.exs
+    sed -i 's/{:macula, "~> [0-9.]*"}/{:macula, path: "\/macula", override: true}/' mix.exs
 
 # Install mix dependencies (will use local path)
 ENV MIX_ENV=prod
@@ -49,10 +56,22 @@ RUN mix compile
 
 # Setup and build assets using Phoenix asset pipeline
 RUN mix assets.setup
-RUN mix assets.deploy
 
-# Build release
-RUN mix release
+# Build and minify assets (from umbrella root)
+RUN cd apps/macula_arcade_web && mix tailwind macula_arcade_web --minify
+RUN cd apps/macula_arcade_web && mix esbuild macula_arcade_web --minify
+
+# Digest static files (run from web app directory)
+RUN cd apps/macula_arcade_web && mix phx.digest
+
+# Build release (--overwrite to ensure fresh build)
+RUN mix release --overwrite
+
+# WORKAROUND: mix release bug - manually copy the correct beam files from _build/prod/lib to release
+# The compiled files in _build/prod/lib are correct, but mix release packages incorrect versions
+RUN cp -r /app/_build/prod/lib/macula_arcade/ebin/*.beam /app/_build/prod/rel/macula_arcade/lib/macula_arcade-0.3.1/ebin/ && \
+    cp -r /app/_build/prod/lib/macula_arcade_web/ebin/*.beam /app/_build/prod/rel/macula_arcade/lib/macula_arcade_web-0.1.0/ebin/ && \
+    ls -la /app/_build/prod/rel/macula_arcade/lib/macula_arcade-0.3.1/ebin/Elixir.MaculaArcade.Matching.Service.beam
 
 # ==============================================================================
 # Runtime Stage
@@ -77,12 +96,10 @@ WORKDIR /home/app
 # Copy release from builder
 COPY --from=builder --chown=app:app /app/_build/prod/rel/macula_arcade ./
 
-# Copy TLS certificates for Macula gateway
-# Macula library expects certificates at /opt/macula/certs/
-RUN mkdir -p /opt/macula/certs
-COPY --from=builder --chown=app:app /app/priv/certs/server-cert.pem /opt/macula/certs/cert.pem
-COPY --from=builder --chown=app:app /app/priv/certs/server-key.pem /opt/macula/certs/key.pem
-RUN chmod 644 /opt/macula/certs/cert.pem && chmod 600 /opt/macula/certs/key.pem
+# Create TLS certificates directory for Macula gateway
+# Certificates are generated at container startup to ensure unique node_ids
+# The start script will generate unique certs per container
+RUN mkdir -p /opt/macula/certs && chown -R app:app /opt/macula/certs
 
 # Switch to app user
 USER app
@@ -92,11 +109,10 @@ EXPOSE 4000
 
 # Set environment
 ENV MIX_ENV=prod
-ENV PHX_SERVER=true
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   CMD curl -f http://localhost:8080/health || exit 1
 
-# Start the release
-CMD ["bin/macula_arcade", "start"]
+# Start the release (runs migrations then starts the server)
+CMD ["bin/start"]

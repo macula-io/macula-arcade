@@ -70,6 +70,11 @@ defmodule MaculaArcade.SnakeMaster do
     |> Repo.all()
   end
 
+  @doc """
+  Alias for list_snakes_for_player - returns all snakes for a player.
+  """
+  def list_player_snakes(player_id), do: list_snakes_for_player(player_id)
+
   def list_idle_snakes_for_player(player_id) do
     Snake
     |> where([s], s.player_id == ^player_id and s.status == "idle")
@@ -83,10 +88,92 @@ defmodule MaculaArcade.SnakeMaster do
     |> Repo.aggregate(:count)
   end
 
-  def create_snake(player_id, attrs) do
-    Snake.create_changeset(player_id, attrs)
-    |> Repo.insert()
+  @doc """
+  Get the top snakes by wins for the leaderboard.
+  Tries distributed leaderboard first, falls back to local database.
+  Returns snakes/stats with player info, ordered by wins descending.
+  """
+  def get_leaderboard(limit \\ 10) do
+    # Try distributed leaderboard first
+    case MaculaArcade.DistributedLeaderboard.get_leaderboard(limit) do
+      [] ->
+        # Fallback to local database if distributed is empty
+        get_local_leaderboard(limit)
+
+      distributed_entries ->
+        distributed_entries
+    end
   end
+
+  @doc """
+  Get the local leaderboard (just this peer's snakes).
+  """
+  def get_local_leaderboard(limit \\ 10) do
+    Snake
+    |> where([s], s.wins > 0 or s.losses > 0)
+    |> order_by([s], desc: s.wins, asc: s.losses, desc: s.total_food_eaten)
+    |> limit(^limit)
+    |> preload(:player)
+    |> Repo.all()
+  end
+
+  @doc """
+  Get total stats across all snakes for display.
+  Tries distributed leaderboard first, falls back to local database.
+  """
+  def get_global_stats do
+    # Try distributed leaderboard first
+    distributed_stats = MaculaArcade.DistributedLeaderboard.get_global_stats()
+
+    case distributed_stats do
+      %{total_snakes: 0} ->
+        # Fallback to local database if distributed is empty
+        get_local_global_stats()
+
+      stats ->
+        stats
+    end
+  end
+
+  @doc """
+  Get local stats (just this peer's snakes).
+  """
+  def get_local_global_stats do
+    query =
+      from s in Snake,
+        select: %{
+          total_snakes: count(s.id),
+          total_matches: sum(s.wins) + sum(s.losses),
+          total_food: sum(s.total_food_eaten)
+        }
+
+    Repo.one(query) || %{total_snakes: 0, total_matches: 0, total_food: 0}
+  end
+
+  def create_snake(player_id, attrs) do
+    result =
+      Snake.create_changeset(player_id, attrs)
+      |> Repo.insert()
+
+    # Register in distributed leaderboard (best-effort, async)
+    register_snake_in_distributed_leaderboard(result, player_id)
+
+    result
+  end
+
+  defp register_snake_in_distributed_leaderboard({:ok, snake}, player_id) do
+    Task.start(fn ->
+      case get_player(player_id) do
+        nil ->
+          :ok
+
+        player ->
+          MaculaArcade.DistributedLeaderboard.register_snake(snake, player)
+      end
+    end)
+  end
+
+  defp register_snake_in_distributed_leaderboard(_error, _player_id), do: :ok
 
   def update_snake(%Snake{} = snake, attrs) do
     snake
@@ -132,37 +219,62 @@ defmodule MaculaArcade.SnakeMaster do
   end
 
   def record_match_and_update_stats(snake, opponent_snake, result, match_data) do
-    Repo.transaction(fn ->
-      # Create match history record
-      match_attrs = %{
-        opponent_snake_id: opponent_snake.id,
-        opponent_name: opponent_snake.name,
-        opponent_player_name: opponent_snake.player.name,
-        result: to_string(result),
-        my_score: match_data[:my_score] || 0,
-        opponent_score: match_data[:opponent_score] || 0,
-        my_final_length: match_data[:my_final_length],
-        opponent_final_length: match_data[:opponent_final_length],
-        duration_seconds: match_data[:duration_seconds],
-        food_eaten: match_data[:food_eaten] || 0,
-        kills: match_data[:kills] || 0,
-        replay_data: match_data[:replay_data]
-      }
+    result =
+      Repo.transaction(fn ->
+        # Create match history record
+        match_attrs = %{
+          opponent_snake_id: opponent_snake.id,
+          opponent_name: opponent_snake.name,
+          opponent_player_name: opponent_snake.player.name,
+          result: to_string(result),
+          my_score: match_data[:my_score] || 0,
+          opponent_score: match_data[:opponent_score] || 0,
+          my_final_length: match_data[:my_final_length],
+          opponent_final_length: match_data[:opponent_final_length],
+          duration_seconds: match_data[:duration_seconds],
+          food_eaten: match_data[:food_eaten] || 0,
+          kills: match_data[:kills] || 0,
+          replay_data: match_data[:replay_data]
+        }
 
-      {:ok, _match} = record_match(snake.id, match_attrs)
+        {:ok, _match} = record_match(snake.id, match_attrs)
 
-      # Update snake stats
-      stats = %{
-        result: result,
-        food_eaten: match_data[:food_eaten] || 0,
-        kills: match_data[:kills] || 0,
-        final_length: match_data[:my_final_length] || 0
-      }
+        # Update snake stats
+        stats = %{
+          result: result,
+          food_eaten: match_data[:food_eaten] || 0,
+          kills: match_data[:kills] || 0,
+          final_length: match_data[:my_final_length] || 0
+        }
 
-      {:ok, updated_snake} = update_snake_stats(snake, stats)
-      updated_snake
+        {:ok, updated_snake} = update_snake_stats(snake, stats)
+        updated_snake
+      end)
+
+    # Sync to distributed leaderboard after local transaction
+    sync_to_distributed_leaderboard(result, snake, match_data)
+
+    result
+  end
+
+  # Sync updated stats to distributed leaderboard (best-effort, async)
+  defp sync_to_distributed_leaderboard({:ok, updated_snake}, _snake, _match_data) do
+    Task.start(fn ->
+      # Reload snake with player to get full data
+      case get_snake_with_player(updated_snake.id) do
+        nil ->
+          :ok
+
+        snake_with_player ->
+          MaculaArcade.DistributedLeaderboard.sync_snake(
+            snake_with_player,
+            snake_with_player.player
+          )
+      end
     end)
   end
+
+  defp sync_to_distributed_leaderboard(_error, _snake, _match_data), do: :ok
 
   # ============================================================================
   # Training Sessions

@@ -1,0 +1,46 @@
+#!/bin/sh
+# Start script - runs migrations then starts the server
+#
+# This is the recommended entrypoint for production deployments.
+# It ensures the database is ready before the application boots.
+
+cd -P -- "$(dirname -- "$0")"
+
+# Generate unique TLS certificates if not present or if using placeholder
+# Each container needs unique certs to get unique node_id in the mesh
+CERT_DIR="/opt/macula/certs"
+CERT_FILE="$CERT_DIR/cert.pem"
+KEY_FILE="$CERT_DIR/key.pem"
+MARKER_FILE="$CERT_DIR/.unique"
+
+# Check if we need to generate unique certs
+# Generate if: marker doesn't exist (shared/build-time cert) OR cert doesn't exist
+if [ ! -f "$MARKER_FILE" ] || [ ! -f "$CERT_FILE" ]; then
+    echo "Generating unique TLS certificate for this container..."
+
+    # Get hostname for the CN (or use MACULA_HOSTNAME if set)
+    CERT_CN="${MACULA_HOSTNAME:-$(hostname)}"
+
+    # Generate self-signed certificate with unique key
+    openssl req -x509 -newkey rsa:2048 \
+        -keyout "$KEY_FILE" \
+        -out "$CERT_FILE" \
+        -days 365 \
+        -nodes \
+        -subj "/CN=$CERT_CN" \
+        2>/dev/null
+
+    # Create marker to indicate this is a unique cert
+    touch "$MARKER_FILE"
+
+    # Set permissions
+    chmod 644 "$CERT_FILE"
+    chmod 600 "$KEY_FILE"
+
+    echo "Generated unique certificate for: $CERT_CN"
+
+    # Log the fingerprint so we can verify uniqueness
+    openssl x509 -in "$CERT_FILE" -fingerprint -sha256 -noout 2>/dev/null | head -1
+fi
+
+./migrate && ./server

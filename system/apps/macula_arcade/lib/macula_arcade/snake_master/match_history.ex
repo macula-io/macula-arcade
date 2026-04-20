@@ -42,9 +42,17 @@ defmodule MaculaArcade.SnakeMaster.MatchHistory do
 
   @required_fields [:snake_id, :result]
   @optional_fields [
-    :opponent_snake_id, :opponent_name, :opponent_player_name,
-    :my_score, :opponent_score, :my_final_length, :opponent_final_length,
-    :duration_seconds, :food_eaten, :kills, :replay_data
+    :opponent_snake_id,
+    :opponent_name,
+    :opponent_player_name,
+    :my_score,
+    :opponent_score,
+    :my_final_length,
+    :opponent_final_length,
+    :duration_seconds,
+    :food_eaten,
+    :kills,
+    :replay_data
   ]
 
   def changeset(match, attrs) do

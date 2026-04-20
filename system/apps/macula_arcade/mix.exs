@@ -4,7 +4,7 @@ defmodule MaculaArcade.MixProject do
   def project do
     [
       app: :macula_arcade,
-      version: "0.1.0",
+      version: "0.3.1",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
@@ -36,14 +36,16 @@ defmodule MaculaArcade.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:macula, "~> 0.10.0"},
+      {:macula, "~> 0.14.1"},
       {:dns_cluster, "~> 0.2.0"},
       {:phoenix_pubsub, "~> 2.1"},
       {:ecto_sql, "~> 3.13"},
       {:ecto_sqlite3, ">= 0.0.0"},
       {:jason, "~> 1.2"},
       {:swoosh, "~> 1.16"},
-      {:req, "~> 0.5"}
+      {:req, "~> 0.5"},
+      {:mnemonic_slugs, "~> 0.0.3"},
+      {:bcrypt_elixir, "~> 3.0"}
     ]
   end
 

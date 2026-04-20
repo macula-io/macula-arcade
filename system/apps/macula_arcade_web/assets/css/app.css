@@ -103,3 +103,394 @@
 [data-phx-session], [data-phx-teleported-src] { display: contents }
 
 /* This file is for your main application CSS */
+
+/* ============================================================================
+   ARCADE STYLES - Old Skool 8-bit Arcade Theme
+   ============================================================================ */
+
+/* Arcade Container */
+.arcade-container {
+  background: linear-gradient(180deg, #0a0a1a 0%, #0f0f2a 100%);
+  position: relative;
+}
+
+/* CRT Scanline Effect */
+.scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.3) 2px,
+    rgba(0, 0, 0, 0.3) 4px
+  );
+  pointer-events: none;
+}
+
+/* Pixel Border Effect */
+.pixel-border {
+  box-shadow:
+    inset -4px -4px 0 0 rgba(0, 0, 0, 0.3),
+    inset 4px 4px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Arcade Panel */
+.arcade-panel {
+  background: linear-gradient(180deg, #1a1a2e 0%, #16162a 100%);
+  border: 2px solid #2d2d4a;
+  border-radius: 4px;
+  box-shadow:
+    0 0 20px rgba(16, 185, 129, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.arcade-panel-header {
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  color: #000;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  letter-spacing: 0.1em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Arcade Buttons */
+.arcade-btn {
+  position: relative;
+  font-family: monospace;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.arcade-btn-primary {
+  background: linear-gradient(180deg, #22c55e 0%, #16a34a 50%, #15803d 100%);
+  color: #000;
+  box-shadow:
+    0 4px 0 #14532d,
+    0 6px 20px rgba(34, 197, 94, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.arcade-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0 #14532d,
+    0 8px 30px rgba(34, 197, 94, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.arcade-btn-primary:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 2px 0 #14532d,
+    0 4px 15px rgba(34, 197, 94, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.arcade-btn-secondary {
+  background: linear-gradient(180deg, #6366f1 0%, #4f46e5 50%, #4338ca 100%);
+  color: #fff;
+  box-shadow:
+    0 4px 0 #312e81,
+    0 6px 20px rgba(99, 102, 241, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.arcade-btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0 #312e81,
+    0 8px 30px rgba(99, 102, 241, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.arcade-btn-secondary:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 2px 0 #312e81,
+    0 4px 15px rgba(99, 102, 241, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Stat Box */
+.stat-box {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+/* Stat Row */
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+/* Leaderboard Row */
+.leaderboard-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none;
+}
+
+/* Insert Coin Animation */
+.insert-coin {
+  color: #fbbf24;
+  animation: blink 1s infinite;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Glow Effect for Title */
+.arcade-glow {
+  text-shadow:
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 30px currentColor;
+}
+
+/* Waiting Animation */
+.arcade-waiting {
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(251, 191, 36, 0.6);
+  }
+}
+
+/* Neon Text Effect */
+.neon-text {
+  text-shadow:
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 40px currentColor;
+}
+
+/* ============================================================================
+   EVENT ICON ANIMATIONS - Snake game event feedback
+   ============================================================================ */
+
+/* Container for event icon - ensures proper sizing and stable layout */
+.event-icon-container {
+  min-height: 80px;
+  contain: layout style;
+}
+
+/* Base event icon styling - GPU accelerated for smooth animations */
+.event-icon {
+  display: inline-block;
+  filter: drop-shadow(0 0 8px currentColor);
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Fast pulse for direction changes - subtle, quick feedback */
+.animate-pulse-fast {
+  animation: pulse-fast 0.25s ease-out forwards;
+}
+
+@keyframes pulse-fast {
+  0% { transform: scale(1) translateZ(0); }
+  50% { transform: scale(1.15) translateZ(0); }
+  100% { transform: scale(1) translateZ(0); }
+}
+
+/* Bounce scale for food eaten */
+.animate-bounce-scale {
+  animation: bounce-scale 0.4s ease-out forwards;
+}
+
+@keyframes bounce-scale {
+  0% { transform: scale(1) translateZ(0); }
+  40% { transform: scale(1.3) translateZ(0); }
+  70% { transform: scale(0.95) translateZ(0); }
+  100% { transform: scale(1) translateZ(0); }
+}
+
+/* Shake for wall collision */
+.animate-shake {
+  animation: shake 0.35s ease-out forwards;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0) translateZ(0); }
+  25% { transform: translateX(-6px) translateZ(0); }
+  50% { transform: translateX(6px) translateZ(0); }
+  75% { transform: translateX(-4px) translateZ(0); }
+}
+
+/* Single spin for self collision */
+.animate-spin-once {
+  animation: spin-once 0.4s ease-out forwards;
+}
+
+@keyframes spin-once {
+  0% { transform: rotate(0deg) translateZ(0); }
+  100% { transform: rotate(360deg) translateZ(0); }
+}
+
+/* Explosion effect for snake/head collision */
+.animate-explode {
+  animation: explode 0.5s ease-out forwards;
+}
+
+@keyframes explode {
+  0% { transform: scale(1) translateZ(0); opacity: 1; }
+  50% { transform: scale(1.6) translateZ(0); opacity: 0.9; }
+  100% { transform: scale(1) translateZ(0); opacity: 1; }
+}
+
+/* Confetti burst for win */
+.animate-confetti {
+  animation: confetti 0.6s ease-out forwards;
+}
+
+@keyframes confetti {
+  0% { transform: scale(0.8) rotate(0deg) translateZ(0); opacity: 0.5; }
+  30% { transform: scale(1.3) rotate(10deg) translateZ(0); opacity: 1; }
+  60% { transform: scale(1.1) rotate(-5deg) translateZ(0); }
+  100% { transform: scale(1) rotate(0deg) translateZ(0); opacity: 1; }
+}
+
+/* ============================================================================
+   SNAKE GAME RESPONSIVE LAYOUT - Vertical stacked rows
+   Header -> Player 1 -> Arena -> Player 2
+   ============================================================================ */
+
+/* Main layout: Vertical stack filling full viewport */
+.snake-game-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100vh;
+  min-height: 400px;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+/* Header row: "You are Player X" + buttons */
+.snake-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: rgba(31, 41, 55, 0.7);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(75, 85, 99, 0.5);
+  flex-shrink: 0;
+}
+
+/* Compact horizontal player panel row */
+.snake-player-panel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(31, 41, 55, 0.5);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(75, 85, 99, 0.5);
+  flex-shrink: 0;
+}
+
+/* Player label (P1/P2) */
+.snake-player-label {
+  font-weight: bold;
+  font-size: 1.25rem;
+  min-width: 2rem;
+}
+
+/* Player score - large and bold */
+.snake-player-score {
+  font-size: 2rem;
+  font-weight: bold;
+  min-width: 3rem;
+}
+
+/* Player description - truncated */
+.snake-player-desc {
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+/* Event icon in player panel - fixed size */
+.snake-event-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Arena container - takes remaining vertical space */
+.snake-arena-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+/* Canvas scales to fill container while maintaining aspect ratio */
+.snake-canvas {
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  border: 4px solid #374151;
+  border-radius: 0.25rem;
+  background: #111827;
+  image-rendering: pixelated; /* Crisp pixel art rendering */
+  image-rendering: crisp-edges;
+}
+
+/* Small screens - tighter spacing */
+@media (max-width: 600px) {
+  .snake-game-layout {
+    gap: 0.25rem;
+    padding: 0.25rem;
+  }
+
+  .snake-header-row,
+  .snake-player-panel {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .snake-player-score {
+    font-size: 1.5rem;
+  }
+
+  .snake-event-icon {
+    width: 36px;
+    height: 36px;
+  }
+}

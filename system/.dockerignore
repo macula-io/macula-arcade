@@ -12,7 +12,10 @@ erl_crash.dump
 
 # Node
 /apps/macula_arcade_web/assets/node_modules
-/apps/macula_arcade_web/priv/static
+
+# Exclude generated assets but keep source static files (images, favicon, etc.)
+/apps/macula_arcade_web/priv/static/assets
+/apps/macula_arcade_web/priv/static/cache_manifest.json
 
 # Database
 *.db

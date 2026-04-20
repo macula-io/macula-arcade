@@ -75,7 +75,7 @@ defmodule MaculaArcadeWeb.MixProject do
       "assets.deploy": [
         "tailwind macula_arcade_web --minify",
         "esbuild macula_arcade_web --minify",
-        "phx.digest"
+        "phx.digest priv/static -o priv/static"
       ]
     ]
   end

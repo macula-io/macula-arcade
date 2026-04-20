@@ -39,7 +39,14 @@ defmodule MaculaArcade.SnakeMaster.TrainingSession do
   end
 
   @required_fields [:snake_id, :training_type]
-  @optional_fields [:generations, :best_fitness, :avg_fitness, :status, :started_at, :completed_at]
+  @optional_fields [
+    :generations,
+    :best_fitness,
+    :avg_fitness,
+    :status,
+    :started_at,
+    :completed_at
+  ]
 
   def changeset(session, attrs) do
     session
@@ -61,27 +68,36 @@ defmodule MaculaArcade.SnakeMaster.TrainingSession do
 
   def update_progress_changeset(session, generations, best_fitness, avg_fitness) do
     session
-    |> cast(%{
-      generations: generations,
-      best_fitness: best_fitness,
-      avg_fitness: avg_fitness
-    }, [:generations, :best_fitness, :avg_fitness])
+    |> cast(
+      %{
+        generations: generations,
+        best_fitness: best_fitness,
+        avg_fitness: avg_fitness
+      },
+      [:generations, :best_fitness, :avg_fitness]
+    )
   end
 
   def complete_changeset(session) do
     session
-    |> cast(%{
-      status: "completed",
-      completed_at: DateTime.utc_now()
-    }, [:status, :completed_at])
+    |> cast(
+      %{
+        status: "completed",
+        completed_at: DateTime.utc_now()
+      },
+      [:status, :completed_at]
+    )
   end
 
   def cancel_changeset(session) do
     session
-    |> cast(%{
-      status: "cancelled",
-      completed_at: DateTime.utc_now()
-    }, [:status, :completed_at])
+    |> cast(
+      %{
+        status: "cancelled",
+        completed_at: DateTime.utc_now()
+      },
+      [:status, :completed_at]
+    )
   end
 
   def training_type_description("survival"), do: "Avoid walls & enemies"

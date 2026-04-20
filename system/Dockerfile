@@ -35,6 +35,9 @@ RUN mix deps.get --only $MIX_ENV
 # Copy application code
 COPY apps apps
 
+# Copy release overlay scripts
+COPY rel rel
+
 # Copy TLS certificates for Macula gateway
 COPY priv priv
 
@@ -43,7 +46,13 @@ RUN mix compile
 
 # Setup and build assets using Phoenix asset pipeline
 RUN mix assets.setup
-RUN mix assets.deploy
+
+# Build and minify assets (from umbrella root)
+RUN cd apps/macula_arcade_web && mix tailwind macula_arcade_web --minify
+RUN cd apps/macula_arcade_web && mix esbuild macula_arcade_web --minify
+
+# Digest static files (run from web app directory)
+RUN cd apps/macula_arcade_web && mix phx.digest
 
 # Build release
 RUN mix release
@@ -86,7 +95,6 @@ EXPOSE 4000
 
 # Set environment
 ENV MIX_ENV=prod
-ENV PHX_SERVER=true
 
-# Start the release
-CMD ["bin/macula_arcade", "start"]
+# Start the release (runs migrations then starts the server)
+CMD ["bin/start"]

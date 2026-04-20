@@ -1,6 +1,5 @@
 import Config
 
-
 # Configure your database
 config :macula_arcade, MaculaArcade.Repo,
   database: Path.expand("../macula_arcade_dev.db", __DIR__),

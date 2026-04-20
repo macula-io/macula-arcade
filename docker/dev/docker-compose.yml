@@ -27,6 +27,7 @@ services:
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
+        CACHE_BUST: ${CACHE_BUST:-0}
     image: macula-arcade:dev
     container_name: dev-bootstrap
     hostname: dev-bootstrap
@@ -48,8 +49,8 @@ services:
       MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
       MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
 
-      # Database (in-memory for dev)
-      DATABASE_PATH: ":memory:"
+      # Database (file-based for proper migration support)
+      DATABASE_PATH: "/tmp/arcade.db"
 
       # Logging (debug for development)
       LOG_LEVEL: "debug"
@@ -79,6 +80,7 @@ services:
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
+        CACHE_BUST: ${CACHE_BUST:-0}
     image: macula-arcade:dev
     container_name: dev-peer1
     hostname: dev-peer1
@@ -98,7 +100,7 @@ services:
       MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
       MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
 
-      DATABASE_PATH: ":memory:"
+      DATABASE_PATH: "/tmp/arcade.db"
       LOG_LEVEL: "debug"
     ports:
       - "5001:4000"
@@ -127,6 +129,7 @@ services:
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
+        CACHE_BUST: ${CACHE_BUST:-0}
     image: macula-arcade:dev
     container_name: dev-peer2
     hostname: dev-peer2
@@ -146,7 +149,7 @@ services:
       MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
       MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
 
-      DATABASE_PATH: ":memory:"
+      DATABASE_PATH: "/tmp/arcade.db"
       LOG_LEVEL: "debug"
     ports:
       - "5002:4000"
@@ -175,6 +178,7 @@ services:
       args:
         BUILD_DATE: ${BUILD_DATE:-unknown}
         VCS_REF: ${VCS_REF:-unknown}
+        CACHE_BUST: ${CACHE_BUST:-0}
     image: macula-arcade:dev
     container_name: dev-bot1
     hostname: dev-bot1
@@ -194,9 +198,10 @@ services:
       MACULA_CERT_PATH: "/opt/macula/certs/cert.pem"
       MACULA_KEY_PATH: "/opt/macula/certs/key.pem"
 
-      DATABASE_PATH: ":memory:"
+      DATABASE_PATH: "/tmp/arcade.db"
 
-      # Bot disabled by default in dev
+      # Old BotClient disabled - Quick Games use BotGuest (on-demand)
+      # Ranked queue is Human vs Human only
       BOT_COUNT: "0"
 
       LOG_LEVEL: "debug"

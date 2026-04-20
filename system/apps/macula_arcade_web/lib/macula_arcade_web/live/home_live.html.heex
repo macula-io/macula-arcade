@@ -1,8 +1,8 @@
 <div class="arcade-container">
   <!-- CRT Screen Effect -->
   <div class="crt-overlay"></div>
-
-  <!-- Retro Terminal Header -->
+  
+<!-- Retro Terminal Header -->
   <div class="terminal-header">
     <div class="terminal-title">
       <pre class="ascii-logo">
@@ -24,22 +24,21 @@
     <div class="manifesto">
       <p class="blink">▸ DECENTRALIZED GAMING COLLECTIVE ◂</p>
       <p class="tagline">
-        No servers. No tracking. No corporations.<br/>
-        Just you, the mesh, and the games.<br/>
+        No servers. No tracking. No corporations.<br /> Just you, the mesh, and the games.<br />
         <span class="hacker-motto">BUILT BY HACKERS, FOR PLAYERS</span>
       </p>
     </div>
   </div>
-
-  <!-- System Info Bar -->
+  
+<!-- System Info Bar -->
   <div class="system-info">
     <span class="info-item">MESH: <span class="status-active">ACTIVE</span></span>
     <span class="info-item">PROTOCOL: HTTP/3</span>
     <span class="info-item">REALM: macula.arcade</span>
     <span class="info-item">PEERS: <span id="peer-count">4</span></span>
   </div>
-
-  <!-- Game Selection Grid -->
+  
+<!-- Game Selection Grid -->
   <div class="game-grid">
     <%= for game <- @games do %>
       <div
@@ -52,11 +51,11 @@
           <div class="game-ascii">
             <pre><%= game.ascii_art %></pre>
           </div>
-
-          <!-- Game Title -->
-          <h2 class="game-title"><%= game.name %></h2>
-
-          <!-- Game Status Badge -->
+          
+<!-- Game Title -->
+          <h2 class="game-title">{game.name}</h2>
+          
+<!-- Game Status Badge -->
           <div class="game-status">
             <%= if game.status == :available do %>
               <span class="badge available">[ ONLINE ]</span>
@@ -64,16 +63,16 @@
               <span class="badge coming-soon">[ COMING SOON ]</span>
             <% end %>
           </div>
-
-          <!-- Game Info -->
+          
+<!-- Game Info -->
           <div class="game-info">
-            <p class="game-description"><%= game.description %></p>
+            <p class="game-description">{game.description}</p>
             <p class="game-players">
-              <span class="label">PLAYERS:</span> <%= game.players %>
+              <span class="label">PLAYERS:</span> {game.players}
             </p>
           </div>
-
-          <!-- Launch Button -->
+          
+<!-- Launch Button -->
           <%= if game.status == :available do %>
             <button
               class="launch-btn"
@@ -91,8 +90,8 @@
       </div>
     <% end %>
   </div>
-
-  <!-- Footer Manifesto -->
+  
+<!-- Footer Manifesto -->
   <div class="footer-manifesto">
     <div class="manifesto-box">
       <h3>⚡ THE MESH MANIFESTO ⚡</h3>
@@ -105,16 +104,17 @@
       </ul>
       <p class="call-to-action">
         <span class="blink">▸</span>
-        BUILD YOUR OWN GAME. CONTRIBUTE TO THE MESH. BE THE CHANGE.
-        <span class="blink">◂</span>
+        BUILD YOUR OWN GAME. CONTRIBUTE TO THE MESH. BE THE CHANGE. <span class="blink">◂</span>
       </p>
     </div>
   </div>
-
-  <!-- Easter Egg / Hacker Credits -->
+  
+<!-- Easter Egg / Hacker Credits -->
   <div class="credits">
     <p>POWERED BY MACULA MESH • HTTP/3 • ELIXIR • ERLANG/OTP</p>
-    <p class="small">Crafted with ❤️ by distributed rebels. No venture capital was harmed in the making of this arcade.</p>
+    <p class="small">
+      Crafted with ❤️ by distributed rebels. No venture capital was harmed in the making of this arcade.
+    </p>
   </div>
 </div>
 

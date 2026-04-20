@@ -4,7 +4,7 @@ defmodule MaculaArcade.Umbrella.MixProject do
   def project do
     [
       apps_path: "apps",
-      version: "0.3.0",
+      version: "0.3.1",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
@@ -16,10 +16,13 @@ defmodule MaculaArcade.Umbrella.MixProject do
   defp releases do
     [
       macula_arcade: [
+        include_executables_for: [:unix],
+        steps: [:assemble, :tar],
         applications: [
           macula_arcade: :permanent,
           macula_arcade_web: :permanent
-        ]
+        ],
+        overlays: ["rel/overlays"]
       ]
     ]
   end
@@ -62,7 +65,14 @@ defmodule MaculaArcade.Umbrella.MixProject do
     [
       # run `mix setup` in all child apps
       setup: ["cmd mix setup"],
-      precommit: ["compile --warning-as-errors", "deps.unlock --unused", "format", "test"]
+      precommit: ["compile --warning-as-errors", "deps.unlock --unused", "format", "test"],
+      # Asset management (runs in web app context)
+      "assets.setup": ["cmd --app macula_arcade_web mix assets.setup"],
+      "assets.deploy": [
+        "cmd --app macula_arcade_web mix tailwind macula_arcade_web --minify",
+        "cmd --app macula_arcade_web mix esbuild macula_arcade_web --minify",
+        "phx.digest apps/macula_arcade_web/priv/static -o apps/macula_arcade_web/priv/static"
+      ]
     ]
   end
 end

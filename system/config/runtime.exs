@@ -128,5 +128,6 @@ if config_env() == :prod do
     quic_port: quic_port,
     # Health check port
     health_port: health_port
-    # NOTE: bootstrap_url removed in v0.8.7 - use MACULA_BOOTSTRAP_PEERS env var instead
+
+  # NOTE: bootstrap_url removed in v0.8.7 - use MACULA_BOOTSTRAP_PEERS env var instead
 end
